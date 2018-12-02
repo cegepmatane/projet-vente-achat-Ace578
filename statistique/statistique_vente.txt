@@ -1,2 +1,3 @@
 Nombre d'objets vendu : SELECT COUNT(*) as nbVente FROM achat
 Objet le plus cher : SELECT type FROM achat WHERE prix_total = MAX(prix_total)
+Objet le moins cher : SELECT type FROM achat WHERE prix_total = MIN(prix_total)
