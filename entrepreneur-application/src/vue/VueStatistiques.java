@@ -2,8 +2,10 @@ package vue;
 
 import javafx.application.Application;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -29,15 +31,31 @@ public class VueStatistiques extends Application {
 		hautApplication.add(sousTitre, 1, 1);
 		hautApplication.setAlignment(Pos.CENTER);
 		hautApplication.setStyle("-fx-border-color: blue");
+		
+		BorderPane elementCentral = new BorderPane();
+		
+		Label labelAnnee = new Label("Année : ");
+		DatePicker annee = new DatePicker();
+		
+		GridPane affichageApplication = new GridPane();		
+		
+		affichageApplication.add(labelAnnee, 0, 0);
+		affichageApplication.add(annee, 1, 0);
+		
+		affichageApplication.setPadding(new Insets(5));
+		
+		elementCentral.setTop(affichageApplication);
+		elementCentral.setStyle("-fx-border-color: red");
 
-		BorderPane panneau = new BorderPane();
+		BorderPane fenetrePrincipale = new BorderPane();
 
 		BorderPane.setAlignment(hautApplication, Pos.CENTER);
-		panneau.setTop(hautApplication);
+		fenetrePrincipale.setTop(hautApplication);
+		fenetrePrincipale.setCenter(elementCentral);
 		
-		panneau.setStyle("-fx-border-color: black");
+		fenetrePrincipale.setStyle("-fx-border-color: black");
 		
-		stade.setScene(new Scene(panneau, 800, 400));
+		stade.setScene(new Scene(fenetrePrincipale, 800, 400));
 		stade.setTitle("Volet Entreprise Vente Achat");
 		
 		stade.show();
