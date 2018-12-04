@@ -1,5 +1,6 @@
 package vue;
 
+import donnee.MySqlDAO;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -16,21 +17,25 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class VueStatistiques extends Application {
+	
+	private MySqlDAO accesseur;
 
 	@Override
 	public void start(Stage stade) throws Exception {
 		
+		this.accesseur = new MySqlDAO();
+				
 		Label titre = new Label("Statistiques");	
 		titre.setFont(Font.font ("Verdana", 30));
 		
-		Label sousTitre = new Label("X Catégories - X Produits");
-		sousTitre.setFont(Font.font ("Verdana", 15));
+		/*Label sousTitre = new Label("X Catégories - X Produits");
+		sousTitre.setFont(Font.font ("Verdana", 15));*/
 		
 		GridPane hautApplication = new GridPane();		
 		GridPane.setHalignment(titre, HPos.CENTER);
-		GridPane.setHalignment(sousTitre, HPos.CENTER);
+		//GridPane.setHalignment(sousTitre, HPos.CENTER);
 		hautApplication.add(titre, 1, 0);
-		hautApplication.add(sousTitre, 1, 1);
+		//hautApplication.add(sousTitre, 1, 1);
 		hautApplication.setAlignment(Pos.CENTER);
 				
 		Label labelAnnee = new Label("Année : ");
