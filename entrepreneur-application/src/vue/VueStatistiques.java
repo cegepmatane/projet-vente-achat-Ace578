@@ -28,17 +28,17 @@ public class VueStatistiques extends Application {
 		Label titre = new Label("Statistiques");	
 		titre.setFont(Font.font ("Verdana", 30));
 		
-		/*Label sousTitre = new Label("X Catégories - X Produits");
-		sousTitre.setFont(Font.font ("Verdana", 15));*/
+		Label sousTitre = new Label("X CatÃ©gories - X Produits");
+		sousTitre.setFont(Font.font ("Verdana", 15));
 		
 		GridPane hautApplication = new GridPane();		
 		GridPane.setHalignment(titre, HPos.CENTER);
-		//GridPane.setHalignment(sousTitre, HPos.CENTER);
+		GridPane.setHalignment(sousTitre, HPos.CENTER);
 		hautApplication.add(titre, 1, 0);
-		//hautApplication.add(sousTitre, 1, 1);
+		hautApplication.add(sousTitre, 1, 1);
 		hautApplication.setAlignment(Pos.CENTER);
 				
-		Label labelAnnee = new Label("Année : ");
+		Label labelAnnee = new Label("AnnÃ©e : ");
 		DatePicker annee = new DatePicker();
 		Button changerDate = new Button("Valider");
 		
@@ -123,7 +123,7 @@ public class VueStatistiques extends Application {
 		grilleStatistiquesParProduit.setTop(titreParProduit);
 		grilleStatistiquesParProduit.setCenter(affichageStatistiquesParProduit);
 		
-		Label titreParCategorie = new Label("Par Catégorie");
+		Label titreParCategorie = new Label("Par CatÃ©gorie");
 		
 		VBox statistiquesParCategorie = new VBox();
 		for(int i = 0; i<10; i++) {
@@ -160,7 +160,7 @@ public class VueStatistiques extends Application {
 		grilleStatistiquesParCategorie.setTop(titreParCategorie);
 		grilleStatistiquesParCategorie.setCenter(affichageStatistiquesParCategorie);
 		
-		Label titreParRegion = new Label("Par Région");
+		Label titreParRegion = new Label("Par RÃ©gion");
 
 		VBox statistiquesParRegion = new VBox();
 		for(int i = 0; i<10; i++) {			
