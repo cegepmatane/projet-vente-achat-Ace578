@@ -1,6 +1,11 @@
 package vue;
 
+import java.util.Calendar;
+import java.util.List;
+
 import donnee.MySqlDAO;
+import modele.StatistiqueMois;
+import modele.StatistiqueProduit;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -19,26 +24,29 @@ import javafx.stage.Stage;
 public class VueStatistiques extends Application {
 	
 	private MySqlDAO accesseur;
+	private GridPane donneesStatistiquesParMois,donneesStatistiquesParProduit;
+	private BorderPane caseStatistiqueParMois, caseStatistiqueParProduit;
+	private VBox statistiquesParMois, statistiquesParProduit;
 
 	@Override
 	public void start(Stage stade) throws Exception {
 		
 		this.accesseur = new MySqlDAO();
-				
+						
 		Label titre = new Label("Statistiques");	
 		titre.setFont(Font.font ("Verdana", 30));
 		
-		/*Label sousTitre = new Label("X Catégories - X Produits");
-		sousTitre.setFont(Font.font ("Verdana", 15));*/
+		Label sousTitre = new Label(accesseur.recupererNombreCategories() + " CatÃ©gories - " + accesseur.recupererNombreProduits() + " Produits");
+		sousTitre.setFont(Font.font ("Verdana", 15));
 		
 		GridPane hautApplication = new GridPane();		
 		GridPane.setHalignment(titre, HPos.CENTER);
-		//GridPane.setHalignment(sousTitre, HPos.CENTER);
+		GridPane.setHalignment(sousTitre, HPos.CENTER);
 		hautApplication.add(titre, 1, 0);
-		//hautApplication.add(sousTitre, 1, 1);
+		hautApplication.add(sousTitre, 1, 1);
 		hautApplication.setAlignment(Pos.CENTER);
 				
-		Label labelAnnee = new Label("Année : ");
+		Label labelAnnee = new Label("AnnÃ©e : ");
 		DatePicker annee = new DatePicker();
 		Button changerDate = new Button("Valider");
 		
@@ -51,30 +59,7 @@ public class VueStatistiques extends Application {
 		
 		Label titreParMois = new Label("Par Mois");
 		
-		VBox statistiquesParMois = new VBox();
-		for(int i = 0; i<10; i++) {
-			GridPane donneesStatistiquesParMois = new GridPane();
-			donneesStatistiquesParMois.add(new Label("moy"), 0, 0);
-			donneesStatistiquesParMois.add(new Label("max"), 1, 0);
-			donneesStatistiquesParMois.add(new Label("meilleur produit"), 2, 0);
-			donneesStatistiquesParMois.add(new Label("840"), 0, 1);
-			donneesStatistiquesParMois.add(new Label("10"), 1, 1);
-			donneesStatistiquesParMois.add(new Label("Gilet Jaune"), 2, 1);
-			donneesStatistiquesParMois.setAlignment(Pos.CENTER);
-			donneesStatistiquesParMois.setHgap(10);
-			
-			Label date = new Label("01/08/2018");
-			
-			BorderPane caseStatistiqueParMois = new BorderPane();
-			BorderPane.setAlignment(date, Pos.CENTER);
-			BorderPane.setMargin(date, new Insets(10));
-			caseStatistiqueParMois.setLeft(date);
-			caseStatistiqueParMois.setCenter(donneesStatistiquesParMois);
-			caseStatistiqueParMois.setPrefWidth(400);
-			caseStatistiqueParMois.setPrefHeight(50);
-			
-			statistiquesParMois.getChildren().add(caseStatistiqueParMois);
-		}
+		statistiquesParMois = new VBox();
 		
 		ScrollPane affichageStatistiquesParMois = new ScrollPane();
 		affichageStatistiquesParMois.setContent(statistiquesParMois);
@@ -88,30 +73,7 @@ public class VueStatistiques extends Application {
 		
 		Label titreParProduit = new Label("Par Produit (les 5 meilleurs)");
 		
-		VBox statistiquesParProduit = new VBox();
-		for(int i = 0; i<10; i++) {
-			GridPane donneesStatistiquesParProduit = new GridPane();
-			donneesStatistiquesParProduit.add(new Label("moy"), 0, 0);
-			donneesStatistiquesParProduit.add(new Label("max"), 1, 0);
-			donneesStatistiquesParProduit.add(new Label("meilleur mois"), 2, 0);
-			donneesStatistiquesParProduit.add(new Label("840"), 0, 1);
-			donneesStatistiquesParProduit.add(new Label("10"), 1, 1);
-			donneesStatistiquesParProduit.add(new Label("05/10/2018"), 2, 1);
-			donneesStatistiquesParProduit.setAlignment(Pos.CENTER);
-			donneesStatistiquesParProduit.setHgap(10);
-			
-			Label produit = new Label("Gilet Jaune");
-			
-			BorderPane caseStatistiqueParProduit = new BorderPane();
-			BorderPane.setAlignment(produit, Pos.CENTER);
-			BorderPane.setMargin(produit, new Insets(10));
-			caseStatistiqueParProduit.setLeft(produit);
-			caseStatistiqueParProduit.setCenter(donneesStatistiquesParProduit);
-			caseStatistiqueParProduit.setPrefWidth(400);
-			caseStatistiqueParProduit.setPrefHeight(50);
-			
-			statistiquesParProduit.getChildren().add(caseStatistiqueParProduit);
-		}
+		statistiquesParProduit = new VBox();
 		
 		ScrollPane affichageStatistiquesParProduit = new ScrollPane();
 		affichageStatistiquesParProduit.setContent(statistiquesParProduit);
@@ -123,7 +85,7 @@ public class VueStatistiques extends Application {
 		grilleStatistiquesParProduit.setTop(titreParProduit);
 		grilleStatistiquesParProduit.setCenter(affichageStatistiquesParProduit);
 		
-		Label titreParCategorie = new Label("Par Catégorie");
+		Label titreParCategorie = new Label("Par CatÃ©gorie");
 		
 		VBox statistiquesParCategorie = new VBox();
 		for(int i = 0; i<10; i++) {
@@ -160,7 +122,7 @@ public class VueStatistiques extends Application {
 		grilleStatistiquesParCategorie.setTop(titreParCategorie);
 		grilleStatistiquesParCategorie.setCenter(affichageStatistiquesParCategorie);
 		
-		Label titreParRegion = new Label("Par Région");
+		Label titreParRegion = new Label("Par RÃ©gion");
 
 		VBox statistiquesParRegion = new VBox();
 		for(int i = 0; i<10; i++) {			
@@ -206,9 +168,65 @@ public class VueStatistiques extends Application {
 		fenetrePrincipale.setTop(hautApplication);
 		fenetrePrincipale.setCenter(elementCentral);
 		
+		initialiserDonneesParAnnee(Calendar.getInstance().get(Calendar.YEAR));
+		
 		stade.setScene(new Scene(fenetrePrincipale, 900, 500));
 		stade.setTitle("Volet Entreprise Vente Achat");
 		stade.show();
 		
+	}
+
+	private void initialiserDonneesParAnnee(int annee) {
+		List<StatistiqueMois> statistiquesMois = accesseur.recupererStatistiquesMoisParAnnee(annee);
+		for (int iterateur = 0; iterateur<statistiquesMois.size(); iterateur++) {
+			caseStatistiqueParMois = new BorderPane();
+			caseStatistiqueParMois.setPrefWidth(400);
+			caseStatistiqueParMois.setPrefHeight(50);
+			
+			donneesStatistiquesParMois = new GridPane();
+			donneesStatistiquesParMois.setAlignment(Pos.CENTER);
+			donneesStatistiquesParMois.setHgap(10);
+			
+			donneesStatistiquesParMois.add(new Label("moy"), 0, iterateur+1);
+			donneesStatistiquesParMois.add(new Label("max"), 1, iterateur+1);
+			donneesStatistiquesParMois.add(new Label("meilleur produit"), 2, iterateur+1);
+			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMoyenneFloat()), 0, iterateur+2);
+			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMaximumFloat()), 1, iterateur+2);
+			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMeilleur()), 2, iterateur+2);
+			
+			Label date = new Label(""+statistiquesMois.get(iterateur).getMois());
+			BorderPane.setAlignment(date, Pos.CENTER);
+			BorderPane.setMargin(date, new Insets(10));
+			
+			caseStatistiqueParMois.setLeft(date);
+			caseStatistiqueParMois.setCenter(donneesStatistiquesParMois);
+			statistiquesParMois.getChildren().add(caseStatistiqueParMois);
+		}
+		
+		List<StatistiqueProduit> statistiquesProduit = accesseur.recupererStatistiquesProduitsParAnnee(annee);
+		for (int iterateur = 0; iterateur<statistiquesProduit.size(); iterateur++) {
+			caseStatistiqueParProduit = new BorderPane();
+			caseStatistiqueParProduit.setPrefWidth(400);
+			caseStatistiqueParProduit.setPrefHeight(50);
+			
+			donneesStatistiquesParProduit = new GridPane();
+			donneesStatistiquesParProduit.setAlignment(Pos.CENTER);
+			donneesStatistiquesParProduit.setHgap(10);
+			
+			donneesStatistiquesParProduit.add(new Label("moy"), 0, iterateur+1);
+			donneesStatistiquesParProduit.add(new Label("max"), 1, iterateur+1);
+			donneesStatistiquesParProduit.add(new Label("meilleur produit"), 2, iterateur+1);
+			donneesStatistiquesParProduit.add(new Label(""+statistiquesProduit.get(iterateur).getMoyenne()), 0, iterateur+2);
+			donneesStatistiquesParProduit.add(new Label(""+statistiquesProduit.get(iterateur).getMaximum()), 1, iterateur+2);
+			donneesStatistiquesParProduit.add(new Label(""+statistiquesProduit.get(iterateur).getMeilleurMois()), 2, iterateur+2);
+			
+			Label produit = new Label(""+statistiquesProduit.get(iterateur).getProduit());
+			BorderPane.setAlignment(produit, Pos.CENTER);
+			BorderPane.setMargin(produit, new Insets(10));
+			
+			caseStatistiqueParProduit.setLeft(produit);
+			caseStatistiqueParProduit.setCenter(donneesStatistiquesParProduit);
+			statistiquesParProduit.getChildren().add(caseStatistiqueParProduit);
+		}
 	}
 }
