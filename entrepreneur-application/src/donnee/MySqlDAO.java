@@ -20,6 +20,7 @@ public class MySqlDAO {
 	
 	public MySqlDAO() {
 		try {
+			System.out.println("Connexion MariaDB");
 			Class.forName(BASEDEDONNEES_DRIVER);
 			connexion = DriverManager.getConnection(BASEDEDONNEES_URL, BASEDEDONNEES_USAGER, BASEDEDONNEES_MOTDEPASSE);
 			declaration = connexion.createStatement();
@@ -33,7 +34,9 @@ public class MySqlDAO {
 	public String recupererNombreCategories() {
 		String resultat = "";
 		try {
-			ResultSet resulatRequete = declaration.executeQuery("SELECT COUNT(*) FROM categorie");
+			String REQUETE_NOMBRE_CATEGORIES = "SELECT COUNT(*) FROM categorie";
+			System.out.println(REQUETE_NOMBRE_CATEGORIES);
+			ResultSet resulatRequete = declaration.executeQuery(REQUETE_NOMBRE_CATEGORIES);
 			while(resulatRequete.next()) {
 				resultat = resulatRequete.getString(1);
 			}
@@ -46,7 +49,9 @@ public class MySqlDAO {
 	public String recupererNombreProduits() {
 		String resultat = "";
 		try {
-			ResultSet resulatRequete = declaration.executeQuery("SELECT COUNT(*) FROM produit");
+			String REQUETE_NOMBRE_PRODUITS = "SELECT COUNT(*) FROM produit";
+			System.out.println(REQUETE_NOMBRE_PRODUITS);
+			ResultSet resulatRequete = declaration.executeQuery(REQUETE_NOMBRE_PRODUITS);
 			while(resulatRequete.next()) {
 				resultat = resulatRequete.getString(1);
 			}

@@ -1,5 +1,7 @@
 package vue;
 
+import java.util.Calendar;
+
 import donnee.MySqlDAO;
 import javafx.application.Application;
 import javafx.geometry.HPos;
@@ -24,6 +26,8 @@ public class VueStatistiques extends Application {
 	public void start(Stage stade) throws Exception {
 		
 		this.accesseur = new MySqlDAO();
+		
+		initialiserDonneesParAnnee(Calendar.getInstance().get(Calendar.YEAR));
 				
 		Label titre = new Label("Statistiques");	
 		titre.setFont(Font.font ("Verdana", 30));
@@ -210,5 +214,9 @@ public class VueStatistiques extends Application {
 		stade.setTitle("Volet Entreprise Vente Achat");
 		stade.show();
 		
+	}
+
+	private void initialiserDonneesParAnnee(int annee) {
+
 	}
 }
