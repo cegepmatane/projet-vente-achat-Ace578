@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modele.StatistiqueMois;
+import modele.StatistiqueProduit;
 
 public class MySqlDAO {
 	
@@ -82,6 +83,17 @@ public class MySqlDAO {
 		resultat.add(new StatistiqueMois("Sep", 10, 456, "Maillot"));
 		resultat.add(new StatistiqueMois("Nov", 54, 125, "Maillot"));
 		resultat.add(new StatistiqueMois("Déc", 75, 150, "Maillot"));
+		
+		return resultat;
+	}
+
+	public List<StatistiqueProduit> recupererStatistiquesProduitsParAnnee(int annee) {
+		List<StatistiqueProduit> resultat = new ArrayList<StatistiqueProduit>();
+
+		resultat.add(new StatistiqueProduit("Maillot Bleu", 100, 200, "Jan"));
+		resultat.add(new StatistiqueProduit("Maillot Vert", 80, 420, "Mar"));
+		resultat.add(new StatistiqueProduit("Maillot Jaune", 10, 456, "Sep"));
+		resultat.add(new StatistiqueProduit("Maillot Rouge", 54, 125, "Nov"));
 		
 		return resultat;
 	}
