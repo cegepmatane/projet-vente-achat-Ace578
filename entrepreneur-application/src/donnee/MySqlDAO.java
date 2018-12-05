@@ -9,8 +9,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import modele.StatistiqueCategorie;
 import modele.StatistiqueMois;
 import modele.StatistiqueProduit;
+import modele.StatistiqueRegion;
 
 public class MySqlDAO {
 	
@@ -90,8 +92,6 @@ public class MySqlDAO {
 						resultat.add(statMois);
 					}					
 				}			
-				
-				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -107,6 +107,16 @@ public class MySqlDAO {
 		resultat.add(new StatistiqueProduit("Maillot Vert", 80, 420, "Mar"));
 		resultat.add(new StatistiqueProduit("Maillot Jaune", 10, 456, "Sep"));
 		resultat.add(new StatistiqueProduit("Maillot Rouge", 54, 125, "Nov"));
+		
+		return resultat;
+	}
+	
+	public List<StatistiqueCategorie> recupererStatistiquesCategoriesParAnnee(int annee){
+		List<StatistiqueCategorie> resultat = new ArrayList<StatistiqueCategorie>();
+		
+		resultat.add(new StatistiqueCategorie("Maillot", 100, 200, "Maillot Bleu"));
+		resultat.add(new StatistiqueCategorie("Chaussure", 80, 420, "Chaussure Rouge"));
+		resultat.add(new StatistiqueCategorie("Ballon", 10, 456, "Ballon mousse"));
 		
 		return resultat;
 	}

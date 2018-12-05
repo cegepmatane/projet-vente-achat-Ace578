@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import donnee.MySqlDAO;
+import modele.StatistiqueCategorie;
 import modele.StatistiqueMois;
 import modele.StatistiqueProduit;
 import javafx.application.Application;
@@ -24,9 +25,9 @@ import javafx.stage.Stage;
 public class VueStatistiques extends Application {
 	
 	private MySqlDAO accesseur;
-	private GridPane donneesStatistiquesParMois,donneesStatistiquesParProduit;
-	private BorderPane caseStatistiqueParMois, caseStatistiqueParProduit;
-	private VBox statistiquesParMois, statistiquesParProduit;
+	private GridPane donneesStatistiquesParMois,donneesStatistiquesParProduit, donneesStatistiquesParCategorie;
+	private BorderPane caseStatistiqueParMois, caseStatistiqueParProduit, caseStatistiquesParCategorie;
+	private VBox statistiquesParMois, statistiquesParProduit, statistiquesParCategorie;
 
 	@Override
 	public void start(Stage stade) throws Exception {
@@ -87,30 +88,7 @@ public class VueStatistiques extends Application {
 		
 		Label titreParCategorie = new Label("Par Catégorie");
 		
-		VBox statistiquesParCategorie = new VBox();
-		for(int i = 0; i<10; i++) {
-			GridPane donneesStatistiquesParCategorie = new GridPane();
-			donneesStatistiquesParCategorie.add(new Label("moy"), 0, 0);
-			donneesStatistiquesParCategorie.add(new Label("max"), 1, 0);
-			donneesStatistiquesParCategorie.add(new Label("meilleur produit"), 2, 0);
-			donneesStatistiquesParCategorie.add(new Label("840"), 0, 1);
-			donneesStatistiquesParCategorie.add(new Label("10"), 1, 1);
-			donneesStatistiquesParCategorie.add(new Label("Gilet Jaune"), 2, 1);
-			donneesStatistiquesParCategorie.setAlignment(Pos.CENTER);
-			donneesStatistiquesParCategorie.setHgap(10);
-			
-			Label categorie = new Label("Arme");
-			
-			BorderPane caseStatistiqueParCategorie = new BorderPane();
-			BorderPane.setAlignment(categorie, Pos.CENTER);
-			BorderPane.setMargin(categorie, new Insets(10));
-			caseStatistiqueParCategorie.setLeft(categorie);
-			caseStatistiqueParCategorie.setCenter(donneesStatistiquesParCategorie);
-			caseStatistiqueParCategorie.setPrefWidth(400);
-			caseStatistiqueParCategorie.setPrefHeight(50);
-			
-			statistiquesParCategorie.getChildren().add(caseStatistiqueParCategorie);
-		}
+		statistiquesParCategorie = new VBox();
 		
 		ScrollPane affichageStatistiquesParCategorie = new ScrollPane();
 		affichageStatistiquesParCategorie.setContent(statistiquesParCategorie);
@@ -227,6 +205,32 @@ public class VueStatistiques extends Application {
 			caseStatistiqueParProduit.setLeft(produit);
 			caseStatistiqueParProduit.setCenter(donneesStatistiquesParProduit);
 			statistiquesParProduit.getChildren().add(caseStatistiqueParProduit);
+		}
+		
+		List<StatistiqueCategorie> statistiquesCategorie = accesseur.recupererStatistiquesCategoriesParAnnee(annee);
+		for (int iterateur = 0; iterateur<statistiquesCategorie.size(); iterateur++) {
+			caseStatistiquesParCategorie = new BorderPane();
+			caseStatistiquesParCategorie.setPrefWidth(400);
+			caseStatistiquesParCategorie.setPrefHeight(50);
+			
+			donneesStatistiquesParCategorie = new GridPane();
+			donneesStatistiquesParCategorie.setAlignment(Pos.CENTER);
+			donneesStatistiquesParCategorie.setHgap(10);
+			
+			donneesStatistiquesParCategorie.add(new Label("moy"), 0, iterateur+1);
+			donneesStatistiquesParCategorie.add(new Label("max"), 1, iterateur+1);
+			donneesStatistiquesParCategorie.add(new Label("meilleur produit"), 2, iterateur+1);
+			donneesStatistiquesParCategorie.add(new Label(""+statistiquesCategorie.get(iterateur).getMoyenne()), 0, iterateur+2);
+			donneesStatistiquesParCategorie.add(new Label(""+statistiquesCategorie.get(iterateur).getMaximum()), 1, iterateur+2);
+			donneesStatistiquesParCategorie.add(new Label(""+statistiquesCategorie.get(iterateur).getMeilleurProduit()), 2, iterateur+2);
+			
+			Label categorie = new Label(""+statistiquesCategorie.get(iterateur).getCategorie());
+			BorderPane.setAlignment(categorie, Pos.CENTER);
+			BorderPane.setMargin(categorie, new Insets(10));
+			
+			caseStatistiquesParCategorie.setLeft(categorie);
+			caseStatistiquesParCategorie.setCenter(donneesStatistiquesParCategorie);
+			statistiquesParCategorie.getChildren().add(caseStatistiquesParCategorie);
 		}
 	}
 }
