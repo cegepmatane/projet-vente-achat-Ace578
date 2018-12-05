@@ -1,13 +1,14 @@
 package vue;
 
 import java.util.Calendar;
-import java.util.List;
 
 import donnee.MySqlDAO;
 import modele.StatistiqueCategorie;
 import modele.StatistiqueMois;
 import modele.StatistiqueProduit;
+import modele.StatistiqueRegion;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,20 +16,24 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class VueStatistiques extends Application {
 	
 	private MySqlDAO accesseur;
-	private GridPane donneesStatistiquesParMois,donneesStatistiquesParProduit, donneesStatistiquesParCategorie;
-	private BorderPane caseStatistiqueParMois, caseStatistiqueParProduit, caseStatistiquesParCategorie;
-	private VBox statistiquesParMois, statistiquesParProduit, statistiquesParCategorie;
+	
+	private TableView<StatistiqueMois> tableStatitistiquesMois;
+	private TableView<StatistiqueProduit> tableStatistiquesProduit;
+	private TableView<StatistiqueCategorie> tableStatistiquesCategorie;
+	private TableView<StatistiqueRegion> tableStatistiquesRegion;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void start(Stage stade) throws Exception {
 		
@@ -58,179 +63,132 @@ public class VueStatistiques extends Application {
 		affichageAnnee.setPadding(new Insets(5));
 		GridPane.setMargin(changerDate, new Insets(10));
 		
-		Label titreParMois = new Label("Par Mois");
+		tableStatitistiquesMois = new TableView<StatistiqueMois>();
 		
-		statistiquesParMois = new VBox();
+		TableColumn<StatistiqueMois, String> statistiquesMoisTitre = new TableColumn<StatistiqueMois, String>("Par mois");
+		TableColumn<StatistiqueMois, String> statistiquesMoisColonneMois = new TableColumn<StatistiqueMois, String>("Mois");
+		TableColumn<StatistiqueMois, Float> statistiquesMoisColonneMoyenne = new TableColumn<StatistiqueMois, Float>("Moyenne");
+		TableColumn<StatistiqueMois, Float> statistiquesMoisColonneMaximum = new TableColumn<StatistiqueMois, Float>("Maximum");
+		TableColumn<StatistiqueMois, String> statistiquesMoisColonneMeilleurProduit = new TableColumn<StatistiqueMois, String>("Meilleur Produit");
 		
-		ScrollPane affichageStatistiquesParMois = new ScrollPane();
-		affichageStatistiquesParMois.setContent(statistiquesParMois);
-		affichageStatistiquesParMois.setPrefHeight(200);
-		affichageStatistiquesParMois.setPrefWidth(430);
+		statistiquesMoisColonneMois.setCellValueFactory(new PropertyValueFactory<>("mois"));
+		statistiquesMoisColonneMoyenne.setCellValueFactory(new PropertyValueFactory<>("moyenne"));
+		statistiquesMoisColonneMaximum.setCellValueFactory(new PropertyValueFactory<>("maximum"));
+		statistiquesMoisColonneMeilleurProduit.setCellValueFactory(new PropertyValueFactory<>("meilleurProduit"));
+				
+		statistiquesMoisColonneMois.setStyle( "-fx-alignment: CENTER;");
+		statistiquesMoisColonneMoyenne.setStyle( "-fx-alignment: CENTER;");
+		statistiquesMoisColonneMaximum.setStyle( "-fx-alignment: CENTER;");
+		statistiquesMoisColonneMeilleurProduit.setStyle( "-fx-alignment: CENTER;");
 
-		BorderPane grilleStatistiquesParMois = new BorderPane();
-		BorderPane.setAlignment(titreParMois, Pos.CENTER);
-		grilleStatistiquesParMois.setTop(titreParMois);
-		grilleStatistiquesParMois.setCenter(affichageStatistiquesParMois);
+		statistiquesMoisTitre.getColumns().addAll(statistiquesMoisColonneMois, statistiquesMoisColonneMoyenne, 
+				statistiquesMoisColonneMaximum, statistiquesMoisColonneMeilleurProduit);
+		tableStatitistiquesMois.getColumns().addAll(statistiquesMoisTitre);
+		tableStatitistiquesMois.setPrefWidth(500);
+		tableStatitistiquesMois.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		
-		Label titreParProduit = new Label("Par Produit (les 5 meilleurs)");
+		tableStatistiquesProduit = new TableView<StatistiqueProduit>();
 		
-		statistiquesParProduit = new VBox();
+		TableColumn<StatistiqueProduit, String> statistiquesProduitTitre = new TableColumn<StatistiqueProduit, String>("Par produit");
+		TableColumn<StatistiqueProduit, String> statistiquesProduitColonneProduit = new TableColumn<StatistiqueProduit, String>("Produit"); 
+		TableColumn<StatistiqueProduit, Float> statistiquesProduitColonneMoyenne = new TableColumn<StatistiqueProduit, Float>("Moyenne"); 
+		TableColumn<StatistiqueProduit, Float> statistiquesProduitColonneMaximum = new TableColumn<StatistiqueProduit, Float>("Maximum"); 
+		TableColumn<StatistiqueProduit, String> statistiquesProduitColonneMeilleurMois = new TableColumn<StatistiqueProduit, String>("Meilleur Mois"); 
 		
-		ScrollPane affichageStatistiquesParProduit = new ScrollPane();
-		affichageStatistiquesParProduit.setContent(statistiquesParProduit);
-		affichageStatistiquesParProduit.setPrefHeight(200);
-		affichageStatistiquesParProduit.setPrefWidth(430);
+		statistiquesProduitColonneProduit.setCellValueFactory(new PropertyValueFactory<>("produit"));
+		statistiquesProduitColonneMoyenne.setCellValueFactory(new PropertyValueFactory<>("moyenne"));
+		statistiquesProduitColonneMaximum.setCellValueFactory(new PropertyValueFactory<>("maximum"));
+		statistiquesProduitColonneMeilleurMois.setCellValueFactory(new PropertyValueFactory<>("meilleurMois"));
 		
-		BorderPane grilleStatistiquesParProduit = new BorderPane();
-		BorderPane.setAlignment(titreParProduit, Pos.CENTER);
-		grilleStatistiquesParProduit.setTop(titreParProduit);
-		grilleStatistiquesParProduit.setCenter(affichageStatistiquesParProduit);
+		statistiquesProduitColonneProduit.setStyle( "-fx-alignment: CENTER;");
+		statistiquesProduitColonneMoyenne.setStyle( "-fx-alignment: CENTER;");
+		statistiquesProduitColonneMaximum.setStyle( "-fx-alignment: CENTER;");
+		statistiquesProduitColonneMeilleurMois.setStyle( "-fx-alignment: CENTER;");
 		
-		Label titreParCategorie = new Label("Par Catégorie");
+		statistiquesProduitTitre.getColumns().addAll(statistiquesProduitColonneProduit, statistiquesProduitColonneMoyenne,
+				statistiquesProduitColonneMaximum, statistiquesProduitColonneMeilleurMois);
+		tableStatistiquesProduit.getColumns().addAll(statistiquesProduitTitre);
+		tableStatistiquesProduit.setPrefWidth(500);
+		tableStatistiquesProduit.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		
-		statistiquesParCategorie = new VBox();
+		tableStatistiquesCategorie = new TableView<StatistiqueCategorie>();
 		
-		ScrollPane affichageStatistiquesParCategorie = new ScrollPane();
-		affichageStatistiquesParCategorie.setContent(statistiquesParCategorie);
-		affichageStatistiquesParCategorie.setPrefHeight(200);
-		affichageStatistiquesParCategorie.setPrefWidth(400);
+		TableColumn<StatistiqueCategorie, String> statistiquesCategorieTitre = new TableColumn<StatistiqueCategorie, String>("Par catégorie");
+		TableColumn<StatistiqueCategorie, String> statistiquesCategorieColonneCategorie = new TableColumn<StatistiqueCategorie, String>("Catégorie"); 
+		TableColumn<StatistiqueCategorie, Float> statistiquesCategorieColonneMoyenne = new TableColumn<StatistiqueCategorie, Float>("Moyenne"); 
+		TableColumn<StatistiqueCategorie, Float> statistiquesCategorieColonneMaximum = new TableColumn<StatistiqueCategorie, Float>("Maximum"); 
+		TableColumn<StatistiqueCategorie, String> statistiquesCategorieColonneMeilleurProduit = new TableColumn<StatistiqueCategorie, String>("Meilleur Produit"); 
 		
-		BorderPane grilleStatistiquesParCategorie = new BorderPane();
-		BorderPane.setAlignment(titreParCategorie, Pos.CENTER);
-		grilleStatistiquesParCategorie.setTop(titreParCategorie);
-		grilleStatistiquesParCategorie.setCenter(affichageStatistiquesParCategorie);
+		statistiquesCategorieColonneCategorie.setCellValueFactory(new PropertyValueFactory<>("categorie"));
+		statistiquesCategorieColonneMoyenne.setCellValueFactory(new PropertyValueFactory<>("moyenne"));
+		statistiquesCategorieColonneMaximum.setCellValueFactory(new PropertyValueFactory<>("maximum"));
+		statistiquesCategorieColonneMeilleurProduit.setCellValueFactory(new PropertyValueFactory<>("meilleurProduit"));
 		
-		Label titreParRegion = new Label("Par Région");
-
-		VBox statistiquesParRegion = new VBox();
-		for(int i = 0; i<10; i++) {			
-			Label region = new Label("France");
-			
-			BorderPane caseStatistiqueParRegion = new BorderPane();
-			BorderPane.setAlignment(region, Pos.CENTER);
-			BorderPane.setMargin(region, new Insets(10));
-			caseStatistiqueParRegion.setLeft(region);
-			caseStatistiqueParRegion.setCenter(new Label("60 millions d'acheteurs"));
-			caseStatistiqueParRegion.setPrefWidth(400);
-			caseStatistiqueParRegion.setPrefHeight(50);
-			
-			statistiquesParRegion.getChildren().add(caseStatistiqueParRegion);
-		}
+		statistiquesCategorieColonneCategorie.setStyle( "-fx-alignment: CENTER;");
+		statistiquesCategorieColonneMoyenne.setStyle( "-fx-alignment: CENTER;");
+		statistiquesCategorieColonneMaximum.setStyle( "-fx-alignment: CENTER;");
+		statistiquesCategorieColonneMeilleurProduit.setStyle( "-fx-alignment: CENTER;");
 		
-		ScrollPane affichageStatistiquesParRegion = new ScrollPane();
-		affichageStatistiquesParRegion.setContent(statistiquesParRegion);
-		affichageStatistiquesParRegion.setPrefHeight(200);
-		affichageStatistiquesParRegion.setPrefWidth(430);
+		statistiquesCategorieTitre.getColumns().addAll(statistiquesCategorieColonneCategorie, statistiquesCategorieColonneMoyenne,
+				statistiquesCategorieColonneMaximum, statistiquesCategorieColonneMeilleurProduit);
+		tableStatistiquesCategorie.getColumns().addAll(statistiquesCategorieTitre);
+		tableStatistiquesCategorie.setPrefWidth(500);
+		tableStatistiquesCategorie.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		
-		BorderPane grilleStatistiquesParRegion = new BorderPane();
-		BorderPane.setAlignment(titreParRegion, Pos.CENTER);
-		grilleStatistiquesParRegion.setTop(titreParRegion);
-		grilleStatistiquesParRegion.setCenter(affichageStatistiquesParRegion);
+		tableStatistiquesRegion = new TableView<StatistiqueRegion>();
+		
+		TableColumn<StatistiqueRegion, String> statistiquesRegionTitre = new TableColumn<StatistiqueRegion, String>("Par région");
+		TableColumn<StatistiqueRegion, String> statistiquesRegionColonneRegion = new TableColumn<StatistiqueRegion, String>("Région"); 
+		TableColumn<StatistiqueRegion, Integer> statistiquesRegionColonneNombreAchats = new TableColumn<StatistiqueRegion, Integer>("Nombre d'achats");
+		
+		statistiquesRegionColonneRegion.setCellValueFactory(new PropertyValueFactory<>("region"));
+		statistiquesRegionColonneNombreAchats.setCellValueFactory(new PropertyValueFactory<>("nombreAcheteurs"));
+				
+		statistiquesRegionColonneRegion.setStyle( "-fx-alignment: CENTER;");
+		statistiquesRegionColonneNombreAchats.setStyle( "-fx-alignment: CENTER;");
+		
+		statistiquesRegionTitre.getColumns().addAll(statistiquesRegionColonneRegion, statistiquesRegionColonneNombreAchats);
+		tableStatistiquesRegion.getColumns().addAll(statistiquesRegionTitre);
+		tableStatistiquesRegion.setPrefWidth(500);
+		tableStatistiquesRegion.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		
 		GridPane affichageStatistiques = new GridPane();		
-		affichageStatistiques.add(grilleStatistiquesParMois, 0, 0);
-		affichageStatistiques.add(grilleStatistiquesParProduit, 0, 1);
-		affichageStatistiques.add(grilleStatistiquesParCategorie, 1, 0);
-		affichageStatistiques.add(grilleStatistiquesParRegion, 1, 1);
+		affichageStatistiques.add(tableStatitistiquesMois, 0, 0);
+		affichageStatistiques.add(tableStatistiquesProduit, 0, 1);
+		affichageStatistiques.add(tableStatistiquesCategorie, 1, 0);
+		affichageStatistiques.add(tableStatistiquesRegion, 1, 1);
 		affichageStatistiques.setAlignment(Pos.CENTER);
-		GridPane.setMargin(grilleStatistiquesParRegion, new Insets(5));
-		GridPane.setMargin(grilleStatistiquesParCategorie, new Insets(5));
-		GridPane.setMargin(grilleStatistiquesParProduit, new Insets(5));
-		GridPane.setMargin(grilleStatistiquesParMois, new Insets(5));
+		affichageStatistiques.setHgap(10);
+		affichageStatistiques.setVgap(10);
 		
 		BorderPane elementCentral = new BorderPane();
 		elementCentral.setTop(affichageAnnee);
 		elementCentral.setCenter(affichageStatistiques);
+		elementCentral.setBottom(new Label());
 		
 		BorderPane fenetrePrincipale = new BorderPane();
 		fenetrePrincipale.setTop(hautApplication);
 		fenetrePrincipale.setCenter(elementCentral);
 		
-		initialiserDonneesParAnnee(Calendar.getInstance().get(Calendar.YEAR));
-		
-		stade.setScene(new Scene(fenetrePrincipale, 900, 500));
+		initialiserDonnees(Calendar.getInstance().get(Calendar.YEAR));
+				
+		stade.setScene(new Scene(fenetrePrincipale, 1050, 800));
 		stade.setTitle("Volet Entreprise Vente Achat");
 		stade.show();
 		
 	}
 
-	private void initialiserDonneesParAnnee(int annee) {
-		List<StatistiqueMois> statistiquesMois = accesseur.recupererStatistiquesMoisParAnnee(annee);
-		for (int iterateur = 0; iterateur<statistiquesMois.size(); iterateur++) {
-			caseStatistiqueParMois = new BorderPane();
-			caseStatistiqueParMois.setPrefWidth(400);
-			caseStatistiqueParMois.setPrefHeight(50);
-			
-			donneesStatistiquesParMois = new GridPane();
-			donneesStatistiquesParMois.setAlignment(Pos.CENTER);
-			donneesStatistiquesParMois.setHgap(10);
-			
-			donneesStatistiquesParMois.add(new Label("moy"), 0, iterateur+1);
-			donneesStatistiquesParMois.add(new Label("max"), 1, iterateur+1);
-			donneesStatistiquesParMois.add(new Label("meilleur produit"), 2, iterateur+1);
-			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMoyenneFloat()), 0, iterateur+2);
-			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMaximumFloat()), 1, iterateur+2);
-			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMeilleurProduit()), 2, iterateur+2);
-			
-			Label date = new Label(""+statistiquesMois.get(iterateur).getMois());
-			BorderPane.setAlignment(date, Pos.CENTER);
-			BorderPane.setMargin(date, new Insets(10));
-			
-			caseStatistiqueParMois.setLeft(date);
-			caseStatistiqueParMois.setCenter(donneesStatistiquesParMois);
-			statistiquesParMois.getChildren().add(caseStatistiqueParMois);
-		}
+	private void initialiserDonnees(int annee) {
+		ObservableList<StatistiqueMois> listeStatistiqueMois = accesseur.recupererStatistiquesMoisParAnnee(annee);
+		tableStatitistiquesMois.setItems(listeStatistiqueMois);
 		
-		List<StatistiqueProduit> statistiquesProduit = accesseur.recupererStatistiquesProduitsParAnnee(annee);
-		for (int iterateur = 0; iterateur<statistiquesProduit.size(); iterateur++) {
-			caseStatistiqueParProduit = new BorderPane();
-			caseStatistiqueParProduit.setPrefWidth(400);
-			caseStatistiqueParProduit.setPrefHeight(50);
-			
-			donneesStatistiquesParProduit = new GridPane();
-			donneesStatistiquesParProduit.setAlignment(Pos.CENTER);
-			donneesStatistiquesParProduit.setHgap(10);
-			
-			donneesStatistiquesParProduit.add(new Label("moy"), 0, iterateur+1);
-			donneesStatistiquesParProduit.add(new Label("max"), 1, iterateur+1);
-			donneesStatistiquesParProduit.add(new Label("meilleur produit"), 2, iterateur+1);
-			donneesStatistiquesParProduit.add(new Label(""+statistiquesProduit.get(iterateur).getMoyenne()), 0, iterateur+2);
-			donneesStatistiquesParProduit.add(new Label(""+statistiquesProduit.get(iterateur).getMaximum()), 1, iterateur+2);
-			donneesStatistiquesParProduit.add(new Label(""+statistiquesProduit.get(iterateur).getMeilleurMois()), 2, iterateur+2);
-			
-			Label produit = new Label(""+statistiquesProduit.get(iterateur).getProduit());
-			BorderPane.setAlignment(produit, Pos.CENTER);
-			BorderPane.setMargin(produit, new Insets(10));
-			
-			caseStatistiqueParProduit.setLeft(produit);
-			caseStatistiqueParProduit.setCenter(donneesStatistiquesParProduit);
-			statistiquesParProduit.getChildren().add(caseStatistiqueParProduit);
-		}
+		ObservableList<StatistiqueProduit> listeStatistiqueProduit = accesseur.recupererStatistiquesProduitsParAnnee(annee);
+		tableStatistiquesProduit.setItems(listeStatistiqueProduit);
 		
-		List<StatistiqueCategorie> statistiquesCategorie = accesseur.recupererStatistiquesCategoriesParAnnee(annee);
-		for (int iterateur = 0; iterateur<statistiquesCategorie.size(); iterateur++) {
-			caseStatistiquesParCategorie = new BorderPane();
-			caseStatistiquesParCategorie.setPrefWidth(400);
-			caseStatistiquesParCategorie.setPrefHeight(50);
-			
-			donneesStatistiquesParCategorie = new GridPane();
-			donneesStatistiquesParCategorie.setAlignment(Pos.CENTER);
-			donneesStatistiquesParCategorie.setHgap(10);
-			
-			donneesStatistiquesParCategorie.add(new Label("moy"), 0, iterateur+1);
-			donneesStatistiquesParCategorie.add(new Label("max"), 1, iterateur+1);
-			donneesStatistiquesParCategorie.add(new Label("meilleur produit"), 2, iterateur+1);
-			donneesStatistiquesParCategorie.add(new Label(""+statistiquesCategorie.get(iterateur).getMoyenne()), 0, iterateur+2);
-			donneesStatistiquesParCategorie.add(new Label(""+statistiquesCategorie.get(iterateur).getMaximum()), 1, iterateur+2);
-			donneesStatistiquesParCategorie.add(new Label(""+statistiquesCategorie.get(iterateur).getMeilleurProduit()), 2, iterateur+2);
-			
-			Label categorie = new Label(""+statistiquesCategorie.get(iterateur).getCategorie());
-			BorderPane.setAlignment(categorie, Pos.CENTER);
-			BorderPane.setMargin(categorie, new Insets(10));
-			
-			caseStatistiquesParCategorie.setLeft(categorie);
-			caseStatistiquesParCategorie.setCenter(donneesStatistiquesParCategorie);
-			statistiquesParCategorie.getChildren().add(caseStatistiquesParCategorie);
-		}
+		ObservableList<StatistiqueCategorie> listeStatistiqueCategorie = accesseur.recupererStatistiquesCategoriesParAnnee(annee);
+		tableStatistiquesCategorie.setItems(listeStatistiqueCategorie);
+		
+		ObservableList<StatistiqueRegion> listeStatistiqueRegion = accesseur.recupererStatistiquesRegionParAnnee(annee);
+		tableStatistiquesRegion.setItems(listeStatistiqueRegion);
 	}
 }

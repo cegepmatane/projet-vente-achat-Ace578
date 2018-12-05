@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import modele.StatistiqueCategorie;
 import modele.StatistiqueMois;
 import modele.StatistiqueProduit;
@@ -67,7 +69,7 @@ public class MySqlDAO {
 		return resultat;
 	}
 
-	public List<StatistiqueMois> recupererStatistiquesMoisParAnnee(int annee) {
+	public ObservableList<StatistiqueMois> recupererStatistiquesMoisParAnnee(int annee) {
 		List<StatistiqueMois> resultat = new ArrayList<StatistiqueMois>();
 		
 		try {
@@ -97,23 +99,12 @@ public class MySqlDAO {
 			e.printStackTrace();
 		}
 
-		return resultat;
+		return FXCollections.observableArrayList(resultat);
 	}
 
-	public List<StatistiqueProduit> recupererStatistiquesProduitsParAnnee(int annee) {
-		List<StatistiqueProduit> resultat = new ArrayList<StatistiqueProduit>();
-
-		resultat.add(new StatistiqueProduit("Maillot Bleu", 100, 200, "Jan"));
-		resultat.add(new StatistiqueProduit("Maillot Vert", 80, 420, "Mar"));
-		resultat.add(new StatistiqueProduit("Maillot Jaune", 10, 456, "Sep"));
-		resultat.add(new StatistiqueProduit("Maillot Rouge", 54, 125, "Nov"));
-		
-		return resultat;
-	}
+	public ObservableList<StatistiqueCategorie> recupererStatistiquesCategoriesParAnnee(int annee) {
+		List<StatistiqueCategorie> resultat = new ArrayList<StatistiqueCategorie>();
 	
-	public List<StatistiqueCategorie> recupererStatistiquesCategoriesParAnnee(int annee){
-	List<StatistiqueCategorie> resultat = new ArrayList<StatistiqueCategorie>();
-		
 		try {
 
 			String REQUETE_STATISTIQUES_CATEGORIE = "SELECT categorie, AVG(prix_total) as moyenne, MAX(prix_total) as maximum, produit FROM achat WHERE YEAR(date) = " +annee+" GROUP BY categorie;";
@@ -146,7 +137,28 @@ public class MySqlDAO {
 			e.printStackTrace();
 		}
 
-		return resultat;
+		return FXCollections.observableArrayList(resultat);
 	}
-	
+
+	public ObservableList<StatistiqueRegion> recupererStatistiquesRegionParAnnee(int annee) {
+		List<StatistiqueRegion> resultat = new ArrayList<StatistiqueRegion>();
+
+		resultat.add(new StatistiqueRegion("France", 453453));
+		resultat.add(new StatistiqueRegion("Canada", 5623));
+		resultat.add(new StatistiqueRegion("Allemagne", 786854));
+		resultat.add(new StatistiqueRegion("Alsace", 777558));
+		
+		return FXCollections.observableArrayList(resultat);
+	}
+
+	public ObservableList<StatistiqueProduit> recupererStatistiquesProduitsParAnnee(int annee) {
+		List<StatistiqueProduit> resultat = new ArrayList<StatistiqueProduit>();
+
+		resultat.add(new StatistiqueProduit("Maillot Bleu", 100, 200, "1"));
+		resultat.add(new StatistiqueProduit("Maillot Vert", 80, 420, "3"));
+		resultat.add(new StatistiqueProduit("Maillot Jaune", 10, 456, "9"));
+		resultat.add(new StatistiqueProduit("Maillot Rouge", 54, 125, "11"));
+		
+		return FXCollections.observableArrayList(resultat);
+	}
 }
