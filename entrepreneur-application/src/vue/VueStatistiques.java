@@ -190,9 +190,9 @@ public class VueStatistiques extends Application {
 			donneesStatistiquesParMois.add(new Label("moy"), 0, iterateur+1);
 			donneesStatistiquesParMois.add(new Label("max"), 1, iterateur+1);
 			donneesStatistiquesParMois.add(new Label("meilleur produit"), 2, iterateur+1);
-			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMoyenne()), 0, iterateur+2);
-			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMaximum()), 1, iterateur+2);
-			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMeilleurProduit()), 2, iterateur+2);
+			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMoyenneFloat()), 0, iterateur+2);
+			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMaximumFloat()), 1, iterateur+2);
+			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getCategorie()), 2, iterateur+2);
 			
 			Label date = new Label(""+statistiquesMois.get(iterateur).getMois());
 			BorderPane.setAlignment(date, Pos.CENTER);

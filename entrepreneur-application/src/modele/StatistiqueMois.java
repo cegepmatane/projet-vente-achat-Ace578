@@ -37,4 +37,17 @@ public class StatistiqueMois {
 	public int getMaximum() {
 		return maximum;
 	}
+	
+	
+	public float getMoyenneFloat() {
+		return moy;
+	}
+	
+	public float getMaximumFloat() {
+		return max;
+	}
+	
+	public int getCategorie() {
+		return categorie;
+	}
 }
