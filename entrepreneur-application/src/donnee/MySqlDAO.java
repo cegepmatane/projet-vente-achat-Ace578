@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+import java.util.ArrayList;
+import java.util.List;
+
+import modele.StatistiqueMois;
 
 public class MySqlDAO {
 	
@@ -58,6 +61,28 @@ public class MySqlDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return resultat;
+	}
+
+	public List<StatistiqueMois> recupererStatistiquesMoisParAnnee(int annee) {
+		List<StatistiqueMois> resultat = new ArrayList<StatistiqueMois>();
+		/*
+		try {
+			String REQUETE_NOMBRE_PRODUITS = "SELECT * FROM produit";
+			System.out.println(REQUETE_NOMBRE_PRODUITS);
+			ResultSet resulatRequete = declaration.executeQuery(REQUETE_NOMBRE_PRODUITS);
+			while(resulatRequete.next()) {
+				resultat = resulatRequete.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}*/
+		resultat.add(new StatistiqueMois("Jan", 100, 200, "Maillot"));
+		resultat.add(new StatistiqueMois("Mar", 80, 420, "Maillot"));
+		resultat.add(new StatistiqueMois("Sep", 10, 456, "Maillot"));
+		resultat.add(new StatistiqueMois("Nov", 54, 125, "Maillot"));
+		resultat.add(new StatistiqueMois("Déc", 75, 150, "Maillot"));
+		
 		return resultat;
 	}
 }

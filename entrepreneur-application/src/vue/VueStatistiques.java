@@ -1,8 +1,11 @@
 package vue;
 
 import java.util.Calendar;
+import java.util.List;
 
 import donnee.MySqlDAO;
+import modele.StatistiqueMois;
+
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -21,14 +24,15 @@ import javafx.stage.Stage;
 public class VueStatistiques extends Application {
 	
 	private MySqlDAO accesseur;
+	private GridPane donneesStatistiquesParMois;
+	private BorderPane caseStatistiqueParMois;
+	private VBox statistiquesParMois;
 
 	@Override
 	public void start(Stage stade) throws Exception {
 		
 		this.accesseur = new MySqlDAO();
-		
-		initialiserDonneesParAnnee(Calendar.getInstance().get(Calendar.YEAR));
-				
+						
 		Label titre = new Label("Statistiques");	
 		titre.setFont(Font.font ("Verdana", 30));
 		
@@ -55,30 +59,7 @@ public class VueStatistiques extends Application {
 		
 		Label titreParMois = new Label("Par Mois");
 		
-		VBox statistiquesParMois = new VBox();
-		for(int i = 0; i<10; i++) {
-			GridPane donneesStatistiquesParMois = new GridPane();
-			donneesStatistiquesParMois.add(new Label("moy"), 0, 0);
-			donneesStatistiquesParMois.add(new Label("max"), 1, 0);
-			donneesStatistiquesParMois.add(new Label("meilleur produit"), 2, 0);
-			donneesStatistiquesParMois.add(new Label("840"), 0, 1);
-			donneesStatistiquesParMois.add(new Label("10"), 1, 1);
-			donneesStatistiquesParMois.add(new Label("Gilet Jaune"), 2, 1);
-			donneesStatistiquesParMois.setAlignment(Pos.CENTER);
-			donneesStatistiquesParMois.setHgap(10);
-			
-			Label date = new Label("01/08/2018");
-			
-			BorderPane caseStatistiqueParMois = new BorderPane();
-			BorderPane.setAlignment(date, Pos.CENTER);
-			BorderPane.setMargin(date, new Insets(10));
-			caseStatistiqueParMois.setLeft(date);
-			caseStatistiqueParMois.setCenter(donneesStatistiquesParMois);
-			caseStatistiqueParMois.setPrefWidth(400);
-			caseStatistiqueParMois.setPrefHeight(50);
-			
-			statistiquesParMois.getChildren().add(caseStatistiqueParMois);
-		}
+		statistiquesParMois = new VBox();
 		
 		ScrollPane affichageStatistiquesParMois = new ScrollPane();
 		affichageStatistiquesParMois.setContent(statistiquesParMois);
@@ -210,6 +191,8 @@ public class VueStatistiques extends Application {
 		fenetrePrincipale.setTop(hautApplication);
 		fenetrePrincipale.setCenter(elementCentral);
 		
+		initialiserDonneesParAnnee(Calendar.getInstance().get(Calendar.YEAR));
+		
 		stade.setScene(new Scene(fenetrePrincipale, 900, 500));
 		stade.setTitle("Volet Entreprise Vente Achat");
 		stade.show();
@@ -217,6 +200,34 @@ public class VueStatistiques extends Application {
 	}
 
 	private void initialiserDonneesParAnnee(int annee) {
+		Label date = new Label();
+		BorderPane.setAlignment(date, Pos.CENTER);
+		BorderPane.setMargin(date, new Insets(10));
+		
+		List<StatistiqueMois> statistiquesMois = accesseur.recupererStatistiquesMoisParAnnee(annee);
+		for (int iterateur = 0; iterateur<statistiquesMois.size(); iterateur++) {
+			caseStatistiqueParMois = new BorderPane();
+			caseStatistiqueParMois.setPrefWidth(400);
+			caseStatistiqueParMois.setPrefHeight(50);
+			
+			donneesStatistiquesParMois = new GridPane();
+			donneesStatistiquesParMois.setAlignment(Pos.CENTER);
+			donneesStatistiquesParMois.setHgap(10);
+			
+			donneesStatistiquesParMois.add(new Label("moy"), 0, iterateur);
+			donneesStatistiquesParMois.add(new Label("max"), 1, iterateur);
+			donneesStatistiquesParMois.add(new Label("meilleur produit"), 2, iterateur);
+			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMoyenne()), 0, iterateur+1);
+			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMaximum()), 1, iterateur+1);
+			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMeilleurProduit()), 2, iterateur+1);
+			
+			date = new Label(""+statistiquesMois.get(iterateur).getMois());
+			
+			caseStatistiqueParMois.setLeft(date);
+			caseStatistiqueParMois.setCenter(donneesStatistiquesParMois);
+			statistiquesParMois.getChildren().add(caseStatistiqueParMois);
 
+			iterateur++;
+		}
 	}
 }
