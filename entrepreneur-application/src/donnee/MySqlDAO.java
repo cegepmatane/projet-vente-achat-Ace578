@@ -112,12 +112,32 @@ public class MySqlDAO {
 	}
 	
 	public List<StatistiqueCategorie> recupererStatistiquesCategoriesParAnnee(int annee){
-		List<StatistiqueCategorie> resultat = new ArrayList<StatistiqueCategorie>();
+	List<StatistiqueCategorie> resultat = new ArrayList<StatistiqueCategorie>();
 		
-		resultat.add(new StatistiqueCategorie("Maillot", 100, 200, "Maillot Bleu"));
-		resultat.add(new StatistiqueCategorie("Chaussure", 80, 420, "Chaussure Rouge"));
-		resultat.add(new StatistiqueCategorie("Ballon", 10, 456, "Ballon mousse"));
+		try {
+
+			String REQUETE_STATISTIQUES_CATEGORIE = "SELECT categorie, AVG(prix_total) as moyenne, MAX(prix_total) as maximum, produit FROM achat WHERE YEAR(date) = " +annee+" GROUP BY categorie;";
+			System.out.println(REQUETE_STATISTIQUES_CATEGORIE);
+			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_CATEGORIE);
+
+			while(resultatRequete.next()) {
+				float max = resultatRequete.getFloat("maximum");
+				float moyenne = resultatRequete.getFloat("moyenne");
+				int categorie = resultatRequete.getInt("categorie");
+				String REQUETE_NOM_CATEGORIE = "SELECT nom FROM categorie where id="+categorie;
+				ResultSet meill = declaration.executeQuery(REQUETE_NOM_CATEGORIE);
+				while(meill.next()) {
+					String nomCate = meill.getString("nom");
+					StatistiqueCategorie statCategorie = new StatistiqueCategorie(nomCate, moyenne, max, "a");
+					resultat.add(statCategorie);
+				}					
+			}			
 		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 		return resultat;
 	}
+	
 }
