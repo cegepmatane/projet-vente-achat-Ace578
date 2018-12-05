@@ -69,16 +69,28 @@ public class MySqlDAO {
 		List<StatistiqueMois> resultat = new ArrayList<StatistiqueMois>();
 		
 		try {
+
 			String REQUETE_STATISTIQUES_MOIS = "SELECT MONTH(date) as mois, MAX(prix_total) as maximum, AVG(prix_total) as moyenne, produit as meilleur FROM achat WHERE YEAR(date)= " +annee+ " GROUP BY MONTH(date)";
 			System.out.println(REQUETE_STATISTIQUES_MOIS);
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_MOIS);
+
 			while(resultatRequete.next()) {
 				String mois = resultatRequete.getString("mois");
 				float max = resultatRequete.getFloat("maximum");
 				float moyenne = resultatRequete.getFloat("moyenne");
-				int meilleur = resultatRequete.getInt("meilleur");
-				StatistiqueMois statMois = new StatistiqueMois(mois, moyenne, max, meilleur);
-				resultat.add(statMois);
+				String REQUETE_MEILLEURE_PRODUIT = "SELECT meilleur FROM (SELECT COUNT(produit)as max, produit as meilleur FROM achat WHERE MONTH(date) = " +mois+ " GROUP BY produit) as meill ORDER BY max DESC limit 1";
+				ResultSet resultatRe = declaration.executeQuery(REQUETE_MEILLEURE_PRODUIT);
+				while(resultatRe.next()) {
+					int meilleur = resultatRe.getInt("meilleur");
+					String REQUETE_NOM_MEILLEUR = "SELECT nom FROM produit where id="+meilleur;
+					ResultSet meill = declaration.executeQuery(REQUETE_NOM_MEILLEUR);
+					while(meill.next()) {
+						String nomMeill = meill.getString("nom");
+						StatistiqueMois statMois = new StatistiqueMois(mois, moyenne, max, nomMeill);
+						resultat.add(statMois);
+					}					
+				}			
+				
 				
 			}
 		} catch (SQLException e) {

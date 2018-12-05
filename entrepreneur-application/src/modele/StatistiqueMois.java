@@ -14,9 +14,9 @@ public class StatistiqueMois {
 		this.maximum = maximum;
 	}
 	
-	public StatistiqueMois(String mois, float moyenne, float maximum, int meilleurProduit) {
+	public StatistiqueMois(String mois, float moyenne, float maximum, String meilleurProduit) {
 		this.mois = mois;
-		this.meilleur = meilleurProduit;
+		this.meilleurProduit = meilleurProduit;
 		this.max = maximum;
 		this.moy = moyenne;
 		
