@@ -5,7 +5,7 @@ import java.util.List;
 
 import donnee.MySqlDAO;
 import modele.StatistiqueMois;
-
+import modele.StatistiqueProduit;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -24,9 +24,9 @@ import javafx.stage.Stage;
 public class VueStatistiques extends Application {
 	
 	private MySqlDAO accesseur;
-	private GridPane donneesStatistiquesParMois;
-	private BorderPane caseStatistiqueParMois;
-	private VBox statistiquesParMois;
+	private GridPane donneesStatistiquesParMois,donneesStatistiquesParProduit;
+	private BorderPane caseStatistiqueParMois, caseStatistiqueParProduit;
+	private VBox statistiquesParMois, statistiquesParProduit;
 
 	@Override
 	public void start(Stage stade) throws Exception {
@@ -73,30 +73,7 @@ public class VueStatistiques extends Application {
 		
 		Label titreParProduit = new Label("Par Produit (les 5 meilleurs)");
 		
-		VBox statistiquesParProduit = new VBox();
-		for(int i = 0; i<10; i++) {
-			GridPane donneesStatistiquesParProduit = new GridPane();
-			donneesStatistiquesParProduit.add(new Label("moy"), 0, 0);
-			donneesStatistiquesParProduit.add(new Label("max"), 1, 0);
-			donneesStatistiquesParProduit.add(new Label("meilleur mois"), 2, 0);
-			donneesStatistiquesParProduit.add(new Label("840"), 0, 1);
-			donneesStatistiquesParProduit.add(new Label("10"), 1, 1);
-			donneesStatistiquesParProduit.add(new Label("05/10/2018"), 2, 1);
-			donneesStatistiquesParProduit.setAlignment(Pos.CENTER);
-			donneesStatistiquesParProduit.setHgap(10);
-			
-			Label produit = new Label("Gilet Jaune");
-			
-			BorderPane caseStatistiqueParProduit = new BorderPane();
-			BorderPane.setAlignment(produit, Pos.CENTER);
-			BorderPane.setMargin(produit, new Insets(10));
-			caseStatistiqueParProduit.setLeft(produit);
-			caseStatistiqueParProduit.setCenter(donneesStatistiquesParProduit);
-			caseStatistiqueParProduit.setPrefWidth(400);
-			caseStatistiqueParProduit.setPrefHeight(50);
-			
-			statistiquesParProduit.getChildren().add(caseStatistiqueParProduit);
-		}
+		statistiquesParProduit = new VBox();
 		
 		ScrollPane affichageStatistiquesParProduit = new ScrollPane();
 		affichageStatistiquesParProduit.setContent(statistiquesParProduit);
@@ -200,10 +177,6 @@ public class VueStatistiques extends Application {
 	}
 
 	private void initialiserDonneesParAnnee(int annee) {
-		Label date = new Label();
-		BorderPane.setAlignment(date, Pos.CENTER);
-		BorderPane.setMargin(date, new Insets(10));
-		
 		List<StatistiqueMois> statistiquesMois = accesseur.recupererStatistiquesMoisParAnnee(annee);
 		for (int iterateur = 0; iterateur<statistiquesMois.size(); iterateur++) {
 			caseStatistiqueParMois = new BorderPane();
@@ -214,20 +187,46 @@ public class VueStatistiques extends Application {
 			donneesStatistiquesParMois.setAlignment(Pos.CENTER);
 			donneesStatistiquesParMois.setHgap(10);
 			
-			donneesStatistiquesParMois.add(new Label("moy"), 0, iterateur);
-			donneesStatistiquesParMois.add(new Label("max"), 1, iterateur);
-			donneesStatistiquesParMois.add(new Label("meilleur produit"), 2, iterateur);
-			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMoyenne()), 0, iterateur+1);
-			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMaximum()), 1, iterateur+1);
-			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMeilleurProduit()), 2, iterateur+1);
+			donneesStatistiquesParMois.add(new Label("moy"), 0, iterateur+1);
+			donneesStatistiquesParMois.add(new Label("max"), 1, iterateur+1);
+			donneesStatistiquesParMois.add(new Label("meilleur produit"), 2, iterateur+1);
+			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMoyenne()), 0, iterateur+2);
+			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMaximum()), 1, iterateur+2);
+			donneesStatistiquesParMois.add(new Label(""+statistiquesMois.get(iterateur).getMeilleurProduit()), 2, iterateur+2);
 			
-			date = new Label(""+statistiquesMois.get(iterateur).getMois());
+			Label date = new Label(""+statistiquesMois.get(iterateur).getMois());
+			BorderPane.setAlignment(date, Pos.CENTER);
+			BorderPane.setMargin(date, new Insets(10));
 			
 			caseStatistiqueParMois.setLeft(date);
 			caseStatistiqueParMois.setCenter(donneesStatistiquesParMois);
 			statistiquesParMois.getChildren().add(caseStatistiqueParMois);
-
-			iterateur++;
+		}
+		
+		List<StatistiqueProduit> statistiquesProduit = accesseur.recupererStatistiquesProduitsParAnnee(annee);
+		for (int iterateur = 0; iterateur<statistiquesProduit.size(); iterateur++) {
+			caseStatistiqueParProduit = new BorderPane();
+			caseStatistiqueParProduit.setPrefWidth(400);
+			caseStatistiqueParProduit.setPrefHeight(50);
+			
+			donneesStatistiquesParProduit = new GridPane();
+			donneesStatistiquesParProduit.setAlignment(Pos.CENTER);
+			donneesStatistiquesParProduit.setHgap(10);
+			
+			donneesStatistiquesParProduit.add(new Label("moy"), 0, iterateur+1);
+			donneesStatistiquesParProduit.add(new Label("max"), 1, iterateur+1);
+			donneesStatistiquesParProduit.add(new Label("meilleur produit"), 2, iterateur+1);
+			donneesStatistiquesParProduit.add(new Label(""+statistiquesProduit.get(iterateur).getMoyenne()), 0, iterateur+2);
+			donneesStatistiquesParProduit.add(new Label(""+statistiquesProduit.get(iterateur).getMaximum()), 1, iterateur+2);
+			donneesStatistiquesParProduit.add(new Label(""+statistiquesProduit.get(iterateur).getMeilleurMois()), 2, iterateur+2);
+			
+			Label produit = new Label(""+statistiquesProduit.get(iterateur).getProduit());
+			BorderPane.setAlignment(produit, Pos.CENTER);
+			BorderPane.setMargin(produit, new Insets(10));
+			
+			caseStatistiqueParProduit.setLeft(produit);
+			caseStatistiqueParProduit.setCenter(donneesStatistiquesParProduit);
+			statistiquesParProduit.getChildren().add(caseStatistiqueParProduit);
 		}
 	}
 }
