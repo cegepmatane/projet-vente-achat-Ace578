@@ -69,15 +69,15 @@ public class MySqlDAO {
 		List<StatistiqueMois> resultat = new ArrayList<StatistiqueMois>();
 		
 		try {
-			String REQUETE_NOMBRE_PRODUITS = "SELECT MONTH(date) as mois, MAX(prix_total) as maximum, AVG(prix_total) as moyenne, categorie FROM achat WHERE YEAR(date)= " +annee+ " GROUP BY MONTH(date)";
+			String REQUETE_NOMBRE_PRODUITS = "SELECT MONTH(date) as mois, MAX(prix_total) as maximum, AVG(prix_total) as moyenne, produit as meilleur FROM achat WHERE YEAR(date)= " +annee+ " GROUP BY MONTH(date)";
 			System.out.println(REQUETE_NOMBRE_PRODUITS);
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_NOMBRE_PRODUITS);
 			while(resultatRequete.next()) {
 				String mois = resultatRequete.getString("mois");
 				float max = resultatRequete.getFloat("maximum");
 				float moyenne = resultatRequete.getFloat("moyenne");
-				int categorie = resultatRequete.getInt("categorie");
-				StatistiqueMois statMois = new StatistiqueMois(mois, moyenne, max, categorie);
+				int meilleur = resultatRequete.getInt("meilleur");
+				StatistiqueMois statMois = new StatistiqueMois(mois, moyenne, max, meilleur);
 				resultat.add(statMois);
 				
 			}

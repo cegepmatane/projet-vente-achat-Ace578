@@ -4,7 +4,7 @@ public class StatistiqueMois {
 	
 	private String mois, meilleurProduit;
 	private int moyenne, maximum;
-	private int categorie;
+	private int meilleur;
 	private float max, moy;
 	
 	public StatistiqueMois(String mois, int moyenne, int maximum, String meilleurProduit) {
@@ -14,9 +14,9 @@ public class StatistiqueMois {
 		this.maximum = maximum;
 	}
 	
-	public StatistiqueMois(String mois, float moyenne, float maximum, int categorie) {
+	public StatistiqueMois(String mois, float moyenne, float maximum, int meilleurProduit) {
 		this.mois = mois;
-		this.categorie = categorie;
+		this.meilleur = meilleurProduit;
 		this.max = maximum;
 		this.moy = moyenne;
 		
@@ -47,7 +47,7 @@ public class StatistiqueMois {
 		return max;
 	}
 	
-	public int getCategorie() {
-		return categorie;
+	public int getMeilleur() {
+		return meilleur;
 	}
 }
