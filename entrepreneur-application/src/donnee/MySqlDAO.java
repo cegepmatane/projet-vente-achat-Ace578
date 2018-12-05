@@ -69,9 +69,9 @@ public class MySqlDAO {
 		List<StatistiqueMois> resultat = new ArrayList<StatistiqueMois>();
 		
 		try {
-			String REQUETE_NOMBRE_PRODUITS = "SELECT MONTH(date) as mois, MAX(prix_total) as maximum, AVG(prix_total) as moyenne, produit as meilleur FROM achat WHERE YEAR(date)= " +annee+ " GROUP BY MONTH(date)";
-			System.out.println(REQUETE_NOMBRE_PRODUITS);
-			ResultSet resultatRequete = declaration.executeQuery(REQUETE_NOMBRE_PRODUITS);
+			String REQUETE_STATISTIQUES_MOIS = "SELECT MONTH(date) as mois, MAX(prix_total) as maximum, AVG(prix_total) as moyenne, produit as meilleur FROM achat WHERE YEAR(date)= " +annee+ " GROUP BY MONTH(date)";
+			System.out.println(REQUETE_STATISTIQUES_MOIS);
+			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_MOIS);
 			while(resultatRequete.next()) {
 				String mois = resultatRequete.getString("mois");
 				float max = resultatRequete.getFloat("maximum");
