@@ -78,7 +78,7 @@ public class MySqlDAO {
 				String mois = resultatRequete.getString("mois");
 				float max = resultatRequete.getFloat("maximum");
 				float moyenne = resultatRequete.getFloat("moyenne");
-				String REQUETE_MEILLEURE_PRODUIT = "SELECT meilleur FROM (SELECT COUNT(produit)as max, produit as meilleur FROM achat WHERE MONTH(date) = " +mois+ " GROUP BY produit) as meill ORDER BY max DESC limit 1";
+				String REQUETE_MEILLEURE_PRODUIT = "SELECT meilleur FROM (SELECT COUNT(produit)as max, produit as meilleur FROM achat WHERE MONTH(date) = " +mois+ " AND YEAR(date) = " +annee+ " GROUP BY produit) as meill ORDER BY max DESC limit 1";
 				ResultSet resultatRe = declaration.executeQuery(REQUETE_MEILLEURE_PRODUIT);
 				while(resultatRe.next()) {
 					int meilleur = resultatRe.getInt("meilleur");
