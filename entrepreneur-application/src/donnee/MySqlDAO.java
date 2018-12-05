@@ -40,9 +40,9 @@ public class MySqlDAO {
 		try {
 			String REQUETE_NOMBRE_CATEGORIES = "SELECT COUNT(*) FROM categorie";
 			System.out.println(REQUETE_NOMBRE_CATEGORIES);
-			ResultSet resulatRequete = declaration.executeQuery(REQUETE_NOMBRE_CATEGORIES);
-			while(resulatRequete.next()) {
-				resultat = resulatRequete.getString(1);
+			ResultSet resultatRequete = declaration.executeQuery(REQUETE_NOMBRE_CATEGORIES);
+			while(resultatRequete.next()) {
+				resultat = resultatRequete.getString(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -55,9 +55,9 @@ public class MySqlDAO {
 		try {
 			String REQUETE_NOMBRE_PRODUITS = "SELECT COUNT(*) FROM produit";
 			System.out.println(REQUETE_NOMBRE_PRODUITS);
-			ResultSet resulatRequete = declaration.executeQuery(REQUETE_NOMBRE_PRODUITS);
-			while(resulatRequete.next()) {
-				resultat = resulatRequete.getString(1);
+			ResultSet resultatRequete = declaration.executeQuery(REQUETE_NOMBRE_PRODUITS);
+			while(resultatRequete.next()) {
+				resultat = resultatRequete.getString(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -67,23 +67,24 @@ public class MySqlDAO {
 
 	public List<StatistiqueMois> recupererStatistiquesMoisParAnnee(int annee) {
 		List<StatistiqueMois> resultat = new ArrayList<StatistiqueMois>();
-		/*
+		
 		try {
-			String REQUETE_NOMBRE_PRODUITS = "SELECT * FROM produit";
+			String REQUETE_NOMBRE_PRODUITS = "SELECT MONTH(date) as mois, MAX(prix_total) as maximum, AVG(prix_total) as moyenne, categorie FROM achat WHERE YEAR(date)= " +annee+ " GROUP BY MONTH(date)";
 			System.out.println(REQUETE_NOMBRE_PRODUITS);
-			ResultSet resulatRequete = declaration.executeQuery(REQUETE_NOMBRE_PRODUITS);
-			while(resulatRequete.next()) {
-				resultat = resulatRequete.getString(1);
+			ResultSet resultatRequete = declaration.executeQuery(REQUETE_NOMBRE_PRODUITS);
+			while(resultatRequete.next()) {
+				String mois = resultatRequete.getString("mois");
+				float max = resultatRequete.getFloat("maximum");
+				float moyenne = resultatRequete.getFloat("moyenne");
+				int categorie = resultatRequete.getInt("categorie");
+				StatistiqueMois statMois = new StatistiqueMois(mois, moyenne, max, categorie);
+				resultat.add(statMois);
+				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}*/
-		resultat.add(new StatistiqueMois("Jan", 100, 200, "Maillot"));
-		resultat.add(new StatistiqueMois("Mar", 80, 420, "Maillot"));
-		resultat.add(new StatistiqueMois("Sep", 10, 456, "Maillot"));
-		resultat.add(new StatistiqueMois("Nov", 54, 125, "Maillot"));
-		resultat.add(new StatistiqueMois("Déc", 75, 150, "Maillot"));
-		
+		}
+
 		return resultat;
 	}
 
