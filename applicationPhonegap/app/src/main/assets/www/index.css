@@ -170,31 +170,112 @@ a:hover
 #panier{
 	height:30px;
 	width:30px;
-	margin-left:10%;
+	margin-left:11%;
 	float:left;
-	margin-top:10px;
+	margin-top:20px;
 }
 #compte{
 	height:30px;
 	width:30px;
-	margin-left:68%;
+	margin-left:67%;
 	float:left;
-  margin-top:5px;
+  margin-top:22px;
 }
 #recherche{
 	height:30px;
 	width:30px;
-	margin-left:79%;
+	margin-left:77%;
 	float:left;
-	margin-top:-30px;
+	margin-top:-32px;
 }
 
 
 
 #buttonHomme
 {
-  margin-top: 50px;
-  width: 100px;
-  height: 200px;
-  background-color: red;
+  background-color: white;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 60px 50px;
+    cursor: pointer;
+    border: 2px solid red;
+}
+#buttonFemme
+{
+  background-color: white;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border: 2px solid red;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+
+.search {
+  top:-170px;
+  right: 20px;
+  width: 100%;
+  position: fixed;
+}
+
+.searchTerm {
+  float: left;
+  width: 100%;
+  border: 3px solid red;
+  padding: 5px;
+  height: 20px;
+  border-radius: 5px;
+  outline: none;
+  color: #9DBFAF;
+}
+
+.searchTerm:focus{
+  color: red;
+}
+
+.searchButton {
+  position: absolute;  
+  right: -50px;
+  width: 40px;
+  height: 36px;
+  border: 1px solid red;
+  background: red;
+  text-align: center;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/*Resize the wrap to see the search bar change!*/
+.wrap{
+  width: 30%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.theme{
+  background-color: white;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border: 2px solid black;
 }

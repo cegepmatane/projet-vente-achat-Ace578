@@ -22,7 +22,7 @@
          acceuilVue.afficher();
      }
      
-     /*else if(hash.match(/^#ajouter-article/)) {
+    /* else if(hash.match(/^#personnaliser-article/)) {
              var ajouterArticleVue = new AjouterArticleVue(actionEnregistrerArticle);
              ajouterArticleVue.afficher();
      
