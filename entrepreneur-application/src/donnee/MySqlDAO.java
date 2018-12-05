@@ -29,4 +29,30 @@ public class MySqlDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	public String recupererNombreCategories() {
+		String resultat = "";
+		try {
+			ResultSet resulatRequete = declaration.executeQuery("SELECT COUNT(*) FROM categorie");
+			while(resulatRequete.next()) {
+				resultat = resulatRequete.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return resultat;
+	}
+	
+	public String recupererNombreProduits() {
+		String resultat = "";
+		try {
+			ResultSet resulatRequete = declaration.executeQuery("SELECT COUNT(*) FROM produit");
+			while(resulatRequete.next()) {
+				resultat = resulatRequete.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return resultat;
+	}
 }

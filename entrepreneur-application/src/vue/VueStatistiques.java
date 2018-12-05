@@ -28,7 +28,7 @@ public class VueStatistiques extends Application {
 		Label titre = new Label("Statistiques");	
 		titre.setFont(Font.font ("Verdana", 30));
 		
-		Label sousTitre = new Label("X Catégories - X Produits");
+		Label sousTitre = new Label(accesseur.recupererNombreCategories() + " Catégories - " + accesseur.recupererNombreProduits() + " Produits");
 		sousTitre.setFont(Font.font ("Verdana", 15));
 		
 		GridPane hautApplication = new GridPane();		
