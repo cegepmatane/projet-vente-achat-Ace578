@@ -1,5 +1,6 @@
 package vue;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import donnee.MySqlDAO;
@@ -14,6 +15,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -33,7 +35,7 @@ public class VueStatistiques extends Application {
 	private TableView<StatistiqueCategorie> tableStatistiquesCategorie;
 	private TableView<StatistiqueRegion> tableStatistiquesRegion;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void start(Stage stade) throws Exception {
 		
@@ -53,12 +55,19 @@ public class VueStatistiques extends Application {
 		hautApplication.setAlignment(Pos.CENTER);
 				
 		Label labelAnnee = new Label("Année : ");
-		DatePicker annee = new DatePicker();
+		ArrayList<Integer> annees = new ArrayList<>();
+		for (int annee = Calendar.getInstance().get(Calendar.YEAR); annee > 2000 ; annee--) {
+			annees.add(annee);
+		}
+		ComboBox choixAnnees = new ComboBox();
+		choixAnnees.getItems().addAll(annees);
+		choixAnnees.setValue(Calendar.getInstance().get(Calendar.YEAR));
+		choixAnnees.setVisibleRowCount(4);
 		Button changerDate = new Button("Valider");
 		
 		GridPane affichageAnnee = new GridPane();		
 		affichageAnnee.add(labelAnnee, 0, 0);
-		affichageAnnee.add(annee, 1, 0);
+		affichageAnnee.add(choixAnnees, 1, 0);
 		affichageAnnee.add(changerDate, 2, 0);
 		affichageAnnee.setPadding(new Insets(5));
 		GridPane.setMargin(changerDate, new Insets(10));
