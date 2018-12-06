@@ -143,7 +143,22 @@ public class MySqlDAO {
 	public ObservableList<StatistiqueRegion> recupererStatistiquesRegionParAnnee(int annee) {
 		List<StatistiqueRegion> resultat = new ArrayList<StatistiqueRegion>();
 
+		try {
+
+			String REQUETE_STATISTIQUES_CATEGORIE = "SELECT COUNT(produit) as nombreAcheteurs, region FROM achat WHERE YEAR(date) = " +annee+" GROUP BY region";
+			System.out.println(REQUETE_STATISTIQUES_CATEGORIE);
+			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_CATEGORIE);
+
+			while(resultatRequete.next()) {
+				int nombreAcheteurs = resultatRequete.getInt("nombreAcheteurs");
+				String region = resultatRequete.getString("region");
+				StatistiqueRegion statRegion = new StatistiqueRegion(region, nombreAcheteurs);
+				resultat.add(statRegion);
+				}	
 		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		return FXCollections.observableArrayList(resultat);
 	}
