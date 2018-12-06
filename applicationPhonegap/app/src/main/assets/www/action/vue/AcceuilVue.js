@@ -9,7 +9,19 @@ var AcceuilVue = (function() {
         this.afficher = function() {
 			document.getElementsByTagName("body")[0].innerHTML = pageAcceuil;
 
-        }
+
+			var listeCategorie = document.getElementById("theme");
+
+            var li="";
+            for (var numeroArticle in listeArticleDonnee) {
+
+                li += '<a href="#categorie/'+listeArticleDonnee[numeroArticle]+'"><button>'+listeArticleDonnee[numeroArticle].nom+" </button></a>";
+
+            }
+            listeCategorie.innerHTML = li;
+
+           }
+        };
 
         window.onload = function(){ 
         	document.getElementById("buttonHomme").onclick = function() {myFunction()};;
@@ -26,7 +38,7 @@ var AcceuilVue = (function() {
 		};
         
 
-    };
+    
 
 
 })();
