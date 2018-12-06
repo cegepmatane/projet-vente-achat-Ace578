@@ -143,10 +143,7 @@ public class MySqlDAO {
 	public ObservableList<StatistiqueRegion> recupererStatistiquesRegionParAnnee(int annee) {
 		List<StatistiqueRegion> resultat = new ArrayList<StatistiqueRegion>();
 
-		resultat.add(new StatistiqueRegion("France", 453453));
-		resultat.add(new StatistiqueRegion("Canada", 5623));
-		resultat.add(new StatistiqueRegion("Allemagne", 786854));
-		resultat.add(new StatistiqueRegion("Alsace", 777558));
+		
 		
 		return FXCollections.observableArrayList(resultat);
 	}
@@ -154,10 +151,28 @@ public class MySqlDAO {
 	public ObservableList<StatistiqueProduit> recupererStatistiquesProduitsParAnnee(int annee) {
 		List<StatistiqueProduit> resultat = new ArrayList<StatistiqueProduit>();
 
-		resultat.add(new StatistiqueProduit("Maillot Bleu", 100, 200, "1"));
-		resultat.add(new StatistiqueProduit("Maillot Vert", 80, 420, "3"));
-		resultat.add(new StatistiqueProduit("Maillot Jaune", 10, 456, "9"));
-		resultat.add(new StatistiqueProduit("Maillot Rouge", 54, 125, "11"));
+		try {
+
+			String REQUETE_STATISTIQUES_PRODUIT = "SELECT COUNT(produit) as nb ,  AVG(prix_total) as moyenne, MAX(prix_total) as max,  produit, MONTH(date) as mois FROM achat WHERE YEAR(date) = " +annee+ " GROUP by produit ORDER BY nb DESC LIMIT 5";
+			System.out.println(REQUETE_STATISTIQUES_PRODUIT);
+			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_PRODUIT);
+			while(resultatRequete.next()) {
+				int meilleur = resultatRequete.getInt("produit");
+				String mois = resultatRequete.getString("mois");
+				float moyenne = resultatRequete.getFloat("moyenne");
+				float max = resultatRequete.getFloat("max");
+				String REQUETE_MEILLEURE_PRODUIT = "SELECT nom FROM produit where id="+meilleur;
+				ResultSet resultatRe = declaration.executeQuery(REQUETE_MEILLEURE_PRODUIT);
+				while(resultatRe.next()) {
+					String nom = resultatRe.getString("nom");
+					StatistiqueProduit statProduit = new StatistiqueProduit(nom, moyenne, max,mois);
+					resultat.add(statProduit);
+									
+				}			
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		return FXCollections.observableArrayList(resultat);
 	}
