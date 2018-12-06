@@ -1,3 +1,4 @@
 Nombre d'objets vendu : SELECT COUNT(*) as nbVente FROM achat
 Objet le plus cher : SELECT type FROM achat WHERE prix_total = MAX(prix_total)
 Objet le moins cher : SELECT type FROM achat WHERE prix_total = MIN(prix_total)
+Statcategorie : SELECT categorie, AVG(prix_total) as moyenne, MAX(prix_total) as maximum, produit FROM achat WHERE YEAR(date) = 2018 GROUP BY categorie;

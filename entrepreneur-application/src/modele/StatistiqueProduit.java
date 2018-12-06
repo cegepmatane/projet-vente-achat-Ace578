@@ -3,9 +3,9 @@ package modele;
 public class StatistiqueProduit {
 
 	private String produit, meilleurMois;
-	private int moyenne, maximum;
+	private float moyenne, maximum;
 	
-	public StatistiqueProduit(String produit, int moyenne, int maximum, String meilleurMois) {
+	public StatistiqueProduit(String produit, float moyenne, float maximum, String meilleurMois) {
 		this.produit = produit;
 		this.meilleurMois = meilleurMois;
 		this.moyenne = moyenne;
@@ -20,11 +20,11 @@ public class StatistiqueProduit {
 		return meilleurMois;
 	}
 
-	public int getMoyenne() {
+	public float getMoyenne() {
 		return moyenne;
 	}
 
-	public int getMaximum() {
+	public float getMaximum() {
 		return maximum;
 	}
 }
