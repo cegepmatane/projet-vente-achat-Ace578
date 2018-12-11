@@ -13,6 +13,7 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import modele.Produit;
+import modele.Produit;
 import modele.StatistiqueCategorie;
 import modele.StatistiqueMois;
 import modele.StatistiqueProduit;
@@ -211,6 +212,26 @@ public class MySqlDAO {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void modifierProduit(Produit produit) {
+		System.out.println("modifierProduit()");
+		
+		try {
+			
+			String SQL_MODIFIER_PRODUIT = "UPDATE produit SET nom = ?, image = ?, prix = ?, id_categorie = ? WHERE id=?";
+			PreparedStatement requeteModifierProduit = connexion.prepareStatement(SQL_MODIFIER_PRODUIT);
+			requeteModifierProduit.setString(1, produit.getNom());
+			requeteModifierProduit.setString(2, produit.getImage());
+			requeteModifierProduit.setFloat(3, produit.getPrix());
+			requeteModifierProduit.setInt(4, produit.getIdCategorie());
+			requeteModifierProduit.setInt(5, produit.getId());
+			
+			requeteModifierProduit.execute();
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
 		
 	}
 }
