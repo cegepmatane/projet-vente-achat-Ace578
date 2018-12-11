@@ -12,11 +12,16 @@ import modele.Produit;
 public class MongoDAO {
 	
 	protected DBCollection listeProduits = null;
+	protected DBCollection listeAchats = null;
+	protected DBCollection listeStickers = null;
 
 	public MongoDAO () {
 		
 		MongoClient mongo = new MongoClient();
 		DB vente = mongo.getDB("vente");
+		listeProduits = vente.getCollection("produit");
+		listeAchats = vente.getCollection("achat");
+		listeStickers = vente.getCollection("stickers");
 
 	}
 	
