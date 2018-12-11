@@ -7,6 +7,8 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
+import modele.Produit;
+
 public class MongoDAO {
 	
 	protected DBCollection listeProduits = null;
@@ -14,9 +16,17 @@ public class MongoDAO {
 	public MongoDAO () {
 		
 		MongoClient mongo = new MongoClient();
-		DB bergerie = mongo.getDB("vente");
+		DB vente = mongo.getDB("vente");
 
 	}
+	
+	public void ajouterProduit(Produit produit)
+	{
+		DBObject produitMongo = new BasicDBObject();
+		produitMongo.putAll(produit.exporterHash());
+		listeProduits.insert(produitMongo);		
+	}
+	
 	
 	
 	
