@@ -14,6 +14,7 @@ public class MongoDAO {
 	protected DBCollection listeProduits = null;
 	protected DBCollection listeAchats = null;
 	protected DBCollection listeStickers = null;
+	protected DBCollection listeCategories = null;
 
 	public MongoDAO () {
 		
@@ -22,6 +23,7 @@ public class MongoDAO {
 		listeProduits = vente.getCollection("produit");
 		listeAchats = vente.getCollection("achat");
 		listeStickers = vente.getCollection("stickers");
+		listeCategories = vente.getCollection("categorie");
 
 	}
 	
