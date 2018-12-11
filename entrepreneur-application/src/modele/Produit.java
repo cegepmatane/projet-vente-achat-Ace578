@@ -1,5 +1,8 @@
 package modele;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Produit {
 	
 	protected int id;
@@ -53,6 +56,16 @@ public class Produit {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public Map<String, String> exporterHash()
+	{
+		Map<String, String> hash = new HashMap<String, String>();
+		hash.put("nom", this.nom);
+		hash.put("image", this.image);
+		hash.put("prix", this.prix + "");
+		hash.put("id_categorie", this.idCategorie + "");
+		return hash;
+}
 	
 	
 	
