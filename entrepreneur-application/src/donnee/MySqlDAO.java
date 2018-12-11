@@ -2,6 +2,7 @@ package donnee;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import modele.Produit;
 import modele.StatistiqueCategorie;
 import modele.StatistiqueMois;
 import modele.StatistiqueProduit;
@@ -190,5 +192,25 @@ public class MySqlDAO {
 		}
 		
 		return FXCollections.observableArrayList(resultat);
+	}
+	
+	
+	public void ajouterProduit(Produit produit) {
+		System.out.println("ajouterProduit(produit)");
+		try {
+			
+			String SQL_AJOUTER_PRODUIT = "INSERT into produit(nom, image, prix, id_categorie) VALUES (?,?,?,?)";
+			PreparedStatement requeteAjouterProduit = connexion.prepareStatement(SQL_AJOUTER_PRODUIT);
+			requeteAjouterProduit.setString(1, produit.getNom());
+			requeteAjouterProduit.setString(2, produit.getImage());
+			requeteAjouterProduit.setFloat(3, produit.getPrix());
+			requeteAjouterProduit.setInt(4, produit.getIdCategorie());
+			requeteAjouterProduit.execute();
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		
 	}
 }
