@@ -1,0 +1,4 @@
+<?php
+ header("Access-Control-Allow-Origin: *");
+
+ https://enable-cors.org/server_php.html

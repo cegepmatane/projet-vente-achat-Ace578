@@ -1,7 +1,17 @@
 (function () {
     var instance = this;
     var numeroArticle;
-    this.listeArticleDonnee = ["manteau","gants"];
+    var cat;
+    this.listeCategorieDonnee = [new Categorie(0,"casquette","nouveau modele"),
+                                new Categorie(1,"manteau","nouveau modele")];
+
+    this.listeArticleDonnee = [new Article(0,"swift","nike","nouveau modele",0,"casquetteBaseball.jpg"),
+                                new Article(1,"doudoune","lacoste","nouveau modele",1,"doudoune1.jpg"),
+                                new Article(1,"blueberry","lacoste","nouveau modele",0,"casquetteLondon.png"),
+                                new Article(1,"doudoune","lacoste","nouveau modele",1,"doudoune2.jpg")];
+
+
+
     var initialiser = function (){
 
        this.articleDAO = new ArticleDAO();
@@ -23,11 +33,17 @@
      }
      
     else if(hash.match(/^#categorie/)) {
+            var href = location.href;
+             this.cat = href.match(/([^\/]*)\/*$/)[1];
              var vueListeArticle = new VueListeArticle();
-             vueListeArticle.afficher();
-             if(hash.match(/^#categorie/)){alert(numeroArticle);}
-     
+             vueListeArticle.afficher(this.cat); 
+             
           }
+    else if(hash.match(/^#categorie/[0-9])) {
+             var vueArticle = new VueArticle();
+             vueArticle.afficher();  
+          }
+
     /*else if(hash.match(/^#modifier-article/)) {
              var modifierArticleVue = new ModifierArticleVue(actionEnregistrerArticle);
              modifierArticleVue.afficher(numeroArticle);

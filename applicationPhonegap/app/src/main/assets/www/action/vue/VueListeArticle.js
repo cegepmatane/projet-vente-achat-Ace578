@@ -6,10 +6,20 @@ var VueListeArticle = (function() {
 
 
 
-        this.afficher = function() {
+        this.afficher = function(cat) {
 		  document.getElementsByTagName("body")[0].innerHTML = pageListeArticle;
 
-        
+          var listeArticle = document.getElementById("article");
+
+            var li="";
+            for (var numeroCategorie in listeArticleDonnee) { 
+                if(listeArticleDonnee[numeroCategorie].categorie == cat){
+                    li += '<a href="#categorie/'+listeArticleDonnee[numeroCategorie].nom+'"><img src="'+listeArticleDonnee[numeroCategorie].image+'" style="max-height:200px; max-width:200px;"></br>';
+                }
+            }
+            listeArticle.innerHTML = li;
+
+            
 
 
 

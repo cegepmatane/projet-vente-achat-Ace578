@@ -4,23 +4,25 @@ var AcceuilVue = (function() {
 
      return function() {
 
+		var identifiant;
 
-
-        this.afficher = function() {
+        this.afficher = function(cat) {
 			document.getElementsByTagName("body")[0].innerHTML = pageAcceuil;
 
 
 			var listeCategorie = document.getElementById("theme");
 
             var li="";
-            for (var numeroArticle in listeArticleDonnee) {
+            for (var numeroCategorie in listeCategorieDonnee) {
 
-                li += '<a href="#categorie/'+listeArticleDonnee[numeroArticle]+'"><button>'+listeArticleDonnee[numeroArticle].nom+" </button></a>";
-
-            }
+                li += '<a href="#categorie/'+listeCategorieDonnee[numeroCategorie].id+'"><button>'+listeCategorieDonnee[numeroCategorie].nom+" </button ></a>";
+                
             listeCategorie.innerHTML = li;
+			}
+        }
 
-           }
+        
+
         };
 
         window.onload = function(){ 
@@ -34,6 +36,8 @@ var AcceuilVue = (function() {
 			    document.getElementById("buttonHomme").style.background = "white";
 			    document.getElementById("buttonFemme").style.background = "red";
 			}
+
+
 
 		};
         
