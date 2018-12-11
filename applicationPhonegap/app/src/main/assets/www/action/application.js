@@ -5,10 +5,10 @@
     this.listeCategorieDonnee = [new Categorie(0,"casquette","nouveau modele"),
                                 new Categorie(1,"manteau","nouveau modele")];
 
-    this.listeArticleDonnee = [new Article(0,"swift","nike","nouveau modele",0,"casquetteBaseball.jpg"),
-                                new Article(1,"doudoune","lacoste","nouveau modele",1,"doudoune1.jpg"),
-                                new Article(1,"blueberry","lacoste","nouveau modele",0,"casquetteLondon.png"),
-                                new Article(1,"doudoune","lacoste","nouveau modele",1,"doudoune2.jpg")];
+    this.listeArticleDonnee = [new Article(0,"swift","nike","nouveau modele",0,"image/casquetteBaseball.jpg"),
+                                new Article(1,"doudoune","lacoste","nouveau modele",1,"image/doudoune1.jpg"),
+                                new Article(1,"blueberry","lacoste","nouveau modele",0,"image/casquetteLondon.png"),
+                                new Article(1,"doudoune","lacoste","nouveau modele",1,"image/doudoune2.jpg")];
 
 
 
