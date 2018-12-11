@@ -2,6 +2,7 @@ package modele;
 
 public class Produit {
 	
+	protected int id;
 	String nom, image;
 	float prix;
 	int idCategorie;
@@ -44,6 +45,16 @@ public class Produit {
 	public void setIdCategorie(int idCategorie) {
 		this.idCategorie = idCategorie;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	
 	
 	
 
