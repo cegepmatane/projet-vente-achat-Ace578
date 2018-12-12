@@ -3,12 +3,12 @@ package vue;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import action.ControleurStatistiques;
 import donnee.MySqlDAO;
 import modele.StatistiqueCategorie;
 import modele.StatistiqueMois;
 import modele.StatistiqueProduit;
 import modele.StatistiqueRegion;
-import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,7 +18,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -26,11 +25,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
-public class VueStatistiques extends Application {
+public class VueStatistiques extends Scene {
 	
 	private MySqlDAO accesseur;
+	
+	private ControleurStatistiques controleurStatistiques;
+	
+	private BorderPane fenetrePrincipale;
 	
 	private TableView<StatistiqueMois> tableStatitistiquesMois;
 	private TableView<StatistiqueProduit> tableStatistiquesProduit;
@@ -38,9 +40,13 @@ public class VueStatistiques extends Application {
 	private TableView<StatistiqueRegion> tableStatistiquesRegion;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void start(Stage stade) throws Exception {
+	public VueStatistiques(){
 		
+		super(new BorderPane(), 1050, 800);
+		
+		fenetrePrincipale = (BorderPane) this.getRoot();
+		fenetrePrincipale.getChildren().clear();
+
 		this.accesseur = new MySqlDAO();
 						
 		Label titre = new Label("Statistiques");	
@@ -68,12 +74,12 @@ public class VueStatistiques extends Application {
 		
 		Button changerDate = new Button("Valider");
 		changerDate.setOnAction(new EventHandler<ActionEvent>() {
-			
 			@Override
 			public void handle(ActionEvent event) {
 				initialiserDonnees(Integer.parseInt(choixAnnees.getValue().toString()));
 			}
 		});
+		
 		GridPane affichageAnnee = new GridPane();		
 		affichageAnnee.add(labelAnnee, 0, 0);
 		affichageAnnee.add(choixAnnees, 1, 0);
@@ -183,17 +189,11 @@ public class VueStatistiques extends Application {
 		elementCentral.setTop(affichageAnnee);
 		elementCentral.setCenter(affichageStatistiques);
 		elementCentral.setBottom(new Label());
-		
-		BorderPane fenetrePrincipale = new BorderPane();
+
 		fenetrePrincipale.setTop(hautApplication);
 		fenetrePrincipale.setCenter(elementCentral);
-		
+	
 		initialiserDonnees(Calendar.getInstance().get(Calendar.YEAR));
-				
-		stade.setScene(new Scene(fenetrePrincipale, 1050, 800));
-		stade.setTitle("Volet Entreprise Vente Achat");
-		stade.show();
-		
 	}
 
 	private void initialiserDonnees(int annee) {
@@ -208,5 +208,9 @@ public class VueStatistiques extends Application {
 		
 		ObservableList<StatistiqueRegion> listeStatistiqueRegion = accesseur.recupererStatistiquesRegionParAnnee(annee);
 		tableStatistiquesRegion.setItems(listeStatistiqueRegion);
+	}
+
+	public void setControleurStatistiques(ControleurStatistiques controleurStatistiques) {
+		this.controleurStatistiques = controleurStatistiques;
 	}
 }

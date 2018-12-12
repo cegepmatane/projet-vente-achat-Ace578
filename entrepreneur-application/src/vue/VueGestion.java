@@ -1,5 +1,12 @@
 package vue;
 
-public class VueGestion {
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+
+public class VueGestion extends Scene {
+
+	public VueGestion() {
+		super(new Pane(), 500, 500);
+	}
 
 }
