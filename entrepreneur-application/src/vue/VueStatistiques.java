@@ -38,6 +38,8 @@ public class VueStatistiques extends Scene {
 	private TableView<StatistiqueProduit> tableStatistiquesProduit;
 	private TableView<StatistiqueCategorie> tableStatistiquesCategorie;
 	private TableView<StatistiqueRegion> tableStatistiquesRegion;
+	
+	private Label profit = new Label();
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public VueStatistiques(){
@@ -54,13 +56,22 @@ public class VueStatistiques extends Scene {
 		
 		Label sousTitre = new Label(accesseur.recupererNombreCategories() + " Catégories - " + accesseur.recupererNombreProduits() + " Produits");
 		sousTitre.setFont(Font.font ("Verdana", 15));
-		
-		GridPane hautApplication = new GridPane();		
+				
+		GridPane titres = new GridPane();		
 		GridPane.setHalignment(titre, HPos.CENTER);
 		GridPane.setHalignment(sousTitre, HPos.CENTER);
-		hautApplication.add(titre, 1, 0);
-		hautApplication.add(sousTitre, 1, 1);
-		hautApplication.setAlignment(Pos.CENTER);
+		titres.add(titre, 1, 0);
+		titres.add(sousTitre, 1, 1);
+		titres.setAlignment(Pos.CENTER);
+				
+		BorderPane affichageProfit = new BorderPane();
+		affichageProfit.setTop(new Label("Total des recettes :"));
+		affichageProfit.setCenter(profit);
+		affichageProfit.setStyle("-fx-background-color:red; -fx-border-color:black; -fx-font-size: 20px; -fx-padding:10px");
+		
+		BorderPane hautApplication = new BorderPane();
+		hautApplication.setCenter(titres);
+		hautApplication.setRight(affichageProfit);
 				
 		Label labelAnnee = new Label("Année : ");
 		ArrayList<Integer> annees = new ArrayList<>();
@@ -77,10 +88,13 @@ public class VueStatistiques extends Scene {
 			@Override
 			public void handle(ActionEvent event) {
 				initialiserDonnees(Integer.parseInt(choixAnnees.getValue().toString()));
+				
 			}
 		});
 		
-		GridPane affichageAnnee = new GridPane();		
+		profit = new Label();
+		
+		GridPane affichageAnnee = new GridPane();	
 		affichageAnnee.add(labelAnnee, 0, 0);
 		affichageAnnee.add(choixAnnees, 1, 0);
 		affichageAnnee.add(changerDate, 2, 0);
@@ -197,6 +211,8 @@ public class VueStatistiques extends Scene {
 	}
 
 	private void initialiserDonnees(int annee) {
+		profit.setText("AFFICHE TOI");
+		
 		ObservableList<StatistiqueMois> listeStatistiqueMois = accesseur.recupererStatistiquesMoisParAnnee(annee);
 		tableStatitistiquesMois.setItems(listeStatistiqueMois);
 		
