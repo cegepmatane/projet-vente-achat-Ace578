@@ -10,6 +10,8 @@ import modele.StatistiqueProduit;
 import modele.StatistiqueRegion;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -63,8 +65,15 @@ public class VueStatistiques extends Application {
 		choixAnnees.getItems().addAll(annees);
 		choixAnnees.setValue(Calendar.getInstance().get(Calendar.YEAR));
 		choixAnnees.setVisibleRowCount(4);
-		Button changerDate = new Button("Valider");
 		
+		Button changerDate = new Button("Valider");
+		changerDate.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				initialiserDonnees(Integer.parseInt(choixAnnees.getValue().toString()));
+			}
+		});
 		GridPane affichageAnnee = new GridPane();		
 		affichageAnnee.add(labelAnnee, 0, 0);
 		affichageAnnee.add(choixAnnees, 1, 0);
