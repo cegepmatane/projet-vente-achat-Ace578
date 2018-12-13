@@ -93,8 +93,19 @@ public class VueStatistiques extends Scene {
 			}
 		});
 		
+		Button actionGestion = new Button("Gestion");
+		actionGestion.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				controleurStatistiques.notifierNaviguerVueGestion();
+				
+			}
+			
+		});
 		
-		
+		hautApplication.setLeft(actionGestion);
+				
 		GridPane affichageAnnee = new GridPane();	
 		affichageAnnee.add(labelAnnee, 0, 0);
 		affichageAnnee.add(choixAnnees, 1, 0);
