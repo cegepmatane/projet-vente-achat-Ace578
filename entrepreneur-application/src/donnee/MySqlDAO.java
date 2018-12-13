@@ -71,6 +71,22 @@ public class MySqlDAO {
 		}
 		return resultat;
 	}
+	
+	public float recupererRecetteTotal(int annee) {
+		float resultat = 0.0f;
+		try {
+			String REQUETE_RECETTE_TOTALE = "SELECT SUM(prix_total) FROM achat WHERE YEAR(date) = " +annee+ "";
+			System.out.println(REQUETE_RECETTE_TOTALE);
+			ResultSet resultatRequete = declaration.executeQuery(REQUETE_RECETTE_TOTALE);
+			while(resultatRequete.next()) {
+				resultat = resultatRequete.getFloat(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return resultat;
+	}
+	
 
 	public ObservableList<StatistiqueMois> recupererStatistiquesMoisParAnnee(int annee) {
 		List<StatistiqueMois> resultat = new ArrayList<StatistiqueMois>();
