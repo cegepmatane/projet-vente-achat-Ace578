@@ -225,7 +225,7 @@ public class VueStatistiques extends Scene {
 	private void initialiserDonnees(int annee) {
 		
 		float recetteTotale = accesseur.recupererRecetteTotal(annee);
-		profit.setText(""+recetteTotale);
+		profit.setText(""+recetteTotale + " $");
 		
 		ObservableList<StatistiqueMois> listeStatistiqueMois = accesseur.recupererStatistiquesMoisParAnnee(annee);
 		tableStatitistiquesMois.setItems(listeStatistiqueMois);
