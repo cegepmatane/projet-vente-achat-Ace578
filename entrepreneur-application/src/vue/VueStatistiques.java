@@ -70,10 +70,22 @@ public class VueStatistiques extends Scene {
 		affichageProfit.setCenter(profit);
 		affichageProfit.setStyle("-fx-background-color:red; -fx-border-color:black; -fx-font-size: 20px; -fx-padding:10px");
 		
+		Button actionGestion = new Button("Gestion");
+		actionGestion.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				controleurStatistiques.notifierNaviguerVueGestion();
+				
+			}
+			
+		});
+				
 		BorderPane hautApplication = new BorderPane();
 		hautApplication.setCenter(titres);
 		hautApplication.setRight(affichageProfit);
-				
+		hautApplication.setLeft(actionGestion);
+
 		Label labelAnnee = new Label("Année : ");
 		ArrayList<Integer> annees = new ArrayList<>();
 		for (int annee = Calendar.getInstance().get(Calendar.YEAR); annee > 2000 ; annee--) {
@@ -92,19 +104,6 @@ public class VueStatistiques extends Scene {
 				
 			}
 		});
-		
-		Button actionGestion = new Button("Gestion");
-		actionGestion.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent arg0) {
-				controleurStatistiques.notifierNaviguerVueGestion();
-				
-			}
-			
-		});
-		
-		hautApplication.setLeft(actionGestion);
 				
 		GridPane affichageAnnee = new GridPane();	
 		affichageAnnee.add(labelAnnee, 0, 0);

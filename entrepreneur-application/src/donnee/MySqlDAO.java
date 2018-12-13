@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -248,6 +249,17 @@ public class MySqlDAO {
 			
 			e.printStackTrace();
 		}
+		
+	}
+
+	public Collection<String> recupererCategories() {
+		Collection<String> categories = new ArrayList();
+		
+		categories.add("Chaussure");
+		categories.add("Ballon");
+		categories.add("Maillot");
+		
+		return categories;
 		
 	}
 }
