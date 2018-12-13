@@ -66,6 +66,7 @@ public class VueStatistiques extends Scene {
 				
 		BorderPane affichageProfit = new BorderPane();
 		affichageProfit.setTop(new Label("Total des recettes :"));
+		profit = new Label("");
 		affichageProfit.setCenter(profit);
 		affichageProfit.setStyle("-fx-background-color:red; -fx-border-color:black; -fx-font-size: 20px; -fx-padding:10px");
 		
@@ -92,7 +93,7 @@ public class VueStatistiques extends Scene {
 			}
 		});
 		
-		profit = new Label();
+		
 		
 		GridPane affichageAnnee = new GridPane();	
 		affichageAnnee.add(labelAnnee, 0, 0);
@@ -211,7 +212,9 @@ public class VueStatistiques extends Scene {
 	}
 
 	private void initialiserDonnees(int annee) {
-		profit.setText("AFFICHE TOI");
+		
+		float recetteTotale = accesseur.recupererRecetteTotal(annee);
+		profit.setText(""+recetteTotale);
 		
 		ObservableList<StatistiqueMois> listeStatistiqueMois = accesseur.recupererStatistiquesMoisParAnnee(annee);
 		tableStatitistiquesMois.setItems(listeStatistiqueMois);
