@@ -276,7 +276,7 @@ public class MySqlDAO {
 		Collection<String> categories = new ArrayList();
 		
 		try {
-			String REQUETE_CATEGORIE_PRODUIT = "SELECT nom FROM categorie WHERE nom ";
+			String REQUETE_CATEGORIE_PRODUIT = "SELECT nom FROM categorie";
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_CATEGORIE_PRODUIT);
 			while (resultatRequete.next()) {
 				String nom = resultatRequete.getString("nom");
