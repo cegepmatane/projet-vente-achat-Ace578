@@ -290,10 +290,6 @@ public class MySqlDAO {
 		return categories;
 		
 	}
-
-		
-		
-
 	
 	public int trouverIdCategorie(String categorie) {
 		int id = 0;
