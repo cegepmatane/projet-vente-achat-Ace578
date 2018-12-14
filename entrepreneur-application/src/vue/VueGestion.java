@@ -64,7 +64,11 @@ public class VueGestion extends Scene {
 		changerCategorie.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Changement catégorie");				
+				try {
+					afficherListeProduits(accesseur.trouverIdCategorie(choixCategories.getValue().toString()));
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}				
 			}
 		});		
 		
@@ -75,19 +79,8 @@ public class VueGestion extends Scene {
 		affichageCategorie.setPadding(new Insets(5));
 		GridPane.setMargin(changerCategorie, new Insets(10));
 		
-		Label labelNom = new Label("Nom");
-		Label labelPrix = new Label("Prix");
-		Label labelImage = new Label("Image");
-		
 		grilleProduits = new GridPane();
 		grilleProduits.setPadding(new Insets(10));
-		grilleProduits.add(labelNom, 0, 0);
-		grilleProduits.add(labelPrix, 1, 0);
-		grilleProduits.add(labelImage, 2, 0);
-
-		GridPane.setMargin(labelNom, new Insets(10));
-		GridPane.setMargin(labelPrix, new Insets(10));
-		GridPane.setMargin(labelImage, new Insets(10));
 
 		try {
 			afficherListeProduits(accesseur.trouverIdCategorie(choixCategories.getValue().toString()));
@@ -105,6 +98,20 @@ public class VueGestion extends Scene {
 
 
 	private void afficherListeProduits(int categorie) throws FileNotFoundException {
+		grilleProduits.getChildren().clear();
+		
+		Label labelNom = new Label("Nom");
+		Label labelPrix = new Label("Prix");
+		Label labelImage = new Label("Image");
+		
+		grilleProduits.add(labelNom, 0, 0);
+		grilleProduits.add(labelPrix, 1, 0);
+		grilleProduits.add(labelImage, 2, 0);
+
+		GridPane.setMargin(labelNom, new Insets(10));
+		GridPane.setMargin(labelPrix, new Insets(10));
+		GridPane.setMargin(labelImage, new Insets(10));
+		
 		List<Produit> listeProduits = new ArrayList<>();
 
 		listeProduits.addAll(accesseur.recupererProduitsParCategorie(categorie));
