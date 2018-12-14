@@ -275,13 +275,25 @@ public class MySqlDAO {
 	public Collection<String> recupererCategories() {
 		Collection<String> categories = new ArrayList();
 		
-		categories.add("Chaussure");
-		categories.add("Ballon");
-		categories.add("Maillot");
-		
+		try {
+			String REQUETE_CATEGORIE_PRODUIT = "SELECT nom FROM categorie WHERE nom ";
+			ResultSet resultatRequete = declaration.executeQuery(REQUETE_CATEGORIE_PRODUIT);
+			while (resultatRequete.next()) {
+				String nom = resultatRequete.getString("nom");
+				categories.add(nom);
+			}
+			
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
 		return categories;
 		
 	}
+
+		
+		
+
 	
 	public int trouverIdCategorie(String categorie) {
 		int id = 0;
