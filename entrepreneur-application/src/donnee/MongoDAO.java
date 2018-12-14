@@ -34,6 +34,12 @@ public class MongoDAO {
 		listeProduits.insert(produitMongo);		
 	}
 	
+	public void effacerProduit(int id)
+	{
+		DBObject critereProduit = new BasicDBObject("id",id);
+		this.listeProduits.remove(critereProduit);		
+	}
+	
 	
 	
 	
