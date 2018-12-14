@@ -42,7 +42,7 @@ public class MongoDAO {
 		this.listeProduits.remove(critereProduit);		
 	}
 	
-	
+
 	public Produit trouverProduit(int id)
 	{
 		DBObject critereProduit = new BasicDBObject("id",id);

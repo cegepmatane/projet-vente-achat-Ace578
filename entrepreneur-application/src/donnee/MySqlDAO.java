@@ -251,6 +251,26 @@ public class MySqlDAO {
 		}
 		
 	}
+	
+	public ObservableList<Produit> recupererProduitsParCategorie(int categorie) {
+		List<Produit> resultat = new ArrayList<Produit>();
+		try {
+			String REQUETE_CATEGORIE_PRODUIT = "SELECT * FROM produit WHERE categorie = " +categorie+" ";
+			ResultSet resultatRequete = declaration.executeQuery(REQUETE_CATEGORIE_PRODUIT);
+			while(resultatRequete.next()) {
+				String nom = resultatRequete.getString("nom");
+				String image = resultatRequete.getString("image");
+				float prix = resultatRequete.getFloat("prix");
+				int idCategorie = resultatRequete.getInt("id_categorie");
+				Produit produit = new Produit(nom, image, prix, idCategorie);
+				resultat.add(produit);		
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return FXCollections.observableArrayList(resultat);
+	}
 
 	public Collection<String> recupererCategories() {
 		Collection<String> categories = new ArrayList();
