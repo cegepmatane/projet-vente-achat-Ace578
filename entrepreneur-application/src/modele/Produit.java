@@ -16,6 +16,14 @@ public class Produit {
 		this.prix = prix;
 		this.idCategorie = idCategorie;
 	}
+		
+	public Produit(Map<String, String> champs)
+	{
+		this.nom = champs.get("nom");
+		this.image = champs.get("image");
+	}
+	
+	
 
 	public String getNom() {
 		return nom;

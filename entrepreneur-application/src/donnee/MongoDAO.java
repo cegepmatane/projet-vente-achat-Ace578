@@ -1,5 +1,7 @@
 package donnee;
 
+import java.util.Map;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -40,6 +42,18 @@ public class MongoDAO {
 		this.listeProduits.remove(critereProduit);		
 	}
 	
+	
+	public Produit trouverProduit(int id)
+	{
+		DBObject critereProduit = new BasicDBObject("id",id);
+		DBCursor pointeurProduit = listeProduits.find(critereProduit);
+		Map champsProduitTrouve = pointeurProduit.one().toMap();
+		Object prix = champsProduitTrouve.get("prix");
+		Produit produitTrouve = new Produit(champsProduitTrouve);
+		float prixf = (float) prix;
+		produitTrouve.setPrix(prixf);
+		return produitTrouve;
+	}
 	
 	
 	
