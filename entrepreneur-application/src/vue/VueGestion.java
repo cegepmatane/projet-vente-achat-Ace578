@@ -55,7 +55,7 @@ public class VueGestion extends Scene {
 		ArrayList<String> categorie = new ArrayList<>();
 		categorie.addAll(accesseur.recupererCategories());
 		
-		ComboBox choixCategories = new ComboBox();
+		ComboBox<String> choixCategories = new ComboBox<String>();
 		choixCategories.getItems().addAll(categorie);
 		choixCategories.setValue(categorie.get(0));
 		choixCategories.setVisibleRowCount(4);
@@ -90,7 +90,7 @@ public class VueGestion extends Scene {
 		GridPane.setMargin(labelImage, new Insets(10));
 
 		try {
-			afficherListeProduits(choixCategories.getValue().toString());
+			afficherListeProduits(accesseur.trouverIdCategorie(choixCategories.getValue().toString()));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -104,11 +104,10 @@ public class VueGestion extends Scene {
 	}
 
 
-	private void afficherListeProduits(String categorie) throws FileNotFoundException {
+	private void afficherListeProduits(int categorie) throws FileNotFoundException {
 		List<Produit> listeProduits = new ArrayList<>();
-		listeProduits.add(new Produit("Maillot bleu", "", 100, 1));
-		listeProduits.add(new Produit("Maillot rouge", "", 45, 1));
-		listeProduits.add(new Produit("Maillot vert", "", 70, 2));
+
+		listeProduits.addAll(accesseur.recupererProduitsParCategorie(categorie));
 		
 		Label nom = new Label();
 		Label prix = new Label();
