@@ -1,5 +1,7 @@
 package donnee;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Map;
 
 import com.mongodb.BasicDBObject;
@@ -54,6 +56,8 @@ public class MongoDAO {
 		produitTrouve.setPrix(prixf);
 		return produitTrouve;
 	}
+	
+	
 	
 	
 	

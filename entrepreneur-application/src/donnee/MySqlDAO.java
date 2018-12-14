@@ -252,6 +252,18 @@ public class MySqlDAO {
 		
 	}
 	
+	public void supprimerProduit(Produit produit) {
+		String SQL_SUPPRIMER_PRODUIT = "DELETE FROM livre WHERE id= "+produit.getId()+" ";
+		try {
+			PreparedStatement requeteSupprimerProduit = connexion.prepareStatement(SQL_SUPPRIMER_PRODUIT);
+			requeteSupprimerProduit.execute();
+			} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public ObservableList<Produit> recupererProduitsParCategorie(int categorie) {
 		List<Produit> resultat = new ArrayList<Produit>();
 		try {
