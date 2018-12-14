@@ -282,4 +282,19 @@ public class MySqlDAO {
 		return categories;
 		
 	}
+	
+	public int trouverIdCategorie(String categorie) {
+		int id = 0;
+		try {
+			String REQUETE_CATEGORIE_PRODUIT = "SELECT id FROM categorie WHERE nom = " +categorie+" ";
+			ResultSet resultatRequete = declaration.executeQuery(REQUETE_CATEGORIE_PRODUIT);
+			id = resultatRequete.getInt("id");
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		
+		return id;
+		
+	}
 }
