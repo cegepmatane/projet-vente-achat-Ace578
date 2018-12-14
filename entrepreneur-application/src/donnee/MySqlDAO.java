@@ -267,7 +267,7 @@ public class MySqlDAO {
 	public ObservableList<Produit> recupererProduitsParCategorie(int categorie) {
 		List<Produit> resultat = new ArrayList<Produit>();
 		try {
-			String REQUETE_CATEGORIE_PRODUIT = "SELECT * FROM produit WHERE categorie = " +categorie;
+			String REQUETE_CATEGORIE_PRODUIT = "SELECT * FROM produit WHERE id_categorie = " +categorie;
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_CATEGORIE_PRODUIT);
 			while(resultatRequete.next()) {
 				String nom = resultatRequete.getString("nom");
@@ -306,9 +306,12 @@ public class MySqlDAO {
 	public int trouverIdCategorie(String categorie) {
 		int id = 0;
 		try {
-			String REQUETE_ID_CATEGORIE = "SELECT id FROM categorie WHERE nom = " +categorie;
+			String REQUETE_ID_CATEGORIE = "SELECT id FROM categorie WHERE nom = '" +categorie+"';";
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_ID_CATEGORIE);
-			id = resultatRequete.getInt("id");
+			while (resultatRequete.next()) {
+				id = resultatRequete.getInt("id");
+			}
+			
 		} catch (SQLException e) {
 
 			e.printStackTrace();
