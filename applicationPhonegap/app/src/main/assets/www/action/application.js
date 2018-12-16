@@ -2,13 +2,23 @@
     var instance = this;
     var numeroArticle;
     var cat;
-    this.listeCategorieDonnee = [new Categorie(0,"casquette","nouveau modele"),
-                                new Categorie(1,"manteau","nouveau modele")];
+    var idArticle;
+    
 
-    this.listeArticleDonnee = [new Article(0,"swift","nike","nouveau modele",0,"image/casquetteBaseball.jpg"),
-                                new Article(1,"doudoune","lacoste","nouveau modele",1,"image/doudoune1.jpg"),
-                                new Article(1,"blueberry","lacoste","nouveau modele",0,"image/casquetteLondon.png"),
-                                new Article(1,"doudoune","lacoste","nouveau modele",1,"image/doudoune2.jpg")];
+
+
+    var achatVentePDO = new AchatVentePDO();
+    
+    //achatVentePDO.getListeArticle();
+
+
+    this.listeCategorieDonnee = [new Categorie(1,"casquette","nouveau modele"),
+                                new Categorie(2 ,"manteau","nouveau modele")];
+
+    this.listeArticleDonnee = [new Article(0,"swift","nike","nouveau modele",1,"image/casquetteBaseball.jpg"),
+                                new Article(1,"doudoune","lacoste","nouveau modele",2,"image/doudoune1.jpg"),
+                                new Article(2,"blueberry","lacoste","nouveau modele",1,"image/casquetteLondon.png"),
+                                new Article(3,"doudoune","lacoste","nouveau modele",2,"image/doudoune2.jpg")];
 
 
 
@@ -28,8 +38,9 @@
      var hash = window.location.hash;
 
      if (!hash) {
-         var acceuilVue = new AcceuilVue();
-         acceuilVue.afficher();
+        var acceuilVue = new AcceuilVue();
+        acceuilVue.afficher();
+        achatVentePDO.getListeCategorie();
      }
      
     else if(hash.match(/^#categorie/)) {
@@ -37,11 +48,21 @@
              this.cat = href.match(/([^\/]*)\/*$/)[1];
              var vueListeArticle = new VueListeArticle();
              vueListeArticle.afficher(this.cat); 
-             
+             achatVentePDO.getListeArticle(this.cat);
+
           }
-    else if(hash.match(/^#categorie/[0-9])) {
+    else if(hash.match(/^#article/)) {
+            var href = location.href;
+            this.idArticle = href.match(/([^\/]*)\/*$/)[1];
              var vueArticle = new VueArticle();
-             vueArticle.afficher();  
+             vueArticle.afficher();
+            achatVentePDO.getArticle(this.idArticle);
+          }
+    else if(hash.match(/^#personnalisation/)) {
+             var vuePersonnalisation = new VuePersonnalisation();
+             vuePersonnalisation.afficher();
+            achatVentePDO.getArticle(this.idArticle);
+            achatVentePDO.getSticker();
           }
 
     /*else if(hash.match(/^#modifier-article/)) {

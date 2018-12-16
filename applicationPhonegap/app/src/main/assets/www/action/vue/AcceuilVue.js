@@ -10,15 +10,15 @@ var AcceuilVue = (function() {
 			document.getElementsByTagName("body")[0].innerHTML = pageAcceuil;
 
 
-			var listeCategorie = document.getElementById("theme");
+			/*var listeCategorie = document.getElementById("theme");
 
             var li="";
             for (var numeroCategorie in listeCategorieDonnee) {
 
                 li += '<a href="#categorie/'+listeCategorieDonnee[numeroCategorie].id+'"><button>'+listeCategorieDonnee[numeroCategorie].nom+" </button ></a>";
-                
+            
             listeCategorie.innerHTML = li;
-			}
+			}*/
         }
 
         
