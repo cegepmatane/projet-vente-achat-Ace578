@@ -2,6 +2,8 @@ package donnee;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.mongodb.BasicDBObject;
@@ -10,6 +12,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.connection.Server;
 
 import modele.Produit;
 
@@ -22,7 +25,8 @@ public class MongoDAO {
 
 	public MongoDAO () {
 		
-		MongoClient mongo = new MongoClient();
+
+		MongoClient mongo = new MongoClient("158.69.192.249",27017);
 		DB vente = mongo.getDB("vente");
 		listeProduits = vente.getCollection("produit");
 		listeAchats = vente.getCollection("achat");
@@ -45,16 +49,16 @@ public class MongoDAO {
 	}
 	
 
-	public Produit trouverProduit(int id)
+	public List<Produit> trouverProduit(int id)
 	{
-		DBObject critereProduit = new BasicDBObject("id",id);
+		List<Produit> resultat = new ArrayList<Produit>();
+		DBObject critereProduit = new BasicDBObject("id_categorie",id);
 		DBCursor pointeurProduit = listeProduits.find(critereProduit);
 		Map champsProduitTrouve = pointeurProduit.one().toMap();
-		Object prix = champsProduitTrouve.get("prix");
 		Produit produitTrouve = new Produit(champsProduitTrouve);
-		float prixf = (float) prix;
-		produitTrouve.setPrix(prixf);
-		return produitTrouve;
+		resultat.add(produitTrouve);
+		pointeurProduit.next();			
+		return resultat;
 	}
 	
 	

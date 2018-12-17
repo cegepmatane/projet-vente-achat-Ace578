@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import action.ControleurStatistiques;
+import donnee.MongoDAO;
 import donnee.MySqlDAO;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,6 +30,8 @@ public class VueGestion extends Scene {
 	
 	private MySqlDAO accesseur;
 	
+	private MongoDAO accesseurMongo;
+	
 	private ControleurStatistiques controleurStatistiques;
 
 	private BorderPane fenetrePrincipale;
@@ -43,6 +46,7 @@ public class VueGestion extends Scene {
 		fenetrePrincipale.getChildren().clear();
 
 		this.accesseur = new MySqlDAO();
+		this.accesseurMongo = new MongoDAO();
 						
 		Label titre = new Label("Gestion");	
 		titre.setFont(Font.font ("Verdana", 30));
@@ -130,7 +134,8 @@ public class VueGestion extends Scene {
 		
 		List<Produit> listeProduits = new ArrayList<>();
 
-		listeProduits.addAll(accesseur.recupererProduitsParCategorie(categorie));
+		//listeProduits.addAll(accesseur.recupererProduitsParCategorie(categorie));
+		listeProduits.addAll(accesseurMongo.trouverProduit(categorie));
 		
 		Label nom = new Label();
 		Label prix = new Label();
