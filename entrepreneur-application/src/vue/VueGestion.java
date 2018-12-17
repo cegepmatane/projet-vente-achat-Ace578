@@ -46,8 +46,24 @@ public class VueGestion extends Scene {
 						
 		Label titre = new Label("Gestion");	
 		titre.setFont(Font.font ("Verdana", 30));
+		
+		Button actionNaviguerVueStatistiques = new Button("Statistiques");
+		actionNaviguerVueStatistiques.setOnAction(new EventHandler<ActionEvent>() {
 
-		fenetrePrincipale.setTop(titre);
+			@Override
+			public void handle(ActionEvent arg0) {
+				controleurStatistiques.notifierNaviguerVueStatistiques();
+				
+			}
+			
+		});
+		
+		BorderPane hautApplication = new BorderPane();
+		
+		hautApplication.setCenter(titre);
+		hautApplication.setLeft(actionNaviguerVueStatistiques);
+
+		fenetrePrincipale.setTop(hautApplication);
 		BorderPane.setAlignment(titre, Pos.CENTER);
 		
 		Label labelCategorie = new Label("Catégorie : ");

@@ -70,8 +70,8 @@ public class VueStatistiques extends Scene {
 		affichageProfit.setCenter(profit);
 		affichageProfit.setStyle("-fx-background-color:red; -fx-border-color:black; -fx-font-size: 20px; -fx-padding:10px");
 		
-		Button actionGestion = new Button("Gestion");
-		actionGestion.setOnAction(new EventHandler<ActionEvent>() {
+		Button actionNaviguerVueGestion = new Button("Gestion");
+		actionNaviguerVueGestion.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -84,7 +84,7 @@ public class VueStatistiques extends Scene {
 		BorderPane hautApplication = new BorderPane();
 		hautApplication.setCenter(titres);
 		hautApplication.setRight(affichageProfit);
-		hautApplication.setLeft(actionGestion);
+		hautApplication.setLeft(actionNaviguerVueGestion);
 
 		Label labelAnnee = new Label("Année : ");
 		ArrayList<Integer> annees = new ArrayList<>();
