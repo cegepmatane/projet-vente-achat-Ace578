@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
 import action.ControleurStatistiques;
+import donnee.MongoDAO;
 import donnee.MySqlDAO;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -27,7 +30,9 @@ import modele.Produit;
 
 public class VueGestion extends Scene {
 	
-	private MySqlDAO accesseur;
+	//private MySqlDAO accesseur;
+	
+	private MongoDAO accesseur;
 	
 	private ControleurStatistiques controleurStatistiques;
 
@@ -42,12 +47,29 @@ public class VueGestion extends Scene {
 		fenetrePrincipale = (BorderPane) this.getRoot();
 		fenetrePrincipale.getChildren().clear();
 
-		this.accesseur = new MySqlDAO();
+		//this.accesseur = new MySqlDAO();
+		this.accesseur = new MongoDAO();
 						
 		Label titre = new Label("Gestion");	
 		titre.setFont(Font.font ("Verdana", 30));
+		
+		Button actionNaviguerVueStatistiques = new Button("Statistiques");
+		actionNaviguerVueStatistiques.setOnAction(new EventHandler<ActionEvent>() {
 
-		fenetrePrincipale.setTop(titre);
+			@Override
+			public void handle(ActionEvent arg0) {
+				controleurStatistiques.notifierNaviguerVueStatistiques();
+				
+			}
+			
+		});
+		
+		BorderPane hautApplication = new BorderPane();
+		
+		hautApplication.setCenter(titre);
+		hautApplication.setLeft(actionNaviguerVueStatistiques);
+
+		fenetrePrincipale.setTop(hautApplication);
 		BorderPane.setAlignment(titre, Pos.CENTER);
 		
 		Label labelCategorie = new Label("Catégorie : ");
@@ -97,9 +119,9 @@ public class VueGestion extends Scene {
 	}
 
 
-	private void afficherListeProduits(int categorie) throws FileNotFoundException {
+	public void afficherListeProduits(/*int*/ ObjectId categorie) throws FileNotFoundException {
 		grilleProduits.getChildren().clear();
-		
+
 		Label labelNom = new Label("Nom");
 		Label labelPrix = new Label("Prix");
 		Label labelImage = new Label("Image");
@@ -127,8 +149,10 @@ public class VueGestion extends Scene {
 			actionEditerProduit.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent arg0) {
-					//controleurStatistiques.notifierNaviguerEditerProduit();
-			}});
+					//controleurStatistiques.notifierNaviguerVueEditerProduit(produit.getId());
+					controleurStatistiques.notifierNaviguerVueEditerProduit(produit.getIdMongo());
+				}
+			});
 			
 			numero++;
 			
@@ -148,6 +172,11 @@ public class VueGestion extends Scene {
 			GridPane.setMargin(prix, new Insets(10));
 			GridPane.setMargin(actionEditerProduit, new Insets(10));
 		}
+	}
+
+
+	public void setControleurStatistiques(ControleurStatistiques controleurStatistiques) {
+		this.controleurStatistiques = controleurStatistiques;
 	}
 
 }
