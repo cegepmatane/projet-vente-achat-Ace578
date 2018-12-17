@@ -1,35 +1,58 @@
 package vue;
 
-import com.sun.xml.internal.ws.org.objectweb.asm.Label;
-
 import action.ControleurStatistiques;
+import donnee.MySqlDAO;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import modele.Produit;
 
 public class VueEditerProduit extends Scene {
 	
+	private MySqlDAO accesseur;
+	
 	private ControleurStatistiques controleurStatistiques;
 	
+	private BorderPane fenetrePrincipale;
+	
+	private TextField nom, prix;
+
 	private int idProduit = 0;
 	
-	private TextField test;
 
 	public VueEditerProduit() {
 		super(new BorderPane(), 1050, 800);
 		
-		BorderPane panneau = (BorderPane) this.getRoot();
+		fenetrePrincipale = (BorderPane) this.getRoot();
 		
-		test = new TextField();
+		Label titre = new Label("Editer produit");	
+		titre.setFont(Font.font ("Verdana", 30));
+
+		fenetrePrincipale.setTop(titre);
+		BorderPane.setAlignment(titre, Pos.CENTER);
 		
-		panneau.setCenter(test);
+				
+		nom = new TextField();
+		prix = new TextField();
+		
+		GridPane champsProduit = new GridPane();
+		champsProduit.add(new Label("Nom : "), 0, 0);
+		champsProduit.add(nom, 1, 0);
+		champsProduit.add(new Label("Prix : "), 0, 1);
+		champsProduit.add(prix, 1, 1);
+		
+		fenetrePrincipale.setCenter(champsProduit);
 
 	}
 	
 	public void afficherProduit(Produit produit) {
 		idProduit = produit.getId();
-		test.setText(""+idProduit);
+		nom.setText(produit.getNom());
+		prix.setText(""+produit.getPrix());
 	}
 
 	public void setControleurStatistiques(ControleurStatistiques controleurStatistiques) {
