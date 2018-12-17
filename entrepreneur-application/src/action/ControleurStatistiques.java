@@ -2,6 +2,7 @@ package action;
 
 import java.io.FileNotFoundException;
 
+import donnee.MongoDAO;
 import donnee.MySqlDAO;
 import modele.Produit;
 import vue.NavigateurDesVues;
@@ -16,7 +17,8 @@ public class ControleurStatistiques {
 	private VueGestion vueGestion;
 	private VueEditerProduit vueEditerProduit;
 	private NavigateurDesVues navigateurDesVues = null;
-	private MySqlDAO accesseur;
+	//private MySqlDAO accesseur;
+	private MongoDAO accesseur;
 	
 	public static ControleurStatistiques getInstance() {
 		if(null == instance) instance = new ControleurStatistiques();
@@ -25,7 +27,8 @@ public class ControleurStatistiques {
 	
 	private ControleurStatistiques() {
 		System.out.println("Initialisation du contrôleur");
-		this.accesseur = new MySqlDAO();
+		//this.accesseur = new MySqlDAO();
+		this.accesseur = new MongoDAO();
 	}
 	
 	public void activerVues(NavigateurDesVues navigateurDesVues) {
@@ -48,7 +51,7 @@ public class ControleurStatistiques {
 		navigateurDesVues.naviguerVersVueStatistiques();
 	}
 	
-	public MySqlDAO getMySqlDAO() {
+	public /*MySqlDAO*/ MongoDAO getMySqlDAO() {
 		return accesseur;
 	}
 

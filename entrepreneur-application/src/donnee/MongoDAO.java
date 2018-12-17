@@ -1,8 +1,7 @@
 package donnee;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +11,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-import com.mongodb.connection.Server;
 
 import modele.Produit;
 
@@ -24,33 +22,29 @@ public class MongoDAO {
 	protected DBCollection listeCategories = null;
 
 	public MongoDAO () {
-		
-
 		MongoClient mongo = new MongoClient("158.69.192.249",27017);
+		
 		DB vente = mongo.getDB("vente");
+		
 		listeProduits = vente.getCollection("produit");
 		listeAchats = vente.getCollection("achat");
 		listeStickers = vente.getCollection("stickers");
 		listeCategories = vente.getCollection("categorie");
-
 	}
 	
-	public void ajouterProduit(Produit produit)
-	{
+	public void ajouterProduit(Produit produit) {
 		DBObject produitMongo = new BasicDBObject();
 		produitMongo.putAll(produit.exporterHash());
 		listeProduits.insert(produitMongo);		
 	}
 	
-	public void effacerProduit(int id)
-	{
+	public void effacerProduit(int id) {
 		DBObject critereProduit = new BasicDBObject("id",id);
 		this.listeProduits.remove(critereProduit);		
 	}
 	
 
-	public List<Produit> trouverListeProduitParCategorie(int categorie)
-	{
+	public List<Produit> recupererProduitsParCategorie(int categorie) {
 		List<Produit> resultat = new ArrayList<Produit>();
 		DBObject critereProduit = new BasicDBObject("id_categorie",categorie);
 		DBCursor pointeurProduit = listeProduits.find(critereProduit);
@@ -63,17 +57,27 @@ public class MongoDAO {
 		return resultat;
 	}
 	
-	public Produit trouverProduit(int id)
-	{
+	public Produit trouverProduit(int id) {
 		DBObject critereProduit = new BasicDBObject("id",id);
 		DBCursor pointeurProduit = listeProduits.find(critereProduit);
 		Map champsProduitTrouve = pointeurProduit.one().toMap();
 		Produit produitTrouve = new Produit(champsProduitTrouve);		
 		return produitTrouve;
-}
-	
-	
-	
-	
-	
+	}
+
+	public int trouverIdCategorie(String string) {
+		return 0;
+	}
+
+	public Collection<? extends String> recupererCategories() {
+		return null;
+	}
+
+	public Produit recupererProduit(int idProduit) {
+		return null;
+	}
+
+	public void modifierProduit(Produit produit) {
+		
+	}	
 }

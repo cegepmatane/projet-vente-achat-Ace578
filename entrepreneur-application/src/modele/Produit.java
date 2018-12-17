@@ -20,10 +20,12 @@ public class Produit {
 		this.idCategorie = idCategorie;
 	}
 		
-	public Produit(Map<String, String> champs)
+	public Produit(Map<String, Object> champs)
 	{
-		this.nom = champs.get("nom");
-		this.image = champs.get("image");
+		System.out.println(champs.toString());
+		this.nom = (String) champs.get("nom");
+		this.image = (String) champs.get("image");
+		this.prix = (float)((double) champs.get("prix"));
 	}
 	
 	

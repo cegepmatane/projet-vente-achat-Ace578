@@ -17,9 +17,9 @@ import modele.Produit;
 
 public class VueEditerProduit extends Scene {
 	
-	private MySqlDAO accesseur;
+	//private MySqlDAO accesseur;
 	
-	private MongoDAO accesseurMongo;
+	private MongoDAO accesseur;
 	
 	private ControleurStatistiques controleurStatistiques;
 	
@@ -35,9 +35,9 @@ public class VueEditerProduit extends Scene {
 		
 		fenetrePrincipale = (BorderPane) this.getRoot();
 		
-		this.accesseur = new MySqlDAO();
+		//this.accesseur = new MySqlDAO();
 		
-		this.accesseurMongo = new MongoDAO();
+		this.accesseur = new MongoDAO();
 		
 		Label titre = new Label("Editer produit");	
 		titre.setFont(Font.font ("Verdana", 30));
