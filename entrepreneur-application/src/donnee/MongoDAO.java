@@ -52,10 +52,11 @@ public class MongoDAO {
 		DBObject critereProduit = new BasicDBObject("id_categorie", categorie);
 		DBCursor pointeurProduit = listeProduits.find(critereProduit);
 		System.out.println(pointeurProduit);
-		while (pointeurProduit.hasNext()) {
-			Map champsProduitTrouve = pointeurProduit.one().toMap();
-			Produit produitTrouve = new Produit(champsProduitTrouve);
+		while (pointeurProduit.hasNext()) {			
+			Map champsProduitTrouve = pointeurProduit.one().toMap();			
+			Produit produitTrouve = new Produit(champsProduitTrouve);			
 			resultat.add(produitTrouve);
+			pointeurProduit.next();
 		}		
 		return resultat;
 	}
@@ -69,12 +70,15 @@ public class MongoDAO {
 	}
 
 	public ObjectId trouverIdCategorie(String nom) {
-		
+		ObjectId idCategorie;
 		DBObject nomCategorie = new BasicDBObject("nom", nom);
 		DBCursor pointeurCategorie = listeCategories.find(nomCategorie);
 		while (pointeurCategorie.hasNext()) {
-			return (ObjectId) pointeurCategorie.next().get("_id");
+			idCategorie = (ObjectId) pointeurCategorie.next().get("_id");
+			System.out.println("Id catégorie : " + idCategorie);
+			return idCategorie;		
 		}		
+		
 		return null;
 	}
 
