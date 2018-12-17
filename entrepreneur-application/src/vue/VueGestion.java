@@ -135,7 +135,7 @@ public class VueGestion extends Scene {
 		List<Produit> listeProduits = new ArrayList<>();
 
 		//listeProduits.addAll(accesseur.recupererProduitsParCategorie(categorie));
-		listeProduits.addAll(accesseurMongo.trouverProduit(categorie));
+		listeProduits.addAll(accesseurMongo.trouverListeProduitParCategorie(categorie));
 		
 		Label nom = new Label();
 		Label prix = new Label();

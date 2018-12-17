@@ -1,6 +1,7 @@
 package vue;
 
 import action.ControleurStatistiques;
+import donnee.MongoDAO;
 import donnee.MySqlDAO;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,6 +19,8 @@ public class VueEditerProduit extends Scene {
 	
 	private MySqlDAO accesseur;
 	
+	private MongoDAO accesseurMongo;
+	
 	private ControleurStatistiques controleurStatistiques;
 	
 	private BorderPane fenetrePrincipale;
@@ -33,6 +36,8 @@ public class VueEditerProduit extends Scene {
 		fenetrePrincipale = (BorderPane) this.getRoot();
 		
 		this.accesseur = new MySqlDAO();
+		
+		this.accesseurMongo = new MongoDAO();
 		
 		Label titre = new Label("Editer produit");	
 		titre.setFont(Font.font ("Verdana", 30));
