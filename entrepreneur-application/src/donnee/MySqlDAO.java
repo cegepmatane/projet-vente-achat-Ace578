@@ -270,11 +270,12 @@ public class MySqlDAO {
 			String REQUETE_CATEGORIE_PRODUIT = "SELECT * FROM produit WHERE id_categorie = " +categorie;
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_CATEGORIE_PRODUIT);
 			while(resultatRequete.next()) {
+				int id = resultatRequete.getInt("id");
 				String nom = resultatRequete.getString("nom");
 				String image = resultatRequete.getString("image");
 				float prix = resultatRequete.getFloat("prix");
 				int idCategorie = resultatRequete.getInt("id_categorie");
-				Produit produit = new Produit(nom, image, prix, idCategorie);
+				Produit produit = new Produit(id, nom, image, prix, idCategorie);
 				resultat.add(produit);		
 			}
 		} catch (SQLException e) {
@@ -319,5 +320,10 @@ public class MySqlDAO {
 		
 		return id;
 		
+	}
+
+	public Produit recupererProduit(int idProduit) {
+		Produit resultat = new Produit(idProduit, "Test", "", 42, 1);
+		return resultat;
 	}
 }

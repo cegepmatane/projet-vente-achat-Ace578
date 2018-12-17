@@ -24,6 +24,14 @@ public class Produit {
 	}
 	
 	
+	public Produit(int id, String nom, String image, float prix, int idCategorie) {
+		this.id = id;
+		this.nom = nom;
+		this.image = image;
+		this.prix = prix;
+		this.idCategorie = idCategorie;
+	}
+
 	public String getNom() {
 		return nom;
 	}
