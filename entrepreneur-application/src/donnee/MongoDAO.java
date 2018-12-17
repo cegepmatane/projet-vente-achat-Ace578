@@ -11,6 +11,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import modele.Produit;
 
@@ -58,19 +59,29 @@ public class MongoDAO {
 	}
 	
 	public Produit trouverProduit(int id) {
-		DBObject critereProduit = new BasicDBObject("id",id);
+		DBObject critereProduit = new BasicDBObject("id", id);
 		DBCursor pointeurProduit = listeProduits.find(critereProduit);
 		Map champsProduitTrouve = pointeurProduit.one().toMap();
 		Produit produitTrouve = new Produit(champsProduitTrouve);		
 		return produitTrouve;
 	}
 
-	public int trouverIdCategorie(String string) {
+	public int trouverIdCategorie(String nom) {
+		/*
+		DBObject nomCategorie = new BasicDBObject("nom", nom);
+		DBCursor pointeurCategorie = listeCategories.find(nomCategorie);
+		Map champsCategorieTrouvee = pointeurCategorie.one().toMap();
+		System.out.println((int) champsCategorieTrouvee.get("nom"));*/
 		return 0;
 	}
 
-	public Collection<? extends String> recupererCategories() {
-		return null;
+	public ArrayList<String> recupererCategories() {
+		ArrayList<String> resultat = new ArrayList<String>();
+		DBCursor pointeurCategories = listeCategories.find();
+		while (pointeurCategories.hasNext()) {
+			resultat.add((String) pointeurCategories.next().get("nom"));
+		}		
+		return resultat;
 	}
 
 	public Produit recupererProduit(int idProduit) {
