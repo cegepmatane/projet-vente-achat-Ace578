@@ -2,8 +2,11 @@ package vue;
 
 import action.ControleurStatistiques;
 import donnee.MySqlDAO;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -29,6 +32,8 @@ public class VueEditerProduit extends Scene {
 		
 		fenetrePrincipale = (BorderPane) this.getRoot();
 		
+		this.accesseur = new MySqlDAO();
+		
 		Label titre = new Label("Editer produit");	
 		titre.setFont(Font.font ("Verdana", 30));
 
@@ -45,8 +50,19 @@ public class VueEditerProduit extends Scene {
 		champsProduit.add(new Label("Prix : "), 0, 1);
 		champsProduit.add(prix, 1, 1);
 		
-		fenetrePrincipale.setCenter(champsProduit);
+		Button actionValider = new Button("Valider");
+		actionValider.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
+			public void handle(ActionEvent arg0) {
+				controleurStatistiques.notifierModifierProduit();
+			}
+			
+		});
+		
+		champsProduit.add(actionValider, 0, 2);
+		
+		fenetrePrincipale.setCenter(champsProduit);
 	}
 	
 	public void afficherProduit(Produit produit) {
@@ -57,6 +73,12 @@ public class VueEditerProduit extends Scene {
 
 	public void setControleurStatistiques(ControleurStatistiques controleurStatistiques) {
 		this.controleurStatistiques = controleurStatistiques;
+	}
+
+	public Produit demanderProduit() {
+		Produit ancienProduit = accesseur.recupererProduit(idProduit);
+		Produit nouveauProduit = new Produit(idProduit, nom.getText(), ancienProduit.getImage(), Float.parseFloat(prix.getText()), ancienProduit.getIdCategorie());
+		return nouveauProduit;
 	}
 
 }

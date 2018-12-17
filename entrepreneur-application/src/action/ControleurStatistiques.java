@@ -1,6 +1,7 @@
 package action;
 
 import donnee.MySqlDAO;
+import modele.Produit;
 import vue.NavigateurDesVues;
 import vue.VueEditerProduit;
 import vue.VueGestion;
@@ -53,5 +54,12 @@ public class ControleurStatistiques {
 		System.out.println("ControleurStatistiques.notifierNaviguerEditerProduit");
 		vueEditerProduit.afficherProduit(accesseur.recupererProduit(idProduit));
 		navigateurDesVues.naviguerVersVueEditerProduit();
+	}
+	
+	public void notifierModifierProduit() {
+		System.out.println("ControleurStatistiques.notifierModifierProduit");
+		Produit produit = navigateurDesVues.getVueEditerProduit().demanderProduit();
+		accesseur.modifierProduit(produit);
+		navigateurDesVues.naviguerVersVueGestion();
 	}
 }

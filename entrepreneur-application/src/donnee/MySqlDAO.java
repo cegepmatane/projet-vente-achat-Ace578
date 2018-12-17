@@ -236,13 +236,15 @@ public class MySqlDAO {
 		
 		try {
 			
-			String SQL_MODIFIER_PRODUIT = "UPDATE produit SET nom = ?, image = ?, prix = ?, id_categorie = ? WHERE id=?";
+			String SQL_MODIFIER_PRODUIT = "UPDATE produit SET nom = ?, image = ?, prix = ?, id_categorie = ? WHERE id = ?";
 			PreparedStatement requeteModifierProduit = connexion.prepareStatement(SQL_MODIFIER_PRODUIT);
 			requeteModifierProduit.setString(1, produit.getNom());
 			requeteModifierProduit.setString(2, produit.getImage());
 			requeteModifierProduit.setFloat(3, produit.getPrix());
 			requeteModifierProduit.setInt(4, produit.getIdCategorie());
 			requeteModifierProduit.setInt(5, produit.getId());
+			
+			System.out.println(requeteModifierProduit);
 			
 			requeteModifierProduit.execute();
 		} catch (SQLException e) {
