@@ -322,8 +322,21 @@ public class MySqlDAO {
 		
 	}
 
-	public Produit recupererProduit(int idProduit) {
-		Produit resultat = new Produit(idProduit, "Test", "", 42, 1);
-		return resultat;
+	public Produit recupererProduit(int idProduit) {		
+		try {
+			String REQUETE_PRODUIT = "SELECT * FROM produit WHERE id = " + idProduit;
+			ResultSet resultatRequete = declaration.executeQuery(REQUETE_PRODUIT);
+			while(resultatRequete.next()) {
+				int id = resultatRequete.getInt("id");
+				String nom = resultatRequete.getString("nom");
+				String image = resultatRequete.getString("image");
+				float prix = resultatRequete.getFloat("prix");
+				int idCategorie = resultatRequete.getInt("id_categorie");
+				return new Produit(id, nom, image, prix, idCategorie);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
