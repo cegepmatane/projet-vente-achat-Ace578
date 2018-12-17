@@ -2,6 +2,8 @@ package action;
 
 import java.io.FileNotFoundException;
 
+import org.bson.types.ObjectId;
+
 import donnee.MongoDAO;
 import donnee.MySqlDAO;
 import modele.Produit;
@@ -55,8 +57,9 @@ public class ControleurStatistiques {
 		return accesseur;
 	}
 
-	public void notifierNaviguerVueEditerProduit(int idProduit) {
+	public void notifierNaviguerVueEditerProduit(ObjectId idProduit) {
 		System.out.println("ControleurStatistiques.notifierNaviguerEditerProduit");
+		System.out.println(idProduit);
 		vueEditerProduit.afficherProduit(accesseur.recupererProduit(idProduit));
 		navigateurDesVues.naviguerVersVueEditerProduit();
 	}

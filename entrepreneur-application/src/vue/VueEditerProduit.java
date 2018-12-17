@@ -1,5 +1,7 @@
 package vue;
 
+import org.bson.types.ObjectId;
+
 import action.ControleurStatistiques;
 import donnee.MongoDAO;
 import donnee.MySqlDAO;
@@ -27,7 +29,9 @@ public class VueEditerProduit extends Scene {
 	
 	private TextField nom, prix;
 
-	private int idProduit = 0;
+	private ObjectId idProduit;
+	
+	private ObjectId idMongo;
 	
 
 	public VueEditerProduit() {
@@ -70,8 +74,9 @@ public class VueEditerProduit extends Scene {
 		fenetrePrincipale.setCenter(champsProduit);
 	}
 	
+	
 	public void afficherProduit(Produit produit) {
-		idProduit = produit.getId();
+		idMongo = produit.getIdMongo();
 		nom.setText(produit.getNom());
 		prix.setText(""+produit.getPrix());
 	}
@@ -82,7 +87,7 @@ public class VueEditerProduit extends Scene {
 
 	public Produit demanderProduit() {
 		Produit ancienProduit = accesseur.recupererProduit(idProduit);
-		Produit nouveauProduit = new Produit(idProduit, nom.getText(), ancienProduit.getImage(), Float.parseFloat(prix.getText()), ancienProduit.getIdCategorie());
+		Produit nouveauProduit = new Produit(idProduit, nom.getText(), ancienProduit.getImage(), Float.parseFloat(prix.getText()), ancienProduit.getIdCategorieMongo());
 		return nouveauProduit;
 	}
 

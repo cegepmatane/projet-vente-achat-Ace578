@@ -39,6 +39,7 @@ public class Produit {
 	public Produit(Map<String, Object> champs)
 	{
 		System.out.println(champs.toString());
+		this.idMongo = (ObjectId) champs.get("_id");
 		this.nom = (String) champs.get("nom");
 		this.image = (String) champs.get("image");
 		this.prix = (float)((double) champs.get("prix"));
@@ -51,6 +52,14 @@ public class Produit {
 		this.image = image;
 		this.prix = prix;
 		this.idCategorie = idCategorie;
+	}
+	
+	public Produit(ObjectId idMongo, String nom, String image, float prix, ObjectId idCategorieMongo) {
+		this.idMongo = idMongo;
+		this.nom = nom;
+		this.image = image;
+		this.prix = prix;
+		this.idCategorieMongo = idCategorieMongo;
 	}
 
 	public String getNom() {

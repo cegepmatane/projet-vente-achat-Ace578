@@ -60,14 +60,6 @@ public class MongoDAO {
 		}		
 		return resultat;
 	}
-	
-	public Produit trouverProduit(int id) {
-		DBObject critereProduit = new BasicDBObject("id", id);
-		DBCursor pointeurProduit = listeProduits.find(critereProduit);
-		Map champsProduitTrouve = pointeurProduit.one().toMap();
-		Produit produitTrouve = new Produit(champsProduitTrouve);		
-		return produitTrouve;
-	}
 
 	public ObjectId trouverIdCategorie(String nom) {
 		ObjectId idCategorie;
@@ -91,8 +83,12 @@ public class MongoDAO {
 		return resultat;
 	}
 
-	public Produit recupererProduit(int idProduit) {
-		return null;
+	public Produit recupererProduit(ObjectId id) {
+		DBObject critereProduit = new BasicDBObject("_id", id);
+		DBCursor pointeurProduit = listeProduits.find(critereProduit);
+		Map champsProduitTrouve = pointeurProduit.one().toMap();
+		Produit produitTrouve = new Produit(champsProduitTrouve);		
+		return produitTrouve;
 	}
 
 	public void modifierProduit(Produit produit) {
