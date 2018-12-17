@@ -1,5 +1,7 @@
 package action;
 
+import java.io.FileNotFoundException;
+
 import donnee.MySqlDAO;
 import modele.Produit;
 import vue.NavigateurDesVues;
@@ -60,6 +62,11 @@ public class ControleurStatistiques {
 		System.out.println("ControleurStatistiques.notifierModifierProduit");
 		Produit produit = navigateurDesVues.getVueEditerProduit().demanderProduit();
 		accesseur.modifierProduit(produit);
+		try {
+			vueGestion.afficherListeProduits(produit.getIdCategorie());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		navigateurDesVues.naviguerVersVueGestion();
 	}
 }

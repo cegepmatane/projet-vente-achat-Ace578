@@ -97,7 +97,7 @@ public class VueGestion extends Scene {
 	}
 
 
-	private void afficherListeProduits(int categorie) throws FileNotFoundException {
+	public void afficherListeProduits(int categorie) throws FileNotFoundException {
 		grilleProduits.getChildren().clear();
 		
 		Label labelNom = new Label("Nom");
