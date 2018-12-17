@@ -48,18 +48,18 @@ public class MongoDAO {
 	
 
 	public List<Produit> recupererProduitsParCategorie(ObjectId categorie) {
-		List<Produit> resultat = new ArrayList<Produit>();
-		DBObject critereProduit = new BasicDBObject("id_categorie", categorie);
-		DBCursor pointeurProduit = listeProduits.find(critereProduit);
-		System.out.println(pointeurProduit);
-		while (pointeurProduit.hasNext()) {			
-			Map champsProduitTrouve = pointeurProduit.one().toMap();			
-			Produit produitTrouve = new Produit(champsProduitTrouve);			
-			resultat.add(produitTrouve);
-			pointeurProduit.next();
-		}		
-		return resultat;
-	}
+        List<Produit> resultat = new ArrayList<Produit>();
+        DBObject critereProduit = new BasicDBObject("id_categorie", categorie);
+        DBCursor pointeurProduit = listeProduits.find(critereProduit);
+        System.out.println(pointeurProduit);
+        while (pointeurProduit.hasNext()) {    
+            DBObject produitMongo = pointeurProduit.next();
+            Map champsProduitTrouve = produitMongo.toMap();            
+            Produit produitTrouve = new Produit(champsProduitTrouve);            
+            resultat.add(produitTrouve);
+        }        
+        return resultat;
+    }
 
 	public ObjectId trouverIdCategorie(String nom) {
 		ObjectId idCategorie;
