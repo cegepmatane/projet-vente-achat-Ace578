@@ -86,7 +86,7 @@ public class VueEditerProduit extends Scene {
 	}
 
 	public Produit demanderProduit() {
-		Produit ancienProduit = accesseur.recupererProduit(idProduit);
+		Produit ancienProduit = accesseur.recupererProduit(/*idProduit*/idMongo);
 		Produit nouveauProduit = new Produit(idProduit, nom.getText(), ancienProduit.getImage(), Float.parseFloat(prix.getText()), ancienProduit.getIdCategorieMongo());
 		return nouveauProduit;
 	}
