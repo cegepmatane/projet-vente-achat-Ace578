@@ -127,8 +127,9 @@ public class VueGestion extends Scene {
 			actionEditerProduit.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent arg0) {
-					//controleurStatistiques.notifierNaviguerEditerProduit();
-			}});
+					controleurStatistiques.notifierNaviguerEditerProduit(produit.getId());
+				}
+			});
 			
 			numero++;
 			
@@ -148,6 +149,11 @@ public class VueGestion extends Scene {
 			GridPane.setMargin(prix, new Insets(10));
 			GridPane.setMargin(actionEditerProduit, new Insets(10));
 		}
+	}
+
+
+	public void setControleurStatistiques(ControleurStatistiques controleurStatistiques) {
+		this.controleurStatistiques = controleurStatistiques;
 	}
 
 }

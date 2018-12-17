@@ -2,6 +2,7 @@ package action;
 
 import donnee.MySqlDAO;
 import vue.NavigateurDesVues;
+import vue.VueEditerProduit;
 import vue.VueGestion;
 import vue.VueStatistiques;
 
@@ -10,6 +11,7 @@ public class ControleurStatistiques {
 	private static ControleurStatistiques instance = null;
 	private VueStatistiques vueStatistiques;
 	private VueGestion vueGestion;
+	private VueEditerProduit vueEditerProduit;
 	private NavigateurDesVues navigateurDesVues = null;
 	private MySqlDAO accesseur;
 	
@@ -44,5 +46,10 @@ public class ControleurStatistiques {
 	
 	public MySqlDAO getMySqlDAO() {
 		return accesseur;
+	}
+
+	public void notifierNaviguerEditerProduit(int id) {
+		System.out.println("ControleurStatistiques.notifierNaviguerEditerProduit");
+		
 	}
 }

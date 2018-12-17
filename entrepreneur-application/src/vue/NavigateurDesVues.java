@@ -9,11 +9,13 @@ public class NavigateurDesVues extends Application {
 	private Stage stade;
 	private VueStatistiques vueStatistiques = null;
 	private VueGestion vueGestion = null;
+	private VueEditerProduit vueEditerProduit = null;
 	private ControleurStatistiques controleurStatistiques;
 	
 	public NavigateurDesVues() {
 		this.vueStatistiques = new VueStatistiques();
 		this.vueGestion = new VueGestion();
+		this.vueEditerProduit = new VueEditerProduit();
 	}
 	
 	@Override
@@ -23,6 +25,8 @@ public class NavigateurDesVues extends Application {
 		controleurStatistiques = ControleurStatistiques.getInstance();
 		controleurStatistiques.activerVues(this);
 		vueStatistiques.setControleurStatistiques(controleurStatistiques);
+		vueGestion.setControleurStatistiques(controleurStatistiques);
+		vueEditerProduit.setControleurStatistiques(controleurStatistiques);
 	}
 	
 	public VueStatistiques getVueStatistiques() {
