@@ -36,6 +36,10 @@ public class NavigateurDesVues extends Application {
 	public VueGestion getVueGestion() {
 		return vueGestion;
 	}
+	
+	public VueEditerProduit getVueEditerProduit() {
+		return vueEditerProduit;
+	}
 
 	public void naviguerVersVueStatistiques() {
 		stade.setScene(vueStatistiques);
@@ -44,6 +48,11 @@ public class NavigateurDesVues extends Application {
 
 	public void naviguerVersVueGestion() {
 		stade.setScene(vueGestion);
+		stade.show();
+	}
+	
+	public void naviguerVersVueEditerProduit() {
+		stade.setScene(vueEditerProduit);
 		stade.show();
 	}
 }

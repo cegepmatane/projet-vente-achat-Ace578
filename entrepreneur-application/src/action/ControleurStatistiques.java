@@ -29,6 +29,7 @@ public class ControleurStatistiques {
 		this.navigateurDesVues = navigateurDesVues;
 		this.vueStatistiques = navigateurDesVues.getVueStatistiques();
 		this.vueGestion = navigateurDesVues.getVueGestion();
+		this.vueEditerProduit = navigateurDesVues.getVueEditerProduit();
 		//this.navigateurDesVues.naviguerVersVueStatistiques();
 		//Tests pour vue Gestion
 		this.navigateurDesVues.naviguerVersVueGestion();
@@ -48,8 +49,9 @@ public class ControleurStatistiques {
 		return accesseur;
 	}
 
-	public void notifierNaviguerEditerProduit(int id) {
+	public void notifierNaviguerVueEditerProduit(int idProduit) {
 		System.out.println("ControleurStatistiques.notifierNaviguerEditerProduit");
-		
+		vueEditerProduit.afficherProduit(accesseur.recupererProduit(idProduit));
+		navigateurDesVues.naviguerVersVueEditerProduit();
 	}
 }

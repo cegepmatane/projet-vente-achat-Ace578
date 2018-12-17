@@ -127,7 +127,7 @@ public class VueGestion extends Scene {
 			actionEditerProduit.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent arg0) {
-					controleurStatistiques.notifierNaviguerEditerProduit(produit.getId());
+					controleurStatistiques.notifierNaviguerVueEditerProduit(produit.getId());
 				}
 			});
 			
