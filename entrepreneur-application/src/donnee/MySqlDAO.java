@@ -32,7 +32,6 @@ public class MySqlDAO {
 	
 	public MySqlDAO() {
 		try {
-			System.out.println("Connexion MariaDB");
 			Class.forName(BASEDEDONNEES_DRIVER);
 			connexion = DriverManager.getConnection(BASEDEDONNEES_URL, BASEDEDONNEES_USAGER, BASEDEDONNEES_MOTDEPASSE);
 			declaration = connexion.createStatement();
@@ -47,7 +46,6 @@ public class MySqlDAO {
 		String resultat = "";
 		try {
 			String REQUETE_NOMBRE_CATEGORIES = "SELECT COUNT(*) FROM categorie";
-			System.out.println(REQUETE_NOMBRE_CATEGORIES);
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_NOMBRE_CATEGORIES);
 			while(resultatRequete.next()) {
 				resultat = resultatRequete.getString(1);
@@ -62,7 +60,6 @@ public class MySqlDAO {
 		String resultat = "";
 		try {
 			String REQUETE_NOMBRE_PRODUITS = "SELECT COUNT(*) FROM produit";
-			System.out.println(REQUETE_NOMBRE_PRODUITS);
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_NOMBRE_PRODUITS);
 			while(resultatRequete.next()) {
 				resultat = resultatRequete.getString(1);
@@ -76,8 +73,7 @@ public class MySqlDAO {
 	public float recupererRecetteTotal(int annee) {
 		float resultat = 0.0f;
 		try {
-			String REQUETE_RECETTE_TOTALE = "SELECT SUM(prix_total) FROM achat WHERE YEAR(date) = " +annee+ "";
-			System.out.println(REQUETE_RECETTE_TOTALE);
+			String REQUETE_RECETTE_TOTALE = "SELECT SUM(prix_total) FROM achat WHERE YEAR(date) = " + annee + "";
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_RECETTE_TOTALE);
 			while(resultatRequete.next()) {
 				resultat = resultatRequete.getFloat(1);
@@ -94,19 +90,18 @@ public class MySqlDAO {
 		
 		try {
 
-			String REQUETE_STATISTIQUES_MOIS = "SELECT MONTH(date) as mois, MAX(prix_total) as maximum, AVG(prix_total) as moyenne, produit as meilleur FROM achat WHERE YEAR(date)= " +annee+ " GROUP BY MONTH(date)";
-			System.out.println(REQUETE_STATISTIQUES_MOIS);
+			String REQUETE_STATISTIQUES_MOIS = "SELECT MONTH(date) as mois, MAX(prix_total) as maximum, AVG(prix_total) as moyenne, produit as meilleur FROM achat WHERE YEAR(date)= " + annee + " GROUP BY MONTH(date)";
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_MOIS);
 
 			while(resultatRequete.next()) {
 				String mois = resultatRequete.getString("mois");
 				float max = resultatRequete.getFloat("maximum");
 				float moyenne = resultatRequete.getFloat("moyenne");
-				String REQUETE_MEILLEURE_PRODUIT = "SELECT meilleur FROM (SELECT COUNT(produit)as max, produit as meilleur FROM achat WHERE MONTH(date) = " +mois+ " AND YEAR(date) = " +annee+ " GROUP BY produit) as meill ORDER BY max DESC limit 1";
+				String REQUETE_MEILLEURE_PRODUIT = "SELECT meilleur FROM (SELECT COUNT(produit) as max, produit as meilleur FROM achat WHERE MONTH(date) = " + mois + " AND YEAR(date) = " + annee + " GROUP BY produit) as meill ORDER BY max DESC limit 1";
 				ResultSet resultatRe = declaration.executeQuery(REQUETE_MEILLEURE_PRODUIT);
 				while(resultatRe.next()) {
 					int meilleur = resultatRe.getInt("meilleur");
-					String REQUETE_NOM_MEILLEUR = "SELECT nom FROM produit where id="+meilleur;
+					String REQUETE_NOM_MEILLEUR = "SELECT nom FROM produit where id = " + meilleur;
 					ResultSet meill = declaration.executeQuery(REQUETE_NOM_MEILLEUR);
 					while(meill.next()) {
 						String nomMeill = meill.getString("nom");
@@ -127,23 +122,22 @@ public class MySqlDAO {
 	
 		try {
 
-			String REQUETE_STATISTIQUES_CATEGORIE = "SELECT categorie, AVG(prix_total) as moyenne, MAX(prix_total) as maximum, produit FROM achat WHERE YEAR(date) = " +annee+" GROUP BY categorie;";
-			System.out.println(REQUETE_STATISTIQUES_CATEGORIE);
+			String REQUETE_STATISTIQUES_CATEGORIE = "SELECT categorie, AVG(prix_total) as moyenne, MAX(prix_total) as maximum, produit FROM achat WHERE YEAR(date) = " + annee + " GROUP BY categorie;";
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_CATEGORIE);
 
 			while(resultatRequete.next()) {
 				float max = resultatRequete.getFloat("maximum");
 				float moyenne = resultatRequete.getFloat("moyenne");
 				int categorie = resultatRequete.getInt("categorie");
-				String REQUETE_NOM_CATEGORIE = "SELECT nom FROM categorie where id="+categorie;
+				String REQUETE_NOM_CATEGORIE = "SELECT nom FROM categorie where id = " + categorie;
 				ResultSet cate = declaration.executeQuery(REQUETE_NOM_CATEGORIE);
 				while(cate.next()) {
 					String nomCate = cate.getString("nom");					
-					String REQUETE_MEILLEURE_PRODUIT = "SELECT meilleur FROM (SELECT COUNT(produit)as max, produit as meilleur FROM achat WHERE YEAR(date) = " +annee+ " AND categorie = " +categorie+" GROUP BY produit) as meill ORDER BY max DESC limit 1";
+					String REQUETE_MEILLEURE_PRODUIT = "SELECT meilleur FROM (SELECT COUNT(produit) as max, produit as meilleur FROM achat WHERE YEAR(date) = " + annee + " AND categorie = " + categorie + " GROUP BY produit) as meill ORDER BY max DESC limit 1";
 					ResultSet resultatRe = declaration.executeQuery(REQUETE_MEILLEURE_PRODUIT);
 					while(resultatRe.next()) {
 						int meilleur = resultatRe.getInt("meilleur");
-						String REQUETE_NOM_MEILLEUR = "SELECT nom FROM produit where id="+meilleur;
+						String REQUETE_NOM_MEILLEUR = "SELECT nom FROM produit where id = " + meilleur;
 						ResultSet meill = declaration.executeQuery(REQUETE_NOM_MEILLEUR);
 						while(meill.next()) {
 							String nomMeill = meill.getString("nom");
@@ -165,9 +159,8 @@ public class MySqlDAO {
 
 		try {
 
-			String REQUETE_STATISTIQUES_CATEGORIE = "SELECT COUNT(produit) as nombreAcheteurs, region FROM achat WHERE YEAR(date) = " +annee+" GROUP BY region";
-			System.out.println(REQUETE_STATISTIQUES_CATEGORIE);
-			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_CATEGORIE);
+			String REQUETE_STATISTIQUES_REGION = "SELECT COUNT(produit) as nombreAcheteurs, region FROM achat WHERE YEAR(date) = " + annee + " GROUP BY region";
+			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_REGION);
 
 			while(resultatRequete.next()) {
 				int nombreAcheteurs = resultatRequete.getInt("nombreAcheteurs");
@@ -188,15 +181,14 @@ public class MySqlDAO {
 
 		try {
 
-			String REQUETE_STATISTIQUES_PRODUIT = "SELECT COUNT(produit) as nb ,  AVG(prix_total) as moyenne, MAX(prix_total) as max,  produit, MONTH(date) as mois FROM achat WHERE YEAR(date) = " +annee+ " GROUP by produit ORDER BY nb DESC LIMIT 5";
-			System.out.println(REQUETE_STATISTIQUES_PRODUIT);
+			String REQUETE_STATISTIQUES_PRODUIT = "SELECT COUNT(produit) as nb, AVG(prix_total) as moyenne, MAX(prix_total) as max,  produit, MONTH(date) as mois FROM achat WHERE YEAR(date) = " + annee + " GROUP by produit ORDER BY nb DESC LIMIT 5";
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_PRODUIT);
 			while(resultatRequete.next()) {
 				int meilleur = resultatRequete.getInt("produit");
 				String mois = resultatRequete.getString("mois");
 				float moyenne = resultatRequete.getFloat("moyenne");
 				float max = resultatRequete.getFloat("max");
-				String REQUETE_MEILLEURE_PRODUIT = "SELECT nom FROM produit where id="+meilleur;
+				String REQUETE_MEILLEURE_PRODUIT = "SELECT nom FROM produit where id = " + meilleur;
 				ResultSet resultatRe = declaration.executeQuery(REQUETE_MEILLEURE_PRODUIT);
 				while(resultatRe.next()) {
 					String nom = resultatRe.getString("nom");
@@ -214,7 +206,6 @@ public class MySqlDAO {
 	
 	
 	public void ajouterProduit(Produit produit) {
-		System.out.println("ajouterProduit(produit)");
 		try {
 			
 			String SQL_AJOUTER_PRODUIT = "INSERT into produit(nom, image, prix, id_categorie) VALUES (?,?,?,?)";
@@ -231,9 +222,7 @@ public class MySqlDAO {
 		
 	}
 	
-	public void modifierProduit(Produit produit) {
-		System.out.println("modifierProduit()");
-		
+	public void modifierProduit(Produit produit) {		
 		try {
 			
 			String SQL_MODIFIER_PRODUIT = "UPDATE produit SET nom = ?, image = ?, prix = ?, id_categorie = ? WHERE id = ?";
@@ -243,9 +232,7 @@ public class MySqlDAO {
 			requeteModifierProduit.setFloat(3, produit.getPrix());
 			requeteModifierProduit.setInt(4, produit.getIdCategorie());
 			requeteModifierProduit.setInt(5, produit.getId());
-			
-			System.out.println(requeteModifierProduit);
-			
+						
 			requeteModifierProduit.execute();
 		} catch (SQLException e) {
 			
@@ -255,7 +242,7 @@ public class MySqlDAO {
 	}
 	
 	public void supprimerProduit(Produit produit) {
-		String SQL_SUPPRIMER_PRODUIT = "DELETE FROM livre WHERE id= "+produit.getId()+" ";
+		String SQL_SUPPRIMER_PRODUIT = "DELETE FROM livre WHERE id = "+produit.getId()+" ";
 		try {
 			PreparedStatement requeteSupprimerProduit = connexion.prepareStatement(SQL_SUPPRIMER_PRODUIT);
 			requeteSupprimerProduit.execute();
@@ -269,8 +256,8 @@ public class MySqlDAO {
 	public ObservableList<Produit> recupererProduitsParCategorie(int categorie) {
 		List<Produit> resultat = new ArrayList<Produit>();
 		try {
-			String REQUETE_CATEGORIE_PRODUIT = "SELECT * FROM produit WHERE id_categorie = " +categorie;
-			ResultSet resultatRequete = declaration.executeQuery(REQUETE_CATEGORIE_PRODUIT);
+			String REQUETE_CATEGORIE_PRODUITS = "SELECT * FROM produit WHERE id_categorie = " +categorie;
+			ResultSet resultatRequete = declaration.executeQuery(REQUETE_CATEGORIE_PRODUITS);
 			while(resultatRequete.next()) {
 				int id = resultatRequete.getInt("id");
 				String nom = resultatRequete.getString("nom");
@@ -291,8 +278,8 @@ public class MySqlDAO {
 		Collection<String> categories = new ArrayList();
 		
 		try {
-			String REQUETE_CATEGORIE_PRODUIT = "SELECT nom FROM categorie";
-			ResultSet resultatRequete = declaration.executeQuery(REQUETE_CATEGORIE_PRODUIT);
+			String REQUETE_CATEGORIES = "SELECT nom FROM categorie";
+			ResultSet resultatRequete = declaration.executeQuery(REQUETE_CATEGORIES);
 			while (resultatRequete.next()) {
 				String nom = resultatRequete.getString("nom");
 				categories.add(nom);
@@ -309,7 +296,7 @@ public class MySqlDAO {
 	public int trouverIdCategorie(String categorie) {
 		int id = 0;
 		try {
-			String REQUETE_ID_CATEGORIE = "SELECT id FROM categorie WHERE nom = '" +categorie+"';";
+			String REQUETE_ID_CATEGORIE = "SELECT id FROM categorie WHERE nom = '" + categorie + "';";
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_ID_CATEGORIE);
 			while (resultatRequete.next()) {
 				id = resultatRequete.getInt("id");
