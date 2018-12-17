@@ -12,15 +12,6 @@
     //achatVentePDO.getListeArticle();
 
 
-    this.listeCategorieDonnee = [new Categorie(1,"casquette","nouveau modele"),
-                                new Categorie(2 ,"manteau","nouveau modele")];
-
-    this.listeArticleDonnee = [new Article(0,"swift","nike","nouveau modele",1,"image/casquetteBaseball.jpg"),
-                                new Article(1,"doudoune","lacoste","nouveau modele",2,"image/doudoune1.jpg"),
-                                new Article(2,"blueberry","lacoste","nouveau modele",1,"image/casquetteLondon.png"),
-                                new Article(3,"doudoune","lacoste","nouveau modele",2,"image/doudoune2.jpg")];
-
-
 
     var initialiser = function (){
 
@@ -33,9 +24,14 @@
 
     }   
 
-     var naviguer = function() {
+    var naviguer = function() {
 
-     var hash = window.location.hash;
+        var hash = window.location.hash;
+        var nom;
+        var adresseLivraison;
+        var pays;
+        var adresseCourriel;
+
 
      if (!hash) {
         var acceuilVue = new AcceuilVue();
@@ -55,23 +51,36 @@
             var href = location.href;
             this.idArticle = href.match(/([^\/]*)\/*$/)[1];
              var vueArticle = new VueArticle();
-             vueArticle.afficher();
+             vueArticle.afficher(this.idArticle);
             achatVentePDO.getArticle(this.idArticle);
           }
-    else if(hash.match(/^#personnalisation/)) {
-             var vuePersonnalisation = new VuePersonnalisation();
-             vuePersonnalisation.afficher();
-            achatVentePDO.getArticle(this.idArticle);
-            achatVentePDO.getSticker();
+    else if(hash.match(/^#personnalisation-sticker/)) {
+            var href = location.href;
+            this.idArticle = href.match(/([^\/]*)\/*$/)[1];
+            var vuePersonnalisation = new VuePersonnalisationSticker();
+            vuePersonnalisation.afficher();
+            achatVentePDO.getListeSticker();
+
           }
+    else if(hash.match(/^#personnalisation-information/)) {    
+            var vuePersonnalisation = new VuePersonnalisationInformation();
+            vuePersonnalisation.afficher();
+            nom = document.getElementsByClassName("nom")[0].value;
 
-    /*else if(hash.match(/^#modifier-article/)) {
-             var modifierArticleVue = new ModifierArticleVue(actionEnregistrerArticle);
-             modifierArticleVue.afficher(numeroArticle);
-     
-          }*/
+            /*document.getElementsByClassName("nom")[0].value = nom;
+            document.getElementsByClassName("adresseLivraison")[0].value = adresseLivraison;
+            document.getElementsByClassName("pays")[0].value = pays;
+            document.getElementsByClassName("adresseCourriel")[0].value = adresseCourriel;*/
+    }
 
+
+    else if(hash.match(/^#personnalisation-payement/)) {
+            var vuePersonnalisationPayement = new VuePersonnalisationPayement();
+            vuePersonnalisationPayement.afficher();
      
+    }
+
+
 
      }
 

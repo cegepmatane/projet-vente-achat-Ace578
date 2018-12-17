@@ -285,3 +285,14 @@ a:hover
   text-align: center;
   padding-top: 10px;
 }
+
+#tableSticker , th, td {
+  border: 1px solid black;
+}
+
+#tableSticker #checkbox1{
+  width: 100px;
+}
+#imagepaypal{
+  width: 100px;
+}

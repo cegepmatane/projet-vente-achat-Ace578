@@ -76,18 +76,43 @@
 
      <script type="plain/text" id ="page-article">
         <h1>nom article</h1>
-        <p>image article</p>
         <div id="articletest"> </div>
-        <a href="#personnalisation/"><button type="submit">Personnaliser</button></a>
+        <div id="buttonPersonnaliser"> </div>
         
     </script>
 
-    <script type="plain/text" id ="page-personnalisation">
+    <script type="plain/text" id ="page-personnalisation-sticker">
         <h1>nom article</h1>
-        <p>image article</p>
+        <h2>Choisir un sticker</h2>
         <div id="articletest"> </div>
-        <a href="#personnalisation/"><button type="submit">SUIVANT</button></a>
-        
+        <table id="tableSticker"><p></p> </table></br>
+        <a href="#personnalisation-information/"><button type="submit">SUIVANT</button></a>
+    </script>
+
+    <script type="plain/text" id ="page-personnalisation-information">
+        <h1>nom article</h1>
+        <h2>Information</h2>
+        <form action="#personnalisation-payement" method="post">
+          Nom:<br>
+          <input type="text" name="nom" class="nom"><br>
+          Adresse de livraison:<br>
+          <input type="text" name="adresseLivraison" class="adresseLivraison"><br>
+          Pays:<br>
+          <input type="text" name="pays" class="pays"><br>
+          Adresse courriel:<br>
+          <input type="text" name="adresseCourriel" class="adresseCourriel">
+          <br><br>
+          <p id="erreur"></p>
+          <input type="submit" value="Valider" class="valider">
+        </form> 
+
+    </script>
+
+    <script type="plain/text" id ="page-personnalisation-payement">
+        <h1>nom article</h1>
+        <h2>payement</h2>
+        <a href="https://www.paypal.com/ca/signin"><img src ="C:\image\Paypal.png" id="x"></a>
+
     </script>
 
 	
@@ -139,7 +164,9 @@
         <script src="action/modele/Categorie.js"></script>
         <script src="action/vue/AcceuilVue.js"></script>
         <script src="action/vue/VueListeArticle.js"></script>
-        <script src="action/vue/VuePersonnalisation.js"></script>
+        <script src="action/vue/VuePersonnalisationSticker.js"></script>
+        <script src="action/vue/VuePersonnalisationInformation.js"></script>
+        <script src="action/vue/VuePersonnalisationPayement.js"></script>
         <script src="action/vue/VueArticle.js"></script>
         <script src="action/donnee/ArticleDAO.js"></script>
         <script src="action/donnee/AchatVentePDO.js"></script>
