@@ -64,6 +64,14 @@ public class ControleurStatistiques {
 		navigateurDesVues.naviguerVersVueEditerProduit();
 	}
 	
+	/**public void notifierNaviguerVueEditerProduit(int idProduit) {
+		System.out.println("ControleurStatistiques.notifierNaviguerEditerProduit");
+		System.out.println(idProduit);
+		vueEditerProduit.afficherProduit(accesseur.recupererProduit(id));
+		navigateurDesVues.naviguerVersVueEditerProduit();
+	}
+	*/
+	
 	public void notifierModifierProduit() {
 		System.out.println("ControleurStatistiques.notifierModifierProduit");
 		Produit produit = navigateurDesVues.getVueEditerProduit().demanderProduit();

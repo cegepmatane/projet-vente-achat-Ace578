@@ -92,6 +92,6 @@ public class MongoDAO {
 	}
 
 	public void modifierProduit(Produit produit) {
-		
+
 	}	
 }

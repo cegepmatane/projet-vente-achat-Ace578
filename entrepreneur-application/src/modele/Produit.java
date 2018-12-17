@@ -45,7 +45,6 @@ public class Produit {
 		this.prix = (float)((double) champs.get("prix"));
 	}
 	
-	
 	public Produit(int id, String nom, String image, float prix, int idCategorie) {
 		this.id = id;
 		this.nom = nom;
