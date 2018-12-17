@@ -3,9 +3,12 @@ package modele;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
+
 public class Produit {
 	
 	protected int id;
+	ObjectId idMongo;
 	String nom, image;
 	float prix;
 	int idCategorie;
@@ -74,11 +77,23 @@ public class Produit {
 	
 	public Map<String, String> exporterHash() {
 		Map<String, String> hash = new HashMap<String, String>();
+		hash.put("id", this.idMongo + "");
 		hash.put("nom", this.nom);
 		hash.put("image", this.image);
 		hash.put("prix", this.prix + "");
 		hash.put("id_categorie", this.idCategorie + "");
 		return hash;
 	}
+
+	public ObjectId getIdMongo() {
+		return idMongo;
+	}
+
+	public void setIdMongo(ObjectId idMongo) {
+		this.idMongo = idMongo;
+	}
+
+	
+	
 
 }
