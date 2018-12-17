@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
 import action.ControleurStatistiques;
 import donnee.MongoDAO;
 import donnee.MySqlDAO;
@@ -117,7 +119,7 @@ public class VueGestion extends Scene {
 	}
 
 
-	public void afficherListeProduits(int categorie) throws FileNotFoundException {
+	public void afficherListeProduits(/*int*/ ObjectId categorie) throws FileNotFoundException {
 		grilleProduits.getChildren().clear();
 		
 		Label labelNom = new Label("Nom");

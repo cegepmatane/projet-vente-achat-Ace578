@@ -66,7 +66,8 @@ public class ControleurStatistiques {
 		Produit produit = navigateurDesVues.getVueEditerProduit().demanderProduit();
 		accesseur.modifierProduit(produit);
 		try {
-			vueGestion.afficherListeProduits(produit.getIdCategorie());
+			//vueGestion.afficherListeProduits(produit.getIdCategorie());
+			vueGestion.afficherListeProduits(produit.getIdCategorieMongo());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

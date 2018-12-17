@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -45,15 +47,15 @@ public class MongoDAO {
 	}
 	
 
-	public List<Produit> recupererProduitsParCategorie(int categorie) {
+	public List<Produit> recupererProduitsParCategorie(ObjectId categorie) {
 		List<Produit> resultat = new ArrayList<Produit>();
-		DBObject critereProduit = new BasicDBObject("id_categorie",categorie);
+		DBObject critereProduit = new BasicDBObject("id_categorie", categorie);
 		DBCursor pointeurProduit = listeProduits.find(critereProduit);
+		System.out.println(pointeurProduit);
 		while (pointeurProduit.hasNext()) {
 			Map champsProduitTrouve = pointeurProduit.one().toMap();
 			Produit produitTrouve = new Produit(champsProduitTrouve);
 			resultat.add(produitTrouve);
-			pointeurProduit.next();
 		}		
 		return resultat;
 	}
@@ -66,13 +68,14 @@ public class MongoDAO {
 		return produitTrouve;
 	}
 
-	public int trouverIdCategorie(String nom) {
-		/*
+	public ObjectId trouverIdCategorie(String nom) {
+		
 		DBObject nomCategorie = new BasicDBObject("nom", nom);
 		DBCursor pointeurCategorie = listeCategories.find(nomCategorie);
-		Map champsCategorieTrouvee = pointeurCategorie.one().toMap();
-		System.out.println((int) champsCategorieTrouvee.get("nom"));*/
-		return 0;
+		while (pointeurCategorie.hasNext()) {
+			return (ObjectId) pointeurCategorie.next().get("_id");
+		}		
+		return null;
 	}
 
 	public ArrayList<String> recupererCategories() {

@@ -12,6 +12,7 @@ public class Produit {
 	String nom, image;
 	float prix;
 	int idCategorie;
+	ObjectId idCategorieMongo;
 	
 	public Produit(String nom, String image, float prix, int idCategorie) {
 		this.nom = nom;
@@ -19,7 +20,22 @@ public class Produit {
 		this.prix = prix;
 		this.idCategorie = idCategorie;
 	}
+	
+	public Produit(String nom, String image, float prix, ObjectId idCategorieMongo) {
+		this.nom = nom;
+		this.image = image;
+		this.prix = prix;
+		this.idCategorieMongo = idCategorieMongo;
+	}
 		
+	public ObjectId getIdCategorieMongo() {
+		return idCategorieMongo;
+	}
+
+	public void setIdCategorieMongo(ObjectId idCategorieMongo) {
+		this.idCategorieMongo = idCategorieMongo;
+	}
+
 	public Produit(Map<String, Object> champs)
 	{
 		System.out.println(champs.toString());
