@@ -3,8 +3,9 @@ package donnee;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+import java.util.Map;import java.util.Set;
 
+import org.bson.BSONObject;
 import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
@@ -51,7 +52,7 @@ public class MongoDAO {
         List<Produit> resultat = new ArrayList<Produit>();
         DBObject critereProduit = new BasicDBObject("id_categorie", categorie);
         DBCursor pointeurProduit = listeProduits.find(critereProduit);
-        System.out.println(pointeurProduit);
+        //System.out.println(pointeurProduit);
         while (pointeurProduit.hasNext()) {    
             DBObject produitMongo = pointeurProduit.next();
             Map champsProduitTrouve = produitMongo.toMap();            
@@ -67,7 +68,7 @@ public class MongoDAO {
 		DBCursor pointeurCategorie = listeCategories.find(nomCategorie);
 		while (pointeurCategorie.hasNext()) {
 			idCategorie = (ObjectId) pointeurCategorie.next().get("_id");
-			System.out.println("Id catégorie : " + idCategorie);
+			//System.out.println("Id catégorie : " + idCategorie);
 			return idCategorie;		
 		}		
 		
@@ -92,6 +93,13 @@ public class MongoDAO {
 	}
 
 	public void modifierProduit(Produit produit) {
-
+		DBObject critereProduit = new BasicDBObject("_id", produit.getIdMongo());
+		DBCursor pointeurProduit = listeProduits.find(critereProduit);
+		while (pointeurProduit.hasNext()) {
+			DBObject produitTrouve = pointeurProduit.next();
+			System.out.println(produitTrouve.toString());
+			System.out.println(new BasicDBObject(produit.exporterHash()));
+			listeProduits.update(produitTrouve, new BasicDBObject(produit.exporterHash()));
+		}
 	}	
 }
