@@ -188,8 +188,9 @@ public class MySqlDAO {
 
 	public ObservableList<StatistiqueRegion> recupererStatistiquesRegionParAnnee(int annee) {
 		List<StatistiqueRegion> resultat = new ArrayList<StatistiqueRegion>();
+		Type listeStatistiquesRegion = new TypeToken<ArrayList<StatistiqueRegion>>(){}.getType();
 		if(redisRecent) {
-			 //resultat = cache.get("statistiquesRegionParAnnee");
+			resultat = gson.fromJson(cache.get("statistiquesRegionParAnnee"), listeStatistiquesRegion);
 		} else {
 			try {
 				String REQUETE_STATISTIQUES_REGION = "SELECT COUNT(produit) as nombreAcheteurs, region FROM achat_" + annee + " GROUP BY region";
@@ -203,7 +204,7 @@ public class MySqlDAO {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			//cache.set("statistiquesRegionParAnnee", resultat);
+			cache.set("statistiquesRegionParAnnee", gson.toJson(resultat));
 		}
 		return FXCollections.observableArrayList(resultat);
 	}
@@ -346,7 +347,6 @@ public class MySqlDAO {
 	
 	private boolean tempsRedisInferieurAUneHeure() {
 		Long tempRedis = Long.parseLong(cache.get("timestamp"));
-		System.out.println(System.currentTimeMillis() - tempRedis);
 		if(System.currentTimeMillis() - tempRedis < 3600000) {
 			return true;
 		}

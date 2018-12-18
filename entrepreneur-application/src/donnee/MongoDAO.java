@@ -97,8 +97,8 @@ public class MongoDAO {
 		DBCursor pointeurProduit = listeProduits.find(critereProduit);
 		while (pointeurProduit.hasNext()) {
 			DBObject produitTrouve = pointeurProduit.next();
-			System.out.println(produitTrouve.toString());
-			System.out.println(new BasicDBObject(produit.exporterHash()));
+			//System.out.println(produitTrouve.toString());
+			//System.out.println(new BasicDBObject(produit.exporterHash()));
 			listeProduits.update(produitTrouve, new BasicDBObject(produit.exporterHash()));
 		}
 	}	

@@ -59,7 +59,7 @@ public class ControleurStatistiques {
 
 	public void notifierNaviguerVueEditerProduit(ObjectId idProduit) {
 		System.out.println("ControleurStatistiques.notifierNaviguerEditerProduit");
-		System.out.println(idProduit);
+		//System.out.println(idProduit);
 		vueEditerProduit.afficherProduit(accesseur.recupererProduit(idProduit));
 		navigateurDesVues.naviguerVersVueEditerProduit();
 	}

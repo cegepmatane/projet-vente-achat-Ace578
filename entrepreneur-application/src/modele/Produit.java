@@ -38,7 +38,7 @@ public class Produit {
 
 	public Produit(Map<String, Object> champs)
     {
-		System.out.println(champs.toString());
+		//System.out.println(champs.toString());
 		this.idMongo = (ObjectId) champs.get("_id");
 		this.nom = (String) champs.get("nom");
 		this.image = (String) champs.get("image");
