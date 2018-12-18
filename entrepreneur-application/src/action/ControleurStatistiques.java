@@ -38,9 +38,9 @@ public class ControleurStatistiques {
 		this.vueStatistiques = navigateurDesVues.getVueStatistiques();
 		this.vueGestion = navigateurDesVues.getVueGestion();
 		this.vueEditerProduit = navigateurDesVues.getVueEditerProduit();
-		//this.navigateurDesVues.naviguerVersVueStatistiques();
+		this.navigateurDesVues.naviguerVersVueStatistiques();
 		//Tests pour vue Gestion
-		this.navigateurDesVues.naviguerVersVueGestion();
+		//this.navigateurDesVues.naviguerVersVueGestion();
 	}
 	
 	public void notifierNaviguerVueGestion() {
