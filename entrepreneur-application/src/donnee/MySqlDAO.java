@@ -1,12 +1,13 @@
 package donnee;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -29,6 +30,7 @@ public class MySqlDAO {
 	private static String BASEDEDONNEES_MOTDEPASSE = "password";
 	
 	private Jedis cache;
+	private boolean redisRecent = false;
 	private Connection connexion = null;
 	private Statement declaration = null;
 	
@@ -43,6 +45,8 @@ public class MySqlDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		redisRecent = tempsRedisInferieurAUneHeure();
+		System.out.println(redisRecent);
 	}
 	
 	public String recupererNombreCategories() {
@@ -330,5 +334,14 @@ public class MySqlDAO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private boolean tempsRedisInferieurAUneHeure() {
+		Long tempRedis = Long.parseLong(cache.get("timestamp"));
+		System.out.println(System.currentTimeMillis() - tempRedis);
+		if(System.currentTimeMillis() - tempRedis < 3600000) {
+			return true;
+		}
+		return false;
 	}
 }
