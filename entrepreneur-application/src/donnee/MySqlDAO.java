@@ -73,7 +73,7 @@ public class MySqlDAO {
 	public float recupererRecetteTotal(int annee) {
 		float resultat = 0.0f;
 		try {
-			String REQUETE_RECETTE_TOTALE = "SELECT SUM(prix_total) FROM achat WHERE YEAR(date) = " + annee + "";
+			String REQUETE_RECETTE_TOTALE = "SELECT SUM(prix_total) FROM achat_" + annee + "";
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_RECETTE_TOTALE);
 			while(resultatRequete.next()) {
 				resultat = resultatRequete.getFloat(1);
@@ -90,14 +90,14 @@ public class MySqlDAO {
 		
 		try {
 
-			String REQUETE_STATISTIQUES_MOIS = "SELECT MONTH(date) as mois, MAX(prix_total) as maximum, AVG(prix_total) as moyenne, produit as meilleur FROM achat WHERE YEAR(date)= " + annee + " GROUP BY MONTH(date)";
+			String REQUETE_STATISTIQUES_MOIS = "SELECT MONTH(date) as mois, MAX(prix_total) as maximum, AVG(prix_total) as moyenne, produit as meilleur FROM achat_" + annee + " GROUP BY MONTH(date)";
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_MOIS);
 
 			while(resultatRequete.next()) {
 				String mois = resultatRequete.getString("mois");
 				float max = resultatRequete.getFloat("maximum");
 				float moyenne = resultatRequete.getFloat("moyenne");
-				String REQUETE_MEILLEURE_PRODUIT = "SELECT meilleur FROM (SELECT COUNT(produit) as max, produit as meilleur FROM achat WHERE MONTH(date) = " + mois + " AND YEAR(date) = " + annee + " GROUP BY produit) as meill ORDER BY max DESC limit 1";
+				String REQUETE_MEILLEURE_PRODUIT = "SELECT meilleur FROM (SELECT COUNT(produit) as max, produit as meilleur FROM achat_" + annee + " WHERE MONTH(date) = " + mois + " GROUP BY produit) as meill ORDER BY max DESC limit 1";
 				ResultSet resultatRe = declaration.executeQuery(REQUETE_MEILLEURE_PRODUIT);
 				while(resultatRe.next()) {
 					int meilleur = resultatRe.getInt("meilleur");
@@ -122,7 +122,7 @@ public class MySqlDAO {
 	
 		try {
 
-			String REQUETE_STATISTIQUES_CATEGORIE = "SELECT categorie, AVG(prix_total) as moyenne, MAX(prix_total) as maximum, produit FROM achat WHERE YEAR(date) = " + annee + " GROUP BY categorie;";
+			String REQUETE_STATISTIQUES_CATEGORIE = "SELECT categorie, AVG(prix_total) as moyenne, MAX(prix_total) as maximum, produit FROM achat_" + annee + " GROUP BY categorie;";
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_CATEGORIE);
 
 			while(resultatRequete.next()) {
@@ -133,7 +133,7 @@ public class MySqlDAO {
 				ResultSet cate = declaration.executeQuery(REQUETE_NOM_CATEGORIE);
 				while(cate.next()) {
 					String nomCate = cate.getString("nom");					
-					String REQUETE_MEILLEURE_PRODUIT = "SELECT meilleur FROM (SELECT COUNT(produit) as max, produit as meilleur FROM achat WHERE YEAR(date) = " + annee + " AND categorie = " + categorie + " GROUP BY produit) as meill ORDER BY max DESC limit 1";
+					String REQUETE_MEILLEURE_PRODUIT = "SELECT meilleur FROM (SELECT COUNT(produit) as max, produit as meilleur FROM achat achat_" + annee + "  WHERE categorie = " + categorie + " GROUP BY produit) as meill ORDER BY max DESC limit 1";
 					ResultSet resultatRe = declaration.executeQuery(REQUETE_MEILLEURE_PRODUIT);
 					while(resultatRe.next()) {
 						int meilleur = resultatRe.getInt("meilleur");
@@ -159,7 +159,7 @@ public class MySqlDAO {
 
 		try {
 
-			String REQUETE_STATISTIQUES_REGION = "SELECT COUNT(produit) as nombreAcheteurs, region FROM achat WHERE YEAR(date) = " + annee + " GROUP BY region";
+			String REQUETE_STATISTIQUES_REGION = "SELECT COUNT(produit) as nombreAcheteurs, region FROM achat_" + annee + " GROUP BY region";
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_REGION);
 
 			while(resultatRequete.next()) {
@@ -181,7 +181,7 @@ public class MySqlDAO {
 
 		try {
 
-			String REQUETE_STATISTIQUES_PRODUIT = "SELECT COUNT(produit) as nb, AVG(prix_total) as moyenne, MAX(prix_total) as max,  produit, MONTH(date) as mois FROM achat WHERE YEAR(date) = " + annee + " GROUP by produit ORDER BY nb DESC LIMIT 5";
+			String REQUETE_STATISTIQUES_PRODUIT = "SELECT COUNT(produit) as nb, AVG(prix_total) as moyenne, MAX(prix_total) as max,  produit, MONTH(date) as mois FROM achat_" + annee + " GROUP by produit ORDER BY nb DESC LIMIT 5";
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_PRODUIT);
 			while(resultatRequete.next()) {
 				int meilleur = resultatRequete.getInt("produit");
