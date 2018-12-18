@@ -211,8 +211,9 @@ public class MySqlDAO {
 
 	public ObservableList<StatistiqueProduit> recupererStatistiquesProduitsParAnnee(int annee) {
 		List<StatistiqueProduit> resultat = new ArrayList<StatistiqueProduit>();
+		Type listeStatistiquesProduits = new TypeToken<ArrayList<StatistiqueProduit>>(){}.getType();
 		if(redisRecent) {
-			//resultat = cache.get("statistiquesProduitsParAnnee");
+			resultat = gson.fromJson(cache.get("statistiquesProduitsParAnnee"), listeStatistiquesProduits);
 		} else {
 			try {
 				String REQUETE_STATISTIQUES_PRODUIT = "SELECT COUNT(produit) as nb, AVG(prix_total) as moyenne, MAX(prix_total) as max,  produit, MONTH(date) as mois FROM achat_" + annee + " GROUP by produit ORDER BY nb DESC LIMIT 5";
@@ -233,7 +234,7 @@ public class MySqlDAO {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			//cache.set("statistiquesProduitsParAnnee", resultat);
+			cache.set("statistiquesProduitsParAnnee", gson.toJson(resultat));
 		}		
 		return FXCollections.observableArrayList(resultat);
 	}
@@ -347,6 +348,7 @@ public class MySqlDAO {
 	
 	private boolean tempsRedisInferieurAUneHeure() {
 		Long tempRedis = Long.parseLong(cache.get("timestamp"));
+		System.out.println(System.currentTimeMillis() - tempRedis);
 		if(System.currentTimeMillis() - tempRedis < 3600000) {
 			return true;
 		}
