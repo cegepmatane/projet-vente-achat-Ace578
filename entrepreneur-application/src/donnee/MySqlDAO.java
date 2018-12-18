@@ -149,8 +149,9 @@ public class MySqlDAO {
 
 	public ObservableList<StatistiqueCategorie> recupererStatistiquesCategoriesParAnnee(int annee) {
 		List<StatistiqueCategorie> resultat = new ArrayList<StatistiqueCategorie>();
+		Type listeStatistiquesCategorie = new TypeToken<ArrayList<StatistiqueCategorie>>(){}.getType();
 		if(redisRecent) {
-			//resultat = cache.get("statistiquesCategoriesParAnnee");
+			resultat = gson.fromJson(cache.get("statistiquesCategoriesParAnnee"), listeStatistiquesCategorie);
 		} else {
 			try {
 				String REQUETE_STATISTIQUES_CATEGORIE = "SELECT categorie, AVG(prix_total) as moyenne, MAX(prix_total) as maximum, produit FROM achat_" + annee + " GROUP BY categorie;";
@@ -180,7 +181,7 @@ public class MySqlDAO {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			//cache.set("statistiquesCategoriesParAnnee, ???);
+			cache.set("statistiquesCategoriesParAnnee", gson.toJson(resultat));
 		}
 		return FXCollections.observableArrayList(resultat);
 	}
