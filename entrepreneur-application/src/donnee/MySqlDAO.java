@@ -45,48 +45,64 @@ public class MySqlDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		redisRecent = tempsRedisInferieurAUneHeure();
-		System.out.println(redisRecent);
+		if(!redisRecent) {
+			redisRecent = tempsRedisInferieurAUneHeure();
+		}
 	}
 	
 	public String recupererNombreCategories() {
 		String resultat = "";
-		try {
-			String REQUETE_NOMBRE_CATEGORIES = "SELECT COUNT(*) FROM categorie";
-			ResultSet resultatRequete = declaration.executeQuery(REQUETE_NOMBRE_CATEGORIES);
-			while(resultatRequete.next()) {
-				resultat = resultatRequete.getString(1);
+		if(redisRecent) {
+			resultat = cache.get("nombreCategories");
+		} else {
+			try {
+				String REQUETE_NOMBRE_CATEGORIES = "SELECT COUNT(*) FROM categorie";
+				ResultSet resultatRequete = declaration.executeQuery(REQUETE_NOMBRE_CATEGORIES);
+				while(resultatRequete.next()) {
+					resultat = resultatRequete.getString(1);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+			cache.set("nombreCategories", resultat);
 		}
 		return resultat;
 	}
 	
 	public String recupererNombreProduits() {
 		String resultat = "";
-		try {
-			String REQUETE_NOMBRE_PRODUITS = "SELECT COUNT(*) FROM produit";
-			ResultSet resultatRequete = declaration.executeQuery(REQUETE_NOMBRE_PRODUITS);
-			while(resultatRequete.next()) {
-				resultat = resultatRequete.getString(1);
+		if(redisRecent) {
+			resultat = cache.get("nombreProduits");
+		} else {
+			try {
+				String REQUETE_NOMBRE_PRODUITS = "SELECT COUNT(*) FROM produit";
+				ResultSet resultatRequete = declaration.executeQuery(REQUETE_NOMBRE_PRODUITS);
+				while(resultatRequete.next()) {
+					resultat = resultatRequete.getString(1);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+			cache.set("nombreProduits", resultat);
 		}
 		return resultat;
 	}
 	
 	public float recupererRecetteTotal(int annee) {
 		float resultat = 0.0f;
-		try {
-			String REQUETE_RECETTE_TOTALE = "SELECT SUM(prix_total) FROM achat_" + annee + "";
-			ResultSet resultatRequete = declaration.executeQuery(REQUETE_RECETTE_TOTALE);
-			while(resultatRequete.next()) {
-				resultat = resultatRequete.getFloat(1);
+		if(redisRecent) {
+			resultat = Float.parseFloat(cache.get("recetteTotale"));
+		} else {
+			try {
+				String REQUETE_RECETTE_TOTALE = "SELECT SUM(prix_total) FROM achat_" + annee + "";
+				ResultSet resultatRequete = declaration.executeQuery(REQUETE_RECETTE_TOTALE);
+				while(resultatRequete.next()) {
+					resultat = resultatRequete.getFloat(1);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+			cache.set("recetteTotale", ""+resultat);
 		}
 		return resultat;
 	}
@@ -94,53 +110,17 @@ public class MySqlDAO {
 
 	public ObservableList<StatistiqueMois> recupererStatistiquesMoisParAnnee(int annee) {
 		List<StatistiqueMois> resultat = new ArrayList<StatistiqueMois>();
-		
-		try {
-
-			String REQUETE_STATISTIQUES_MOIS = "SELECT MONTH(date) as mois, MAX(prix_total) as maximum, AVG(prix_total) as moyenne, produit as meilleur FROM achat_" + annee + " GROUP BY MONTH(date)";
-			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_MOIS);
-
-			while(resultatRequete.next()) {
-				String mois = resultatRequete.getString("mois");
-				float max = resultatRequete.getFloat("maximum");
-				float moyenne = resultatRequete.getFloat("moyenne");
-				String REQUETE_MEILLEURE_PRODUIT = "SELECT meilleur FROM (SELECT COUNT(produit) as max, produit as meilleur FROM achat_" + annee + " WHERE MONTH(date) = " + mois + " GROUP BY produit) as meill ORDER BY max DESC limit 1";
-				ResultSet resultatRe = declaration.executeQuery(REQUETE_MEILLEURE_PRODUIT);
-				while(resultatRe.next()) {
-					int meilleur = resultatRe.getInt("meilleur");
-					String REQUETE_NOM_MEILLEUR = "SELECT nom FROM produit where id = " + meilleur;
-					ResultSet meill = declaration.executeQuery(REQUETE_NOM_MEILLEUR);
-					while(meill.next()) {
-						String nomMeill = meill.getString("nom");
-						StatistiqueMois statMois = new StatistiqueMois(mois, moyenne, max, nomMeill);
-						resultat.add(statMois);
-					}					
-				}			
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return FXCollections.observableArrayList(resultat);
-	}
-
-	public ObservableList<StatistiqueCategorie> recupererStatistiquesCategoriesParAnnee(int annee) {
-		List<StatistiqueCategorie> resultat = new ArrayList<StatistiqueCategorie>();
-	
-		try {
-
-			String REQUETE_STATISTIQUES_CATEGORIE = "SELECT categorie, AVG(prix_total) as moyenne, MAX(prix_total) as maximum, produit FROM achat_" + annee + " GROUP BY categorie;";
-			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_CATEGORIE);
-
-			while(resultatRequete.next()) {
-				float max = resultatRequete.getFloat("maximum");
-				float moyenne = resultatRequete.getFloat("moyenne");
-				int categorie = resultatRequete.getInt("categorie");
-				String REQUETE_NOM_CATEGORIE = "SELECT nom FROM categorie where id = " + categorie;
-				ResultSet cate = declaration.executeQuery(REQUETE_NOM_CATEGORIE);
-				while(cate.next()) {
-					String nomCate = cate.getString("nom");					
-					String REQUETE_MEILLEURE_PRODUIT = "SELECT meilleur FROM (SELECT COUNT(produit) as max, produit as meilleur FROM achat achat_" + annee + "  WHERE categorie = " + categorie + " GROUP BY produit) as meill ORDER BY max DESC limit 1";
+		if(redisRecent) {
+			//resultat = cache.get("statistiquesMoisParAnnee");
+		} else {
+			try {
+				String REQUETE_STATISTIQUES_MOIS = "SELECT MONTH(date) as mois, MAX(prix_total) as maximum, AVG(prix_total) as moyenne, produit as meilleur FROM achat_" + annee + " GROUP BY MONTH(date)";
+				ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_MOIS);
+				while(resultatRequete.next()) {
+					String mois = resultatRequete.getString("mois");
+					float max = resultatRequete.getFloat("maximum");
+					float moyenne = resultatRequete.getFloat("moyenne");
+					String REQUETE_MEILLEURE_PRODUIT = "SELECT meilleur FROM (SELECT COUNT(produit) as max, produit as meilleur FROM achat_" + annee + " WHERE MONTH(date) = " + mois + " GROUP BY produit) as meill ORDER BY max DESC limit 1";
 					ResultSet resultatRe = declaration.executeQuery(REQUETE_MEILLEURE_PRODUIT);
 					while(resultatRe.next()) {
 						int meilleur = resultatRe.getInt("meilleur");
@@ -148,73 +128,111 @@ public class MySqlDAO {
 						ResultSet meill = declaration.executeQuery(REQUETE_NOM_MEILLEUR);
 						while(meill.next()) {
 							String nomMeill = meill.getString("nom");
-							StatistiqueCategorie statCategorie = new StatistiqueCategorie(nomCate, moyenne, max, nomMeill);
-							resultat.add(statCategorie);
+							StatistiqueMois statMois = new StatistiqueMois(mois, moyenne, max, nomMeill);
+							resultat.add(statMois);
 						}					
 					}			
-				}	
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			//cache.set("statistiquesMoisParAnnee, ???);
 		}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		System.out.println(resultat.toArray().toString());
+		return FXCollections.observableArrayList(resultat);
+	}
 
+	public ObservableList<StatistiqueCategorie> recupererStatistiquesCategoriesParAnnee(int annee) {
+		List<StatistiqueCategorie> resultat = new ArrayList<StatistiqueCategorie>();
+		if(redisRecent) {
+			//resultat = cache.get("statistiquesCategoriesParAnnee");
+		} else {
+			try {
+				String REQUETE_STATISTIQUES_CATEGORIE = "SELECT categorie, AVG(prix_total) as moyenne, MAX(prix_total) as maximum, produit FROM achat_" + annee + " GROUP BY categorie;";
+				ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_CATEGORIE);
+				while(resultatRequete.next()) {
+					float max = resultatRequete.getFloat("maximum");
+					float moyenne = resultatRequete.getFloat("moyenne");
+					int categorie = resultatRequete.getInt("categorie");
+					String REQUETE_NOM_CATEGORIE = "SELECT nom FROM categorie where id = " + categorie;
+					ResultSet cate = declaration.executeQuery(REQUETE_NOM_CATEGORIE);
+					while(cate.next()) {
+						String nomCate = cate.getString("nom");					
+						String REQUETE_MEILLEURE_PRODUIT = "SELECT meilleur FROM (SELECT COUNT(produit) as max, produit as meilleur FROM achat achat_" + annee + "  WHERE categorie = " + categorie + " GROUP BY produit) as meill ORDER BY max DESC limit 1";
+						ResultSet resultatRe = declaration.executeQuery(REQUETE_MEILLEURE_PRODUIT);
+						while(resultatRe.next()) {
+							int meilleur = resultatRe.getInt("meilleur");
+							String REQUETE_NOM_MEILLEUR = "SELECT nom FROM produit where id = " + meilleur;
+							ResultSet meill = declaration.executeQuery(REQUETE_NOM_MEILLEUR);
+							while(meill.next()) {
+								String nomMeill = meill.getString("nom");
+								StatistiqueCategorie statCategorie = new StatistiqueCategorie(nomCate, moyenne, max, nomMeill);
+								resultat.add(statCategorie);
+							}					
+						}			
+					}	
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			//cache.set("statistiquesCategoriesParAnnee, ???);
+		}
 		return FXCollections.observableArrayList(resultat);
 	}
 
 	public ObservableList<StatistiqueRegion> recupererStatistiquesRegionParAnnee(int annee) {
 		List<StatistiqueRegion> resultat = new ArrayList<StatistiqueRegion>();
-
-		try {
-
-			String REQUETE_STATISTIQUES_REGION = "SELECT COUNT(produit) as nombreAcheteurs, region FROM achat_" + annee + " GROUP BY region";
-			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_REGION);
-
-			while(resultatRequete.next()) {
-				int nombreAcheteurs = resultatRequete.getInt("nombreAcheteurs");
-				String region = resultatRequete.getString("region");
-				StatistiqueRegion statRegion = new StatistiqueRegion(region, nombreAcheteurs);
-				resultat.add(statRegion);
+		if(redisRecent) {
+			 //resultat = cache.get("statistiquesRegionParAnnee");
+		} else {
+			try {
+				String REQUETE_STATISTIQUES_REGION = "SELECT COUNT(produit) as nombreAcheteurs, region FROM achat_" + annee + " GROUP BY region";
+				ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_REGION);
+				while(resultatRequete.next()) {
+					int nombreAcheteurs = resultatRequete.getInt("nombreAcheteurs");
+					String region = resultatRequete.getString("region");
+					StatistiqueRegion statRegion = new StatistiqueRegion(region, nombreAcheteurs);
+					resultat.add(statRegion);
 				}	
-		
-		} catch (SQLException e) {
-			e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			//cache.set("statistiquesRegionParAnnee", resultat);
 		}
-		
 		return FXCollections.observableArrayList(resultat);
 	}
 
 	public ObservableList<StatistiqueProduit> recupererStatistiquesProduitsParAnnee(int annee) {
 		List<StatistiqueProduit> resultat = new ArrayList<StatistiqueProduit>();
-
-		try {
-
-			String REQUETE_STATISTIQUES_PRODUIT = "SELECT COUNT(produit) as nb, AVG(prix_total) as moyenne, MAX(prix_total) as max,  produit, MONTH(date) as mois FROM achat_" + annee + " GROUP by produit ORDER BY nb DESC LIMIT 5";
-			ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_PRODUIT);
-			while(resultatRequete.next()) {
-				int meilleur = resultatRequete.getInt("produit");
-				String mois = resultatRequete.getString("mois");
-				float moyenne = resultatRequete.getFloat("moyenne");
-				float max = resultatRequete.getFloat("max");
-				String REQUETE_MEILLEURE_PRODUIT = "SELECT nom FROM produit where id = " + meilleur;
-				ResultSet resultatRe = declaration.executeQuery(REQUETE_MEILLEURE_PRODUIT);
-				while(resultatRe.next()) {
-					String nom = resultatRe.getString("nom");
-					StatistiqueProduit statProduit = new StatistiqueProduit(nom, moyenne, max,mois);
-					resultat.add(statProduit);
-									
-				}			
+		if(redisRecent) {
+			//resultat = cache.get("statistiquesProduitsParAnnee");
+		} else {
+			try {
+				String REQUETE_STATISTIQUES_PRODUIT = "SELECT COUNT(produit) as nb, AVG(prix_total) as moyenne, MAX(prix_total) as max,  produit, MONTH(date) as mois FROM achat_" + annee + " GROUP by produit ORDER BY nb DESC LIMIT 5";
+				ResultSet resultatRequete = declaration.executeQuery(REQUETE_STATISTIQUES_PRODUIT);
+				while(resultatRequete.next()) {
+					int meilleur = resultatRequete.getInt("produit");
+					String mois = resultatRequete.getString("mois");
+					float moyenne = resultatRequete.getFloat("moyenne");
+					float max = resultatRequete.getFloat("max");
+					String REQUETE_MEILLEURE_PRODUIT = "SELECT nom FROM produit where id = " + meilleur;
+					ResultSet resultatRe = declaration.executeQuery(REQUETE_MEILLEURE_PRODUIT);
+					while(resultatRe.next()) {
+						String nom = resultatRe.getString("nom");
+						StatistiqueProduit statProduit = new StatistiqueProduit(nom, moyenne, max,mois);
+						resultat.add(statProduit);					
+					}			
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
+			//cache.set("statistiquesProduitsParAnnee", resultat);
+		}		
 		return FXCollections.observableArrayList(resultat);
 	}
 	
-	
 	public void ajouterProduit(Produit produit) {
 		try {
-			
 			String SQL_AJOUTER_PRODUIT = "INSERT into produit(nom, image, prix, id_categorie) VALUES (?,?,?,?)";
 			PreparedStatement requeteAjouterProduit = connexion.prepareStatement(SQL_AJOUTER_PRODUIT);
 			requeteAjouterProduit.setString(1, produit.getNom());
@@ -223,29 +241,23 @@ public class MySqlDAO {
 			requeteAjouterProduit.setInt(4, produit.getIdCategorie());
 			requeteAjouterProduit.execute();
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public void modifierProduit(Produit produit) {		
 		try {
-			
 			String SQL_MODIFIER_PRODUIT = "UPDATE produit SET nom = ?, image = ?, prix = ?, id_categorie = ? WHERE id = ?";
 			PreparedStatement requeteModifierProduit = connexion.prepareStatement(SQL_MODIFIER_PRODUIT);
 			requeteModifierProduit.setString(1, produit.getNom());
 			requeteModifierProduit.setString(2, produit.getImage());
 			requeteModifierProduit.setFloat(3, produit.getPrix());
 			requeteModifierProduit.setInt(4, produit.getIdCategorie());
-			requeteModifierProduit.setInt(5, produit.getId());
-						
+			requeteModifierProduit.setInt(5, produit.getId());	
 			requeteModifierProduit.execute();
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public void supprimerProduit(Produit produit) {
@@ -254,10 +266,8 @@ public class MySqlDAO {
 			PreparedStatement requeteSupprimerProduit = connexion.prepareStatement(SQL_SUPPRIMER_PRODUIT);
 			requeteSupprimerProduit.execute();
 			} catch (SQLException e) {
-			
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public ObservableList<Produit> recupererProduitsParCategorie(int categorie) {
@@ -277,13 +287,11 @@ public class MySqlDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		return FXCollections.observableArrayList(resultat);
 	}
 
 	public Collection<String> recupererCategories() {
 		Collection<String> categories = new ArrayList();
-		
 		try {
 			String REQUETE_CATEGORIES = "SELECT nom FROM categorie";
 			ResultSet resultatRequete = declaration.executeQuery(REQUETE_CATEGORIES);
@@ -291,9 +299,7 @@ public class MySqlDAO {
 				String nom = resultatRequete.getString("nom");
 				categories.add(nom);
 			}
-			
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		}
 		return categories;
@@ -308,14 +314,10 @@ public class MySqlDAO {
 			while (resultatRequete.next()) {
 				id = resultatRequete.getInt("id");
 			}
-			
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		}
-		
 		return id;
-		
 	}
 
 	public Produit recupererProduit(int idProduit) {		
