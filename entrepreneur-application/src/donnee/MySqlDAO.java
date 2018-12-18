@@ -19,6 +19,7 @@ import modele.StatistiqueCategorie;
 import modele.StatistiqueMois;
 import modele.StatistiqueProduit;
 import modele.StatistiqueRegion;
+import redis.clients.jedis.Jedis;
 
 public class MySqlDAO {
 	
@@ -27,10 +28,12 @@ public class MySqlDAO {
 	private static String BASEDEDONNEES_USAGER = "vendeur";
 	private static String BASEDEDONNEES_MOTDEPASSE = "password";
 	
+	private Jedis cache;
 	private Connection connexion = null;
 	private Statement declaration = null;
 	
 	public MySqlDAO() {
+		cache = new Jedis("158.69.192.249", 6379);
 		try {
 			Class.forName(BASEDEDONNEES_DRIVER);
 			connexion = DriverManager.getConnection(BASEDEDONNEES_URL, BASEDEDONNEES_USAGER, BASEDEDONNEES_MOTDEPASSE);
