@@ -12,9 +12,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import modele.Produit;
 import modele.Produit;
 import modele.StatistiqueCategorie;
 import modele.StatistiqueMois;
@@ -30,12 +33,14 @@ public class MySqlDAO {
 	private static String BASEDEDONNEES_MOTDEPASSE = "password";
 	
 	private Jedis cache;
+	private Gson gson;
 	private boolean redisRecent = false;
 	private Connection connexion = null;
 	private Statement declaration = null;
 	
 	public MySqlDAO() {
 		cache = new Jedis("158.69.192.249", 6379);
+		gson = new Gson();
 		try {
 			Class.forName(BASEDEDONNEES_DRIVER);
 			connexion = DriverManager.getConnection(BASEDEDONNEES_URL, BASEDEDONNEES_USAGER, BASEDEDONNEES_MOTDEPASSE);
@@ -110,8 +115,9 @@ public class MySqlDAO {
 
 	public ObservableList<StatistiqueMois> recupererStatistiquesMoisParAnnee(int annee) {
 		List<StatistiqueMois> resultat = new ArrayList<StatistiqueMois>();
+		Type listeStatistiquesMois = new TypeToken<ArrayList<StatistiqueMois>>(){}.getType();
 		if(redisRecent) {
-			//resultat = cache.get("statistiquesMoisParAnnee");
+			resultat = gson.fromJson(cache.get("statistiquesMoisParAnnee"), listeStatistiquesMois);
 		} else {
 			try {
 				String REQUETE_STATISTIQUES_MOIS = "SELECT MONTH(date) as mois, MAX(prix_total) as maximum, AVG(prix_total) as moyenne, produit as meilleur FROM achat_" + annee + " GROUP BY MONTH(date)";
@@ -136,9 +142,8 @@ public class MySqlDAO {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			//cache.set("statistiquesMoisParAnnee, ???);
+			cache.set("statistiquesMoisParAnnee", gson.toJson(resultat));
 		}
-		System.out.println(resultat.toArray().toString());
 		return FXCollections.observableArrayList(resultat);
 	}
 
