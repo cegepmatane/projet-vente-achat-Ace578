@@ -61,7 +61,7 @@ public class MySqlDAO {
 			resultat = cache.get("nombreCategories");
 		} else {
 			try {
-				String REQUETE_NOMBRE_CATEGORIES = "SELECT COUNT(*) FROM categorie";
+				String REQUETE_NOMBRE_CATEGORIES = "SELECT COUNT(id) FROM categorie";
 				ResultSet resultatRequete = declaration.executeQuery(REQUETE_NOMBRE_CATEGORIES);
 				while(resultatRequete.next()) {
 					resultat = resultatRequete.getString(1);
@@ -80,7 +80,7 @@ public class MySqlDAO {
 			resultat = cache.get("nombreProduits");
 		} else {
 			try {
-				String REQUETE_NOMBRE_PRODUITS = "SELECT COUNT(*) FROM produit";
+				String REQUETE_NOMBRE_PRODUITS = "SELECT COUNT(id) FROM produit";
 				ResultSet resultatRequete = declaration.executeQuery(REQUETE_NOMBRE_PRODUITS);
 				while(resultatRequete.next()) {
 					resultat = resultatRequete.getString(1);
