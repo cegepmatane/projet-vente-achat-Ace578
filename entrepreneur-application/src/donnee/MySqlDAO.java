@@ -350,8 +350,11 @@ public class MySqlDAO {
 		Long tempRedis = Long.parseLong(cache.get("timestamp"));
 		System.out.println(System.currentTimeMillis() - tempRedis);
 		if(System.currentTimeMillis() - tempRedis < 3600000) {
+			System.out.println("Utilisation de redis");
 			return true;
 		}
+		cache.set("timestamp", System.currentTimeMillis()+"");
+		System.out.println("Utilisation de la bd");
 		return false;
 	}
 }
